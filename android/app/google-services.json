@@ -1,0 +1,39 @@
+{
+    "project_info": {
+      "project_number": "176790331793",
+      "project_id": "zipscoot-caf79",
+      "storage_bucket": "zipscoot-caf79.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:176790331793:android:e505863c06e8085b113a30",
+          "android_client_info": {
+            "package_name": "com.rn_starter_kit"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "176790331793-3ebdaijaalf0js3pt4o42kc9vjjidmrm.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyDes0_TRieGqwoOK9A7EJKAbv6pyM4J2FA"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "176790331793-3ebdaijaalf0js3pt4o42kc9vjjidmrm.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
