@@ -1,0 +1,8 @@
+node_modules
+ios/Pods
+.DS_store
+yarn.lock
+android
+.idea
+.vscode
+package-lock.json
