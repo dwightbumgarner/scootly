@@ -1,34 +1,41 @@
 import { Platform, StyleSheet, Dimensions } from "react-native";
 import { Configuration } from "./Configuration";
 
-const { width, height } = Dimensions.get("window");
+export const { width, height } = Dimensions.get("window");
 const SCREEN_WIDTH = width < height ? width : height;
 const numColumns = 2;
 
 export const AppStyles = {
   color: {
+    // From Figma
+    primarybg: "#1D1D1D",
+    secondarybg: "#505050",
+    accent: "#FBD85D",
+    text: "#FEDB50",
+    grey: "#313131",
+
+    // From template
     main: "#5ea23a",
-    text: "#696969",
     title: "#464646",
     subtitle: "#545454",
     categoryTitle: "#161616",
-    tint: "#ff5a66",
+    tint: "#FBD85D",
     description: "#bbbbbb",
     filterTitle: "#8a8a8a",
     starRating: "#2bdf85",
     location: "#a9a9a9",
     white: "white",
     facebook: "#4267b2",
-    grey: "grey",
     greenBlue: "#00aea8",
     placeholder: "#a0a0a0",
-    background: "#f2f2f2",
+    background: "#1D1D1D",
     blue: "#3293fe"
   },
   fontSize: {
     title: 30,
     content: 20,
-    normal: 16
+    normal: 16,
+    small: 14
   },
   buttonWidth: {
     main: "70%"
@@ -44,7 +51,7 @@ export const AppStyles = {
 
 export const AppIcon = {
   container: {
-    backgroundColor: "white",
+    backgroundColor: "#1D1D1D",
     borderRadius: 20,
     padding: 8,
     marginRight: 10

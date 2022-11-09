@@ -21,6 +21,7 @@ import {useDispatch} from 'react-redux';
 const FBSDK = require('react-native-fbsdk');
 const {LoginManager, AccessToken} = FBSDK;
 import {login} from '../reducers';
+import { Icon } from 'react-native-elements'
 
 function LoginScreen({navigation}) {
   const [loading, setLoading] = useState(false);
@@ -32,13 +33,13 @@ function LoginScreen({navigation}) {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
-        '763342324681-petgvkkeltcfi9qmgr8um8ohak81l953.apps.googleusercontent.com',
+        '176790331793-nl45oq9u5uoedgu0r3rp0lub7224ituk.apps.googleusercontent.com',
     });
   }, []);
 
   const onPressLogin = () => {
     if (email.length <= 0 || password.length <= 0) {
-      Alert.alert('Please fill out the required fields.');
+      Alert.alert('Please enter your email and password');
       return;
     }
     auth()
@@ -173,14 +174,22 @@ function LoginScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, styles.leftTitle]}>Sign In</Text>
+      <View style={{
+            paddingHorizontal: 10,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center"
+        }}>
+            <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('Welcome')}></Icon>
+            <Text style={styles.title}>Welcome Back!</Text>
+        </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
           placeholder="E-mail or phone number"
           onChangeText={setEmail}
           value={email}
-          placeholderTextColor={AppStyles.color.grey}
+          placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
       </View>
@@ -191,7 +200,7 @@ function LoginScreen({navigation}) {
           placeholder="Password"
           onChangeText={setPassword}
           value={password}
-          placeholderTextColor={AppStyles.color.grey}
+          placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
       </View>
@@ -202,12 +211,6 @@ function LoginScreen({navigation}) {
         Log in
       </Button>
       <Text style={styles.or}>OR</Text>
-      <Button
-        containerStyle={styles.facebookContainer}
-        style={styles.facebookText}
-        onPress={() => onPressFacebook()}>
-        Login with Facebook
-      </Button>
       {loading ? (
         <ActivityIndicator
           style={{marginTop: 30}}
@@ -230,24 +233,26 @@ function LoginScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: AppStyles.color.primarybg,
     alignItems: 'center',
   },
   or: {
-    color: 'black',
+    color: AppStyles.color.white,
     marginTop: 40,
     marginBottom: 10,
   },
   title: {
+    paddingTop: 80,
     fontSize: AppStyles.fontSize.title,
     fontWeight: 'bold',
-    color: AppStyles.color.tint,
-    marginTop: 20,
-    marginBottom: 20,
+    color: AppStyles.color.white,
+    marginBottom: 100,
+    alignItems: 'auto',
+    paddingRight: 65
   },
-  leftTitle: {
-    alignSelf: 'stretch',
-    textAlign: 'left',
-    marginLeft: 20,
+  backArrow: {
+    marginRight: 50,
+    paddingBottom: 20
   },
   content: {
     paddingLeft: 50,
@@ -264,7 +269,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   loginText: {
-    color: AppStyles.color.white,
+    color: AppStyles.color.primarybg,
   },
   placeholder: {
     color: 'red',
@@ -274,7 +279,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: AppStyles.color.grey,
+    borderColor: AppStyles.color.white,
     borderRadius: AppStyles.borderRadius.main,
   },
   body: {
