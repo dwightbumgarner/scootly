@@ -103,7 +103,7 @@ function WelcomeScreen({navigation}) {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Say hello to your new peen</Text>
+      <Text style={styles.title}>Say hello to your new app</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 150,
+    backgroundColor: AppStyles.color.primarybg,
+    paddingBottom: 150,
   },
   logo: {
     width: 200,
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: AppStyles.fontSize.title,
     fontWeight: 'bold',
-    color: AppStyles.color.tint,
+    color: AppStyles.color.white,
     marginTop: 20,
     textAlign: 'center',
     marginBottom: 20,
@@ -143,17 +144,17 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    backgroundColor: AppStyles.color.accent,
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
     marginTop: 30,
   },
   loginText: {
-    color: AppStyles.color.white,
+    color: AppStyles.color.primarybg,
   },
   signupContainer: {
     width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.white,
+    backgroundColor: AppStyles.color.primarybg,
     borderRadius: AppStyles.borderRadius.main,
     padding: 8,
     borderWidth: 1,
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   signupText: {
-    color: AppStyles.color.tint,
+    color: AppStyles.color.white,
   },
   spinner: {
     marginTop: 200,

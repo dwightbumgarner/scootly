@@ -22,10 +22,11 @@ const LoginStack = () => (
       headerTintColor: 'red',
       headerTitleStyle: styles.headerTitleStyle,
       headerMode: 'float',
+      backgroundColor: AppStyles.color.primarybg
     }}>
-    <Stack.Screen name="Welcome" component={WelcomeScreen} />
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="Signup" component={SignupScreen} />
+    <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}}/>
+    <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+    <Stack.Screen name="Signup" component={SignupScreen} options={{headerShown: false}}/>
     
   </Stack.Navigator>
 );
@@ -35,12 +36,17 @@ const HomeStack = () => (
     initialRouteName="Home"
     screenOptions={{
       headerTintColor: 'red',
+      headerStyle: {
+        backgroundColor: AppStyles.color.primarybg
+      },
       headerTitleStyle: styles.headerTitleStyle,
       headerMode: 'float',
+      headerShown: false
     }}>
     <Stack.Screen
       name="Home"
       component={HomeScreen}
+      style={styles.homeHeader}
       options={({navigation}) => ({
         headerLeft: () => (
           <Pressable onPress={() => navigation.openDrawer()}>
@@ -72,6 +78,9 @@ const TabNavigator = () => (
         );
       },
       headerShown: false,
+      tabBarStyle: {
+        display: "none"
+      }
     }}>
     <BottomTab.Screen
       options={{tabBarLabel: 'Home'}}
@@ -114,6 +123,9 @@ const AppNavigator = () => (
 );
 
 const styles = StyleSheet.create({
+  homeHeader:{
+    backgroundColor: AppStyles.color.primarybg,
+  },
   headerTitleStyle: {
     fontWeight: 'bold',
     textAlign: 'center',

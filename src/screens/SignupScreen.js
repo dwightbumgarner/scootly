@@ -6,6 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
 import {login} from '../reducers';
+import { Icon } from 'react-native-elements'
 
 function SignupScreen({navigation}) {
   const [fullname, setFullname] = useState('');
@@ -48,14 +49,22 @@ function SignupScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, styles.leftTitle]}>Create new account</Text>
+      <View style={{
+            paddingHorizontal: 10,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center"
+        }}>
+            <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('Welcome')}></Icon>
+            <Text style={styles.title}>Create Your Account</Text>
+        </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
           placeholder="Full Name"
           onChangeText={setFullname}
           value={fullname}
-          placeholderTextColor={AppStyles.color.grey}
+          placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
       </View>
@@ -65,7 +74,7 @@ function SignupScreen({navigation}) {
           placeholder="Phone Number"
           onChangeText={setPhone}
           value={phone}
-          placeholderTextColor={AppStyles.color.grey}
+          placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
       </View>
@@ -75,7 +84,7 @@ function SignupScreen({navigation}) {
           placeholder="E-mail Address"
           onChangeText={setEmail}
           value={email}
-          placeholderTextColor={AppStyles.color.grey}
+          placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
       </View>
@@ -86,7 +95,7 @@ function SignupScreen({navigation}) {
           secureTextEntry={true}
           onChangeText={setPassword}
           value={password}
-          placeholderTextColor={AppStyles.color.grey}
+          placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
       </View>
@@ -104,18 +113,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: AppStyles.color.primarybg,
   },
   title: {
+    paddingTop: 80,
     fontSize: AppStyles.fontSize.title,
     fontWeight: 'bold',
-    color: AppStyles.color.tint,
-    marginTop: 20,
-    marginBottom: 20,
+    color: AppStyles.color.white,
+    marginBottom: 100,
+    alignItems: 'auto',
+    paddingRight: 25
   },
-  leftTitle: {
-    alignSelf: 'stretch',
-    textAlign: 'left',
-    marginLeft: 20,
+  backArrow: {
+    marginRight: 25,
+    paddingBottom: 20
   },
   content: {
     paddingLeft: 50,
@@ -142,7 +153,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: AppStyles.color.grey,
+    borderColor: AppStyles.color.white,
     borderRadius: AppStyles.borderRadius.main,
   },
   body: {
@@ -159,7 +170,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   facebookText: {
-    color: AppStyles.color.white,
+    color: AppStyles.color.primarybg,
   },
 });
 
