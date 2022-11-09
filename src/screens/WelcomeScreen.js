@@ -103,11 +103,11 @@ function WelcomeScreen({navigation}) {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Say hello to your new app</Text>
+      <Text style={styles.title}>Say hello to your new peen</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={() => navigation.navigate('Login')}>
+        onPress={() => navigation.navigate('DrawerStack')}>
         Log In
       </Button>
       <Button
