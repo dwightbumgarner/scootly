@@ -9,35 +9,64 @@ import { ListItem, SearchBar } from "react-native-elements";
 import filter from "lodash.filter";
 
 export default function RentalListing(props) {
-    const [loading, setLoading] = useState(true);
-    const [rentals, setRentals] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [arrayholder, setArrayHolder] = useState([]);
+    const [allData, setallData] = useState([]);
     const [searchValue, setSearchValue] = useState("");
+
+    // Here we retrieve all available rental listings
     useEffect(() => {
+        // Retrieve Firebase rentals collection
         firestore()
         .collection('rentals')
         .get()
         .then(collectionSnapshot => {
-            console.log('Total Rentals: ', collectionSnapshot.size);
+            //console.log('Total Rentals: ', collectionSnapshot.size);
+            var totalListings = collectionSnapshot.size;
+            var retrievedListings = 0;
             var listings = [];
+            // Loop through the rentals collection to get individual rental listings
             collectionSnapshot
                 .forEach(documentSnapshot => {
-                    var listingData = documentSnapshot.data();
+                    var listingData = documentSnapshot.data(); // Store each rental's data here
+                    // Retrieve Firebase users collection, we need to get information about the vendor for our rental listing
                     firestore().collection('users').doc(listingData.vendorUID).get()
                     .then(doc => {
                         const data = doc.data();
-                        //console.log(doc.id, data);
+                        // Update our master listing data array with vendor info
                         listingData.id = documentSnapshot.id;
                         listingData.vendorName = data.fullname;
                         listingData.vendorImage = data.photoURL;
                         listingData.vendorRating = data.rating;
-                        listings.push(listingData);
-                        console.log('RENTAL: ', documentSnapshot.id, listingData);
-                        setRentals(listings);
-                        setData(rentals);
-                        setArrayHolder(rentals);
-                        setLoading(false);
+                        // Retrieve Firebase ratings collection, we need to get all ratings for our current vendor
+                        firestore().collection('ratings').where('vendorUID', '==', listingData.vendorUID).get()
+                        .then(collectionSnapshot => {
+                            retrievedListings++;
+                            var averageRating = 0;
+                            var totalRatings = 0;
+                            // Loop through all ratings for our current vendor to get an average
+                            collectionSnapshot
+                            .forEach(documentSnapshot => {
+                                var ratingData = documentSnapshot.data()
+                                //console.log("RATING: ", ratingData.rating);
+                                averageRating += ratingData.rating;
+                                totalRatings++;
+                            })
+                            averageRating = averageRating/totalRatings;
+                            listingData.vendorRating = averageRating;
+                            // At the end of all of this, we have a complete set of data for the current listing, push to the master listing data array
+                            listings.push(listingData);
+                            //console.log('RENTAL: ', documentSnapshot.id, listingData);
+                            // We retrieved all available listings, now update state variables (need to minimize this for performance)
+                            if(retrievedListings == totalListings){
+                                // Here we finally have all necessary listing data
+                                setData(listings);
+                                setallData(listings);
+                                //console.log("LISTING ARRAY: ", listings);
+                                //console.log("ALL LISTINGS: ", data);
+                                setLoading(false);
+                            }
+                        })
                     })
                 });
         });
@@ -95,7 +124,8 @@ export default function RentalListing(props) {
     }
       
     searchFunction = (text) => {
-    const updatedData = arrayholder.filter((item) => {
+        console.log("THIS ALL LISTINGS: ", allData);
+    const updatedData = allData.filter((item) => {
         const item_data = `${item.vehicleName.toUpperCase()})`;
         const text_data = text.toUpperCase();
         return item_data.indexOf(text_data) > -1;
@@ -113,7 +143,7 @@ export default function RentalListing(props) {
                     containerStyle={{backgroundColor: AppStyles.color.primarybg, borderTopWidth:0, borderBottomWidth:0,}}
                     inputContainerStyle={{backgroundColor: 'white'}}
                     value={searchValue}
-                    onChangeText={(text) => this.searchFunction(text)}
+                    onChangeText={(text) => searchFunction(text)}
                     autoCorrect={false}
                 />
             </View>
