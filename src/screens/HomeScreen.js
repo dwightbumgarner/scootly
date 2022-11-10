@@ -13,7 +13,7 @@ function HomeScreen({navigation}) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'ZipScoot',
+      title: 'scootly',
     });
   }, []);
 
