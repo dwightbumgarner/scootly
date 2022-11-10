@@ -12,6 +12,7 @@ export default function RentalListing(props) {
     const [loading, setLoading] = useState(true);
     const [rentals, setRentals] = useState([]);
     const [data, setData] = useState([]);
+    const [arrayholder, setArrayHolder] = useState([]);
     const [searchValue, setSearchValue] = useState("");
     useEffect(() => {
         firestore()
@@ -35,6 +36,7 @@ export default function RentalListing(props) {
                         console.log('RENTAL: ', documentSnapshot.id, listingData);
                         setRentals(listings);
                         setData(rentals);
+                        setArrayHolder(rentals);
                         setLoading(false);
                     })
                 });
@@ -93,7 +95,7 @@ export default function RentalListing(props) {
     }
       
     searchFunction = (text) => {
-    const updatedData = this.arrayholder.filter((item) => {
+    const updatedData = arrayholder.filter((item) => {
         const item_data = `${item.vehicleName.toUpperCase()})`;
         const text_data = text.toUpperCase();
         return item_data.indexOf(text_data) > -1;
