@@ -103,11 +103,11 @@ function WelcomeScreen({navigation}) {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Say hello to your new app</Text>
+      <Text style={styles.title}>Welcome to ZipScoot</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={() => navigation.navigate('DrawerStack')}>
+        onPress={() => navigation.navigate('Login')}>
         Log In
       </Button>
       <Button

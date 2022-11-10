@@ -8,6 +8,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import {AppIcon, AppStyles} from '../AppStyles';
 import {Configuration} from '../Configuration';
 import DrawerContainer from '../components/DrawerContainer';
@@ -56,34 +57,62 @@ const HomeStack = () => (
         headerLeftContainerStyle: {paddingLeft: 10},
       })}
     />
+    <Stack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      style={styles.homeHeader}
+      options={{headerShown:false}}
+    />
   </Stack.Navigator>
 );
 
+// BOTTOM TAB BAR ON THE HOME SCREEN
+      // it's an imported react component, so styling is different: https://reactnavigation.org/docs/bottom-tab-navigator/
 const BottomTab = createBottomTabNavigator();
-
 const TabNavigator = () => (
   <BottomTab.Navigator
     initialRouteName="Home"
     screenOptions={{
-      tabBarInactiveTintColor: 'grey',
-      tabBarActiveTintColor: AppStyles.color.tint,
-      tabBarIcon: ({focused}) => {
-        return (
-          <Image
-            style={{
-              tintColor: focused ? AppStyles.color.tint : AppStyles.color.grey,
-            }}
-            source={AppIcon.images.home}
-          />
-        );
+      tabBarStyle: {
+        backgroundColor:'black',
+    
       },
+      tabBarInactiveTintColor: 'lightgrey',
+      tabBarActiveTintColor: AppStyles.color.tint,
       headerShown: false,
     }}>
     <BottomTab.Screen
-      options={{tabBarLabel: 'Home'}}
+      options={{
+        tabBarLabel: 'Home',
+        tabBarIcon: ({focused}) => {
+          return (
+            <Image
+              style={{ tintColor: focused ? AppStyles.color.tint : 'lightgrey',}}
+              source={AppIcon.images.home}
+            />
+          );
+        },
+      }}
       name="HomeStack"
       component={HomeStack}
+      
     />
+    <BottomTab.Screen
+      options={{
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({focused}) => {
+          return (
+            <Image
+              style={{ tintColor: focused ? AppStyles.color.tint : 'lightgrey', height:25, width:25}}
+              source={AppIcon.images.defaultUser}
+            />
+          );
+        },
+      }}
+      name="ProfileScreen"
+      component={ProfileScreen}
+    />
+
   </BottomTab.Navigator>
 );
 
@@ -129,7 +158,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: 'black',
   },
-  iconStyle: {tintColor: AppStyles.color.tint, width: 30, height: 30},
+  iconStyle: {
+    tintColor: AppStyles.color.tint, 
+    width: 30, 
+    height: 30
+  },
 });
 
 export default AppNavigator;
