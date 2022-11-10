@@ -23,6 +23,20 @@ export default function DrawerContainer({navigation}) {
               }); //logout on redux
           }}
         />
+        <MenuButton
+          title="RENTER FLOW"
+          source={AppIcon.images.logout}
+          onPress={() => {
+            navigation.navigate('HomeStack');
+          }}
+        />
+        <MenuButton
+          title="VENDOR FLOW"
+          source={AppIcon.images.logout}
+          onPress={() => {
+            navigation.navigate('VendorStack');
+          }}
+        />
       </View>
     </View>
   );

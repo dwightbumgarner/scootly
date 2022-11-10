@@ -180,9 +180,9 @@ function LoginScreen({navigation}) {
             justifyContent: "space-between",
             alignItems: "center"
         }}>
-            <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('Welcome')}></Icon>
-            <Text style={styles.title}>Welcome Back!</Text>
-        </View>
+          <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('Welcome')}></Icon>
+          <Text style={styles.title}>Welcome Back!</Text>
+      </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
