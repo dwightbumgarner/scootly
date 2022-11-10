@@ -1,11 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, {useLayoutEffect, useState, useEffect} from 'react';
 import {TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {connect, useSelector} from 'react-redux';
 import {AppStyles, width} from '../AppStyles';
 import firestore from '@react-native-firebase/firestore';
-import { Rating } from 'react-native-ratings';
-import { SearchBar } from "react-native-elements";
+import { ScrollView } from 'react-native-gesture-handler';
+import { Rating, AirbnbRating } from 'react-native-ratings';
+import { ListItem, SearchBar } from "react-native-elements";
+import filter from "lodash.filter";
 
-export default function RentalListing(props) {
+export default function VendorListing(props) {
+    const auth = useSelector((state) => state.auth);
+    console.log(auth.user);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [allData, setallData] = useState([]);
@@ -16,6 +21,7 @@ export default function RentalListing(props) {
         // Retrieve Firebase rentals collection
         firestore()
         .collection('rentals')
+        .where('vendorUID', '==', auth.user?.id)
         .get()
         .then(collectionSnapshot => {
             //console.log('Total Rentals: ', collectionSnapshot.size);
@@ -72,26 +78,9 @@ export default function RentalListing(props) {
 
     const renderItem = ({item}) => (
         <TouchableOpacity>
-            <View style={styles.vendorMetaContainer}>
-                <Image
-                    style={styles.vendorImage}
-                    source={{uri: item?.vendorImage}}
-                />
-                <View>
-                    <Text style={styles.vehicleName}>{item?.vehicleName}</Text>
-                    <View style={styles.subtitle}>
-                        <Text style={styles.vendorName}>{item?.vendorName}</Text>
-                        <Rating
-                            style={{backgroundColor: AppStyles.color.primarybg}}
-                            tintColor = "#1D1D1D"
-                            ratingCount={5}
-                            imageSize={20}
-                            readonly
-                            startingValue={item?.vendorRating}
-                        />
-                    </View>
-                </View>
-            </View>
+            {<View style={styles.vendorMetaContainer}>
+                <Text style={styles.vehicleName}>{item?.vehicleName}</Text>
+            </View>}
             <View style={styles.vehicleMetaContainer}>
                 {console.log("RENTAL ID: ", item?.id)}
                 {console.log("RENTAL: ", item)}
@@ -133,17 +122,6 @@ export default function RentalListing(props) {
 
     return (
         <SafeAreaView>
-            <View style={{paddingBottom: 30, width: width - 20}}>
-                <SearchBar
-                    placeholder="What are you looking for?"
-                    round
-                    containerStyle={{backgroundColor: AppStyles.color.primarybg, borderTopWidth:0, borderBottomWidth:0,}}
-                    inputContainerStyle={{backgroundColor: 'white'}}
-                    value={searchValue}
-                    onChangeText={(text) => searchFunction(text)}
-                    autoCorrect={false}
-                />
-            </View>
             <FlatList
                 data={data}
                 renderItem={renderItem}
@@ -182,18 +160,12 @@ const styles = StyleSheet.create({
         marginRight: 15
 
     },
-    vendorImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 50,
-    },
     vehicleName: {
         color: AppStyles.color.white,
         fontSize: AppStyles.fontSize.content,
         fontWeight: "bold",
         paddingRight: 20,
         paddingLeft: 10,
-        marginBottom: 3
 
     },
     vendorName: {

@@ -5,6 +5,8 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
+import VendorHomeScreen from '../screens/VendorHomeScreen';
+import AddVehicleScreen from '../screens/AddVehicleScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
@@ -20,14 +22,11 @@ const LoginStack = () => (
   <Stack.Navigator
     initialRouteName="Welcome"
     screenOptions={{
-      headerTintColor: 'red',
-      headerTitleStyle: styles.headerTitleStyle,
-      headerMode: 'float',
-      backgroundColor: AppStyles.color.primarybg
+      headerShown: false
     }}>
-    <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}}/>
-    <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
-    <Stack.Screen name="Signup" component={SignupScreen} options={{headerShown: false}}/>
+    <Stack.Screen name="Welcome" component={WelcomeScreen}/>
+    <Stack.Screen name="Login" component={LoginScreen}/>
+    <Stack.Screen name="Signup" component={SignupScreen}/>
     
   </Stack.Navigator>
 );
@@ -36,33 +35,25 @@ const HomeStack = () => (
   <Stack.Navigator
     initialRouteName="Home"
     screenOptions={{
-      headerTintColor: 'red',
-      headerStyle: {
-        backgroundColor: AppStyles.color.primarybg
-      },
-      headerTitleStyle: styles.headerTitleStyle,
-      headerMode: 'float',
       headerShown: false
     }}>
-    <Stack.Screen
-      name="Home"
-      component={HomeScreen}
-      style={styles.homeHeader}
-      options={({navigation}) => ({
-        headerLeft: () => (
-          <Pressable onPress={() => navigation.openDrawer()}>
-            <Image style={styles.iconStyle} source={AppIcon.images.menu} />
-          </Pressable>
-        ),
-        headerLeftContainerStyle: {paddingLeft: 10},
-      })}
-    />
     <Stack.Screen
       name="Profile"
       component={ProfileScreen}
       style={styles.homeHeader}
-      options={{headerShown:false}}
     />
+    <Stack.Screen name="Home" component={HomeScreen}/>
+  </Stack.Navigator>
+);
+
+const VendorStack = () => (
+  <Stack.Navigator
+    initialRouteName="VendorHome"
+    screenOptions={{
+      headerShown: false
+    }}>
+    <Stack.Screen name="VendorHome" component={VendorHomeScreen}/>
+    <Stack.Screen name="AddVehicle" component={AddVehicleScreen}/>
   </Stack.Navigator>
 );
 
@@ -138,6 +129,7 @@ const RootNavigator = () => (
     initialRouteName="LoginStack"
     screenOptions={{headerShown: false}}>
     <Stack.Screen name="LoginStack" component={LoginStack} />
+    <Stack.Screen name="VendorStack" component={VendorStack} />
     <Stack.Screen name="DrawerStack" component={DrawerStack} />
   </Stack.Navigator>
 );
