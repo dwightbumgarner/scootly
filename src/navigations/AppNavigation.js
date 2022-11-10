@@ -77,10 +77,6 @@ const TabNavigator = () => (
           />
         );
       },
-      headerShown: false,
-      tabBarStyle: {
-        display: "none"
-      }
     }}>
     <BottomTab.Screen
       options={{tabBarLabel: 'Home'}}
