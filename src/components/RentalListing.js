@@ -11,6 +11,8 @@ export default function RentalListing(props) {
     const [allData, setallData] = useState([]);
     const [searchValue, setSearchValue] = useState("");
 
+    const searchIcon = require('../../assets/icons/search.png');
+
     // Here we retrieve all available rental listings
     useEffect(() => {
         // Retrieve Firebase rentals collection
@@ -73,24 +75,29 @@ export default function RentalListing(props) {
     const renderItem = ({item}) => (
         <TouchableOpacity>
             <View style={styles.vendorMetaContainer}>
-                <Image
-                    style={styles.vendorImage}
-                    source={{uri: item?.vendorImage}}
-                />
-                <View>
-                    <Text style={styles.vehicleName}>{item?.vehicleName}</Text>
-                    <View style={styles.subtitle}>
+
+                <View style={styles.vendorMetaSubcontainer}>
+                    <Image
+                        style={styles.vendorImage}
+                        source={{uri: item?.vendorImage}}
+                    />
+                    <View>
+                        <Text style={styles.vehicleName}>{item?.vehicleName}</Text>
                         <Text style={styles.vendorName}>{item?.vendorName}</Text>
-                        <Rating
-                            style={{backgroundColor: AppStyles.color.primarybg}}
-                            tintColor = "#1D1D1D"
-                            ratingCount={5}
-                            imageSize={20}
-                            readonly
-                            startingValue={item?.vendorRating}
-                        />
                     </View>
                 </View>
+                
+                <Rating
+                    tintColor = "#1D1D1D"
+                    ratingCount={5}
+                    imageSize={16}
+                    readonly
+                    startingValue={item?.vendorRating}
+                    type='custom'
+                    ratingColor={AppStyles.color.accent}
+                    ratingBackgroundColor={AppStyles.color.text}
+                    style={styles.rating}
+                />
             </View>
             <View style={styles.vehicleMetaContainer}>
                 {console.log("RENTAL ID: ", item?.id)}
@@ -133,15 +140,17 @@ export default function RentalListing(props) {
 
     return (
         <SafeAreaView>
-            <View style={{paddingBottom: 30, width: width - 20}}>
+            <View>
                 <SearchBar
-                    placeholder="What are you looking for?"
-                    round
-                    containerStyle={{backgroundColor: AppStyles.color.primarybg, borderTopWidth:0, borderBottomWidth:0,}}
-                    inputContainerStyle={{backgroundColor: 'white'}}
+                    placeholder="Search for a vehicle"
+                    style={styles.searchBar}
+                    containerStyle={styles.searchBarContainer}
+                    inputContainerStyle={styles.searchBarInput}
                     value={searchValue}
                     onChangeText={(text) => searchFunction(text)}
                     autoCorrect={false}
+                    placeholderTextColor={AppStyles.color.secondarytext}
+                    searchIcon={{color: AppStyles.color.text}}
                 />
             </View>
             <FlatList
@@ -159,64 +168,91 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 15
+        marginBottom: 15,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '90%',
+    },
+    vendorMetaSubcontainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
     vehicleMetaContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: AppStyles.color.grey, 
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingTop: 20,
-        paddingBottom: 20,
-        borderRadius: 20
+        backgroundColor: AppStyles.color.secondarybg, 
+        padding: 20,
+        borderRadius: 12,
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     subtitle: {
         flexDirection: "row"
     },
     vehicleImage: {
-        width: 120,
-        height: 120,
-        borderRadius: 10,
-        marginRight: 15
-
+        width: 130,
+        height: 130,
+        borderRadius: 12,
+        marginRight: 20
     },
     vendorImage: {
-        width: 50,
-        height: 50,
+        width: 48,
+        height: 48,
         borderRadius: 50,
+        marginRight: 12,
     },
     vehicleName: {
         color: AppStyles.color.white,
         fontSize: AppStyles.fontSize.content,
+        fontFamily: AppStyles.fontFamily.bold,
         fontWeight: "bold",
-        paddingRight: 20,
-        paddingLeft: 10,
-        marginBottom: 3
-
+        marginBottom: 6,
     },
     vendorName: {
-        color: AppStyles.color.white,
+        color: AppStyles.color.secondarytext,
         fontSize: AppStyles.fontSize.small,
-        paddingRight: 80,
-        paddingLeft: 10,
-        marginBottom: 7
-
+        fontFamily: AppStyles.fontFamily.bold,
+        textTransform: 'uppercase',
+        marginBottom: 7,
     },
     availability: {
         color: AppStyles.color.accent,
-        fontSize: AppStyles.fontSize.small,
-        fontWeight: "bold",
-        paddingRight: 100,
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.bold,
+        width: '70%',
         marginBottom: 20
     },
     price: {
         color: AppStyles.color.white,
-        fontSize: AppStyles.fontSize.small,
-        fontWeight: "bold",
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.regular,
         paddingRight: 100,
         marginBottom: 50
     },
+    searchBar: {
+        fontFamily: AppStyles.fontFamily.regular,
 
+
+    },
+    searchBarContainer: {
+        backgroundColor: AppStyles.color.primarybg, 
+        paddingBottom: 30,
+        borderTopWidth: 0,
+        borderBottomWidth: 0,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    searchBarInput: {
+        backgroundColor: AppStyles.color.secondarybg, 
+        borderWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: AppStyles.color.white,
+        borderRadius: 8,
+        width: '95%',
+    },
+    rating: {
+        justifySelf: 'flex-end'
+    }
   });

@@ -1,0 +1,241 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Noto Sans Bold.ttf",
+      "sha1": "563bd982ccf5b05c6234c40a5758dda2f19160fb"
+    },
+    {
+      "path": "assets/fonts/Noto Sans.ttf",
+      "sha1": "830953c678e6a50697108a9c87d229cef130975a"
+    },
+    {
+      "path": "assets/fonts/Satoshi-Black.otf",
+      "sha1": "d92baad4dab9ca55bc72f1a8a0a6de72829e709f"
+    },
+    {
+      "path": "assets/fonts/Satoshi-BlackItalic.otf",
+      "sha1": "2fada5e2f31f7e2f252d458094603daca66f4a0a"
+    },
+    {
+      "path": "assets/fonts/Satoshi-Bold.otf",
+      "sha1": "57a9e1c24984708865f7d0c31a03773912fb975f"
+    },
+    {
+      "path": "assets/fonts/Satoshi-BoldItalic.otf",
+      "sha1": "c279f41805b46f030eb4a1d55ceaf7c4cacd1a39"
+    },
+    {
+      "path": "assets/fonts/Satoshi-Italic.otf",
+      "sha1": "1ee38a9969b628781bc30ed690f6571aca189451"
+    },
+    {
+      "path": "assets/fonts/Satoshi-Light.otf",
+      "sha1": "3b1b977f00db442bdf30f63603112e6e251b7dda"
+    },
+    {
+      "path": "assets/fonts/Satoshi-LightItalic.otf",
+      "sha1": "782b6239e9a537ffcd574fb26b69201b67b96dc2"
+    },
+    {
+      "path": "assets/fonts/Satoshi-Medium.otf",
+      "sha1": "704faccb5fff19f25c0b914d42d135ab75794a24"
+    },
+    {
+      "path": "assets/fonts/Satoshi-MediumItalic.otf",
+      "sha1": "89936e7345cfa18dadc048e3a9266947c7f12839"
+    },
+    {
+      "path": "assets/fonts/Satoshi-Regular.otf",
+      "sha1": "7dcb59994f2bee1a4ef1f6c079ba0e99b409878b"
+    },
+    {
+      "path": "assets/icons/categories@1x.png",
+      "sha1": "2f5606a3af030c2593f0c57bee23a308a4f05a72"
+    },
+    {
+      "path": "assets/icons/categories@2x.png",
+      "sha1": "13f0e69f24d2caa2d2eb52c8568487acca2c1b42"
+    },
+    {
+      "path": "assets/icons/categories@3x.png",
+      "sha1": "6dd2f7829f27fbe8e1c20391e6d4e3daa8fbe1e6"
+    },
+    {
+      "path": "assets/icons/collections@1x.png",
+      "sha1": "2802b6dc4edfe1fdaa194d4f3085a6b025a804ed"
+    },
+    {
+      "path": "assets/icons/collections@2x.png",
+      "sha1": "faa64df95a2376b43eff2f7c1f61d49caed9faef"
+    },
+    {
+      "path": "assets/icons/collections@3x.png",
+      "sha1": "90b157b706cd4afc0ac0d7a4aa2156efea1c175f"
+    },
+    {
+      "path": "assets/icons/compose@1x.png",
+      "sha1": "e26a2b9bb91c76af53c975de6ace754968f32a54"
+    },
+    {
+      "path": "assets/icons/compose@2x.png",
+      "sha1": "64b240b6bbf0fce3eda51158c44f02fa04a6bf83"
+    },
+    {
+      "path": "assets/icons/compose@3x.png",
+      "sha1": "3b089f4adbb35561e2ba9219dd7ea4e454567b0a"
+    },
+    {
+      "path": "assets/icons/default_user@1x.jpg",
+      "sha1": "871bf12d8a12287f4084efd934c6d0cb961f6af3"
+    },
+    {
+      "path": "assets/icons/filter@1x.png",
+      "sha1": "d492fb9de91a9e6b418f481c8262c10fe9a0c4d2"
+    },
+    {
+      "path": "assets/icons/filter@2x.png",
+      "sha1": "0a4866f7add0cf6c682eaa3ba6052711a20f9c5f"
+    },
+    {
+      "path": "assets/icons/filter@3x.png",
+      "sha1": "93927e2998d10b1420469853c92e474108497fcb"
+    },
+    {
+      "path": "assets/icons/filters@1x.png",
+      "sha1": "b18b100ae5fd09a72d03b5621d5be08389fdf478"
+    },
+    {
+      "path": "assets/icons/filters@2x.png",
+      "sha1": "b07f1a42539853203fcb5db00ab0e4db27a8ee23"
+    },
+    {
+      "path": "assets/icons/filters@3x.png",
+      "sha1": "4ee4dffa2cebe9b0809459e4523f7ba23eaf7b75"
+    },
+    {
+      "path": "assets/icons/heart-filled@1x.png",
+      "sha1": "0de72dbb2ad6a041d7e5564350524a4c9c5d4556"
+    },
+    {
+      "path": "assets/icons/heart-filled@2x.png",
+      "sha1": "2025cdadbf3834c6440bdcb46293aea1de6502c5"
+    },
+    {
+      "path": "assets/icons/heart-filled@3x.png",
+      "sha1": "348d8bffa59fcbe4c0b02d2f4af1f78fbc975219"
+    },
+    {
+      "path": "assets/icons/heart@1x.png",
+      "sha1": "57c8d66d12352d4cdbe82120a6341dbd55ec8068"
+    },
+    {
+      "path": "assets/icons/heart@2x.png",
+      "sha1": "b6556272ae05586fefff2b6fce30a5ddcc55e6ed"
+    },
+    {
+      "path": "assets/icons/heart@3x.png",
+      "sha1": "6df230074b58d9d43562e05d5721f70455570dbb"
+    },
+    {
+      "path": "assets/icons/home@1x.png",
+      "sha1": "82578c78232229b93f538210dfac7b2df71d0e13"
+    },
+    {
+      "path": "assets/icons/home@2x.png",
+      "sha1": "8633df899a46ea1e3c4fe2300b0a28e403a2c00f"
+    },
+    {
+      "path": "assets/icons/home@3x.png",
+      "sha1": "7937a76c2448fd00704efbc3975bde86a3cbd612"
+    },
+    {
+      "path": "assets/icons/list@1x.png",
+      "sha1": "7b712f40d054ac88932d724c538852911c29f5a5"
+    },
+    {
+      "path": "assets/icons/list@2x.png",
+      "sha1": "a67b833e2c4c419e2f4914b6c3339b0419d9df09"
+    },
+    {
+      "path": "assets/icons/list@3x.png",
+      "sha1": "939d46451b444eb9ccf5ff315d83aca3735a288d"
+    },
+    {
+      "path": "assets/icons/map@1x.png",
+      "sha1": "ffc70dde6b4f3d583f4a3c817a8c19c7cd737206"
+    },
+    {
+      "path": "assets/icons/map@2x.png",
+      "sha1": "34c7b261c2fc707cb322a4f4b5e1eae3399d7092"
+    },
+    {
+      "path": "assets/icons/map@3x.png",
+      "sha1": "1da0eab91946bf7057498b6f4421369e6077027d"
+    },
+    {
+      "path": "assets/icons/menu.png",
+      "sha1": "9ee5a503fc11abf84de9f7153b89138126db1373"
+    },
+    {
+      "path": "assets/icons/profile_image_default.png",
+      "sha1": "6a4d15524b41a7285d5f4cd9bbbed44f99a41758"
+    },
+    {
+      "path": "assets/icons/review@1x.png",
+      "sha1": "f6c3a8c84048451fe47a65c813afc1b86b3b8fd1"
+    },
+    {
+      "path": "assets/icons/review@2x.png",
+      "sha1": "fae95ef8c70653529a6ab6a70831bc097f452f5d"
+    },
+    {
+      "path": "assets/icons/review@3x.png",
+      "sha1": "c7a098ad7a8919f3eaa030dc36ec7a2b0f947dae"
+    },
+    {
+      "path": "assets/icons/search@1x.png",
+      "sha1": "4a99c9667b01703241e19a490637b0ef2aa12392"
+    },
+    {
+      "path": "assets/icons/search@2x.png",
+      "sha1": "277c3ea35741cfde97c21188c4e2321c5038b977"
+    },
+    {
+      "path": "assets/icons/search@3x.png",
+      "sha1": "ad77d293c1110d3cf89e2afc6c38e67c24b9185c"
+    },
+    {
+      "path": "assets/icons/shutdown@1x.png",
+      "sha1": "fa890969b5174e71b5ae557d65928c2028b3190a"
+    },
+    {
+      "path": "assets/icons/star_filled@1x.png",
+      "sha1": "c2c6892f76f592668b74778cd63793ee7fbd611e"
+    },
+    {
+      "path": "assets/icons/star_filled@2x.png",
+      "sha1": "3d82646069cc0a364582e16e12a612215a58f364"
+    },
+    {
+      "path": "assets/icons/star_filled@3x.png",
+      "sha1": "a0b8583f1f8d9efba03cdee7bc7f03012a034221"
+    },
+    {
+      "path": "assets/icons/star_nofilled@1x.png",
+      "sha1": "04e005236336053b7dd518706e1a00742bfcc781"
+    },
+    {
+      "path": "assets/icons/star_nofilled@2x.png",
+      "sha1": "2a767675594775a7b591a1ab551092bae9c5be64"
+    },
+    {
+      "path": "assets/icons/star_nofilled@3x.png",
+      "sha1": "c3f673a92e7c92b7ba15c36eeb7006370e54256f"
+    },
+    {
+      "path": "assets/icons/user_profile.png",
+      "sha1": "8e79e8b614a4f7bab84371c0baa56faa1cb34890"
+    }
+  ]
+}

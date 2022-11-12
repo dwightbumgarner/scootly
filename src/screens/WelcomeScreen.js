@@ -103,7 +103,8 @@ function WelcomeScreen({navigation}) {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to ZipScoot</Text>
+      <Text style={styles.subtitle}>Welcome to</Text>
+      <Text style={styles.title}>Scootly</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
@@ -126,43 +127,52 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: AppStyles.color.primarybg,
-    paddingBottom: 150,
+    paddingBottom: 60,
   },
   logo: {
     width: 200,
     height: 200,
   },
   title: {
-    fontSize: AppStyles.fontSize.title,
-    fontWeight: 'bold',
+    fontSize: AppStyles.fontSize.mainTitle,
+    fontFamily: AppStyles.fontFamily.bold,
     color: AppStyles.color.white,
-    marginTop: 20,
+    marginTop: 8,
     textAlign: 'center',
     marginBottom: 20,
     marginLeft: 20,
     marginRight: 20,
   },
+  subtitle: {
+    fontSize: AppStyles.fontSize.small,
+    fontFamily: AppStyles.fontFamily.bold,
+    color: AppStyles.color.secondarytext,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+  },
   loginContainer: {
     width: AppStyles.buttonWidth.main,
     backgroundColor: AppStyles.color.accent,
     borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
+    padding: 15,
     marginTop: 30,
   },
   loginText: {
     color: AppStyles.color.primarybg,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   signupContainer: {
     width: AppStyles.buttonWidth.main,
     backgroundColor: AppStyles.color.primarybg,
     borderRadius: AppStyles.borderRadius.main,
-    padding: 8,
+    padding: 15,
     borderWidth: 1,
-    borderColor: AppStyles.color.tint,
+    borderColor: AppStyles.color.white,
     marginTop: 15,
   },
   signupText: {
     color: AppStyles.color.white,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   spinner: {
     marginTop: 200,

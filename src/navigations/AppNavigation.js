@@ -17,6 +17,9 @@ import DrawerContainer from '../components/DrawerContainer';
 
 const Stack = createStackNavigator();
 
+const homeIcon = require('../../assets/icons/home-icon.png')
+const profileIcon = require('../../assets/icons/profile.png')
+
 // login stack
 const LoginStack = () => (
   <Stack.Navigator
@@ -65,12 +68,16 @@ const TabNavigator = () => (
     initialRouteName="Home"
     screenOptions={{
       tabBarStyle: {
-        backgroundColor:'black',
-    
+        backgroundColor: AppStyles.color.primarybg,
+        borderTopColor: AppStyles.color.secondarybg,
+        paddingBottom: 16,
+        borderTopWidth: 2,
+        height: '10%'
       },
-      tabBarInactiveTintColor: 'lightgrey',
+      tabBarInactiveTintColor: AppStyles.color.text,
       tabBarActiveTintColor: AppStyles.color.tint,
       headerShown: false,
+      tabBarShowLabel: false
     }}>
     <BottomTab.Screen
       options={{
@@ -78,8 +85,8 @@ const TabNavigator = () => (
         tabBarIcon: ({focused}) => {
           return (
             <Image
-              style={{ tintColor: focused ? AppStyles.color.tint : 'lightgrey',}}
-              source={AppIcon.images.home}
+              style={{ tintColor: focused ? AppStyles.color.tint : AppStyles.color.text, height:25, width:25}}
+              source={homeIcon}
             />
           );
         },
@@ -94,8 +101,8 @@ const TabNavigator = () => (
         tabBarIcon: ({focused}) => {
           return (
             <Image
-              style={{ tintColor: focused ? AppStyles.color.tint : 'lightgrey', height:25, width:25}}
-              source={AppIcon.images.defaultUser}
+              style={{ tintColor: focused ? AppStyles.color.tint : AppStyles.color.text, width:20, height: 25}}
+              source={profileIcon}
             />
           );
         },

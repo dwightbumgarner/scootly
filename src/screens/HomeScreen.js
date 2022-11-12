@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   title: {
     paddingTop: 80,
     fontSize: AppStyles.fontSize.title,
-    fontWeight: 'bold',
+    fontFamily: AppStyles.fontFamily.bold,
     color: AppStyles.color.white,
     marginBottom: 40,
   },

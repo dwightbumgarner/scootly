@@ -9,10 +9,11 @@ export const AppStyles = {
   color: {
     // From Figma
     primarybg: "#1D1D1D",
-    secondarybg: "#505050",
+    secondarybg: "#313131",
     accent: "#FBD85D",
-    text: "#FEDB50",
+    text: "#FEFBF0",
     grey: "#313131",
+    secondarytext: "#B5AF9C",
 
     // From template
     main: "#5ea23a",
@@ -31,20 +32,25 @@ export const AppStyles = {
     background: "#1D1D1D",
     blue: "#3293fe"
   },
+  fontFamily: {
+    bold: 'Satoshi-Bold',
+    regular: 'Satoshi-Regular'
+  },
   fontSize: {
-    title: 30,
+    mainTitle: 32,
+    title: 24,
     content: 20,
     normal: 16,
-    small: 14
+    small: 12
   },
   buttonWidth: {
-    main: "70%"
+    main: "35%"
   },
   textInputWidth: {
     main: "80%"
   },
   borderRadius: {
-    main: 25,
+    main: 10,
     small: 5
   }
 };
