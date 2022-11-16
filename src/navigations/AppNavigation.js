@@ -10,6 +10,7 @@ import AddVehicleScreen from '../screens/AddVehicleScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
+import MessagesScreen from '../screens/MessagesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {AppIcon, AppStyles} from '../AppStyles';
 import {Configuration} from '../Configuration';
@@ -37,6 +38,29 @@ const HomeStack = () => (
     screenOptions={{
       headerShown: false
     }}>
+
+    {/* Add different screens to the Home Stack */}
+    <Stack.Screen
+      name="Home"
+      component={HomeScreen}
+      style={styles.homeHeader}
+      options={({navigation}) => ({
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.openDrawer()}>
+            <Image style={styles.iconStyle} source={AppIcon.images.menu} />
+          </Pressable>
+        ),
+        headerLeftContainerStyle: {paddingLeft: 10},
+      })}
+    />
+    
+    <Stack.Screen
+      name="Messages"
+      component={MessagesScreen}
+      style={styles.homeHeader}
+      options={{headerShown:false}}
+    />
+
     <Stack.Screen
       name="Profile"
       component={ProfileScreen}
@@ -66,12 +90,14 @@ const TabNavigator = () => (
     screenOptions={{
       tabBarStyle: {
         backgroundColor:'black',
-    
       },
       tabBarInactiveTintColor: 'lightgrey',
       tabBarActiveTintColor: AppStyles.color.tint,
       headerShown: false,
     }}>
+
+    {/* Add Screen Switch Buttons to Bottom Bar */}
+
     <BottomTab.Screen
       options={{
         tabBarLabel: 'Home',
@@ -86,8 +112,24 @@ const TabNavigator = () => (
       }}
       name="HomeStack"
       component={HomeStack}
-      
     />
+
+    <BottomTab.Screen
+      options={{
+        tabBarLabel:'Messages',
+        tabBarIcon: ({focused}) => {
+          return (
+            <Image
+              style={{ tintColor: focused ? AppStyles.color.tint : 'lightgrey', height: 25, width: 25}}
+              source={AppIcon.images.messages}
+            />
+          );
+        },
+      }}
+      name="MessagesScreen"
+      component={MessagesScreen}
+    />
+
     <BottomTab.Screen
       options={{
         tabBarLabel: 'Profile',
