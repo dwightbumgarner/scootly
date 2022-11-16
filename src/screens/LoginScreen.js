@@ -208,7 +208,7 @@ function LoginScreen({navigation}) {
         containerStyle={styles.loginContainer}
         style={styles.loginText}
         onPress={() => onPressLogin()}>
-        Log in
+        Log In
       </Button>
       <Text style={styles.or}>OR</Text>
       {loading ? (
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   title: {
     paddingTop: 80,
     fontSize: AppStyles.fontSize.title,
-    fontWeight: 'bold',
+    fontFamily: AppStyles.fontFamily.bold,
     color: AppStyles.color.white,
     marginBottom: 100,
     alignItems: 'auto',
@@ -263,13 +263,14 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    backgroundColor: AppStyles.color.accent,
     borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
+    padding: 15,
     marginTop: 30,
   },
   loginText: {
     color: AppStyles.color.primarybg,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   placeholder: {
     color: 'red',
@@ -283,10 +284,11 @@ const styles = StyleSheet.create({
     borderRadius: AppStyles.borderRadius.main,
   },
   body: {
-    height: 42,
+    height: 50,
     paddingLeft: 20,
     paddingRight: 20,
     color: AppStyles.color.text,
+    fontFamily: AppStyles.fontFamily.regular
   },
   facebookContainer: {
     width: 192,

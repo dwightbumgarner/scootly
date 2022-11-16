@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppRegistry} from 'react-native';
+import {AppRegistry, StatusBar} from 'react-native';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
@@ -14,6 +14,7 @@ console.disableYellowBox = true;
 function StarterApp() {
   return (
     <Provider store={store}>
+    <StatusBar barStyle="light-content" />
       <AppNavigator />
     </Provider>
   );
