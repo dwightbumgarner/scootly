@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         marginBottom: 50,
         textAlign: 'center',
-      },
+    },
     profileImageCircle: {
         width: 200,
         height: 200,
