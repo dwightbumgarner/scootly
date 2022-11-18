@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
         overflow:'hidden'
     },
     profileImage: {
-        width: 175,
-        height: 175,
-        tintColor:AppStyles.color.accent,
+        width: 200,
+        height: 200,
+        /*tintColor:AppStyles.color.accent,*/
     }
 });
 

@@ -69,7 +69,6 @@ const HomeStack = () => (
       component={ProfileScreen}
       style={styles.homeHeader}
     />
-
   </Stack.Navigator>
 );
 

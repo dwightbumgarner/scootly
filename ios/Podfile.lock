@@ -255,6 +255,9 @@ PODS:
   - Firebase/Firestore (8.0.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 8.0.0)
+  - Firebase/Storage (8.0.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 8.0.0)
   - FirebaseAuth (8.0.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
@@ -281,6 +284,9 @@ PODS:
     - "gRPC-C++ (~> 1.28.0)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 2.30908.0)
+  - FirebaseStorage (8.0.0):
+    - FirebaseCore (~> 8.0)
+    - GTMSessionFetcher/Core (~> 1.5)
   - fmt (6.2.1)
   - glog (0.3.5)
   - GoogleDataTransport (9.1.2):
@@ -562,7 +568,7 @@ PODS:
   - react-native-fbsdk/Share (3.0.0):
     - FBSDKShareKit (~> 8.1)
     - React
-  - react-native-image-picker (4.10.0):
+  - react-native-image-picker (2.3.4):
     - React-Core
   - react-native-safe-area-context (3.4.1):
     - React-Core
@@ -650,6 +656,10 @@ PODS:
     - Firebase/Firestore (= 8.0.0)
     - React-Core
     - RNFBApp
+  - RNFBStorage (12.9.3):
+    - Firebase/Storage (= 8.0.0)
+    - React-Core
+    - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNGoogleSignin (7.0.1):
@@ -713,6 +723,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
+  - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -734,6 +745,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseFirestore
+    - FirebaseStorage
     - fmt
     - GoogleDataTransport
     - GoogleSignIn
@@ -826,6 +838,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/auth"
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
+  RNFBStorage:
+    :path: "../node_modules/@react-native-firebase/storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -857,6 +871,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 3f09591d51292843e2a46f18358d60bf4e996255
   FirebaseCoreDiagnostics: fe77f42da6329d6d83d21fd9d621a6b704413bfc
   FirebaseFirestore: 7f6576eaca9f821e864c3e917d68aa99f4e6b613
+  FirebaseStorage: 61bcd27880fa17362f68be67d3683d04bfd7b1c7
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
@@ -883,7 +898,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 8c0517dee5e8c70cd6c3066f20213ff7ce54f176
   React-logger: bfddd3418dc1d45b77b822958f3e31422e2c179b
   react-native-fbsdk: 8e92c7a334fd8d9c2b5d8b8fcd7ae2c314161099
-  react-native-image-picker: 4bc9ed38c8be255b515d8c88babbaf74973f91a8
+  react-native-image-picker: c6d75c4ab2cf46f9289f341242b219cb3c1180d3
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   React-perflogger: fcac6090a80e3d967791b4c7f1b1a017f9d4a398
   React-RCTActionSheet: caf5913d9f9e605f5467206cf9d1caa6d47d7ad6
@@ -903,6 +918,7 @@ SPEC CHECKSUMS:
   RNFBApp: e0f7150c2941834a2bc18950f32333387ac61ec1
   RNFBAuth: c22be7319f034ea43321bcdb90322a19e9e0430b
   RNFBFirestore: f8b663e5de7aeba322c354cda0171e626017ccb3
+  RNFBStorage: 2dec95b3511dc346f6ad680d1304901a4d760c76
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
@@ -913,6 +929,6 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   Yoga: 2b4a01651f42a32f82e6cef3830a3ba48088237f
 
-PODFILE CHECKSUM: 87cf36725de316acdaddae9e2935c349b98297d7
+PODFILE CHECKSUM: d43d91928406af8dee9cdf4f350b899bb1e2189b
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2
