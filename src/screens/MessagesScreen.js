@@ -5,7 +5,7 @@ import {connect, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 
 // Clicking a Connection opens a Conversation with another user
-//tesing 
+//
 const Conversation = () => {
 
 }
