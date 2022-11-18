@@ -18,8 +18,8 @@ const MessagesScreen = () => {
                     <Image source={AppIcon.images.defaultProfile}style={styles.connectionPhoto}/>
                 </View>
                 <View>
-                    <Text style={{color:'white', fontSize:AppStyles.fontSize.content}}>Connection Name</Text>
-                    <Text style={{color:'white', }}>Latest Message</Text>
+                    <Text style={styles.name}>Connection Name</Text>
+                    <Text style={styles.lastMessage}>Latest Message</Text>
                 </View>
                 
             </View>
@@ -47,48 +47,52 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: AppStyles.fontSize.title,
-        fontWeight: 'bold',
+        fontFamily: AppStyles.fontFamily.bold,
         color: AppStyles.color.white,
-        marginTop: 50,
-        marginBottom: 50,
+        paddingTop: 80,
+        marginBottom: 48,
         textAlign: 'center',
     },
     connectionList: {
         width:'100%',
         height:'100%',
-        
         alignItems:'center',
-        borderWidth:3,
-        borderColor:'white'
-
     },
     connection: {
-        width:'90%',
-        height:'20%',
-        marginTop:20,
-        marginBottom:10,
-        borderRadius:30,
-        borderWidth:3,
-        borderColor:AppStyles.color.accent,
+        width:'87%',
+        height:'15%',
+        marginBottom: 15,
+        borderRadius:12,
+        backgroundColor: AppStyles.color.secondarybg,
         
         alignItems:'center',
         flexDirection:'row',
-        
     },
     connectionPhotoCircle: {
-        width: 80,
-        height: 80,
+        width: 40,
+        height: 40,
         backgroundColor:AppStyles.color.grey,
         borderRadius: 40,
-        alignItems:'center',
-        justifyContent:'center',
-        marginLeft:20,
-        marginRight:20
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 20,
+        marginRight: 20,
     },
     connectionPhoto: {
-        width: 60,
-        height: 60,
-        tintColor:'white'
+        width: 40,
+        height: 40,
+        tintColor: 'white'
+    },
+    name: {
+        fontSize: AppStyles.fontSize.content,
+        fontFamily: AppStyles.fontFamily.bold,
+        color: AppStyles.color.white,
+        marginBottom: 4,
+    },
+    lastMessage: {
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.regular,
+        color: AppStyles.color.white,
     }
 });
 
