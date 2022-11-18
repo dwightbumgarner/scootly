@@ -69,7 +69,6 @@ const HomeStack = () => (
       component={ProfileScreen}
       style={styles.homeHeader}
     />
-    <Stack.Screen name="Home" component={HomeScreen}/>
   </Stack.Navigator>
 );
 
@@ -96,7 +95,7 @@ const TabNavigator = () => (
         borderTopColor: AppStyles.color.secondarybg,
         paddingBottom: 16,
         borderTopWidth: 2,
-        height: '10%'
+        height: '10%',
         backgroundColor:'black',
       },
       tabBarInactiveTintColor: AppStyles.color.text,
