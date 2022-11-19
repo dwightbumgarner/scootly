@@ -44,51 +44,50 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: AppStyles.color.primarybg,
-        paddingBottom: 150,
+        paddingBottom: 100,
     },
     title: {
         fontSize: AppStyles.fontSize.title,
         fontWeight: 'bold',
-        color: AppStyles.color.white,
-        marginTop: 50,
-        marginBottom: 50,
+        color: AppStyles.color.text,
+        marginTop: 60,
+        marginBottom: 20,
         textAlign: 'center',
     },
     connectionList: {
         width:'100%',
         height:'100%',
-        
         alignItems:'center',
-        borderWidth:3,
-        borderColor:'white'
+        borderWidth: 0.5,
+        borderColor: AppStyles.color.primarybg
 
     },
     connection: {
         width:'90%',
-        height:'15%',
-        marginTop:10,
-        marginBottom:1,
-        borderRadius:10,
-        borderWidth:0.5,
+        height:'13%',
+        marginTop: 10,
+        marginBottom: 1,
+        borderRadius: 10,
+        borderWidth: 1,
         borderColor:AppStyles.color.accent,
-        
+
         alignItems:'center',
         flexDirection:'row',
         
     },
     connectionPhotoCircle: {
-        width: 80,
-        height: 80,
-        backgroundColor:AppStyles.color.grey,
+        width: 70,
+        height: 70,
+        backgroundColor:AppStyles.color.secondarybg,
         borderRadius: 40,
         alignItems:'center',
         justifyContent:'center',
-        marginLeft:20,
+        marginLeft:15,
         marginRight:20
     },
     connectionPhoto: {
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
         tintColor:'white'
     }
 });
