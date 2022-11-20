@@ -20,6 +20,16 @@
 		2DCD954D1E0B4F2C00145EB5 /* rn_starter_kitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* rn_starter_kitTests.m */; };
 		33E8D7B5CA2F0A0181E96134 /* libPods-rn_starter_kit-rn_starter_kitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF09E70B5F4CC5E74378921C /* libPods-rn_starter_kit-rn_starter_kitTests.a */; };
 		B56C5A2DE884E39AB0E35A59 /* libPods-rn_starter_kit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3FA1E5CB9E0D3D821F58005 /* libPods-rn_starter_kit.a */; };
+		B98FE8BB2926E70600158D85 /* Satoshi-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B12926E70500158D85 /* Satoshi-Medium.otf */; };
+		B98FE8BC2926E70600158D85 /* Satoshi-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B22926E70600158D85 /* Satoshi-Bold.otf */; };
+		B98FE8BD2926E70600158D85 /* Satoshi-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B32926E70600158D85 /* Satoshi-BoldItalic.otf */; };
+		B98FE8BE2926E70600158D85 /* Satoshi-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B42926E70600158D85 /* Satoshi-Regular.otf */; };
+		B98FE8BF2926E70600158D85 /* Satoshi-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B52926E70600158D85 /* Satoshi-Light.otf */; };
+		B98FE8C02926E70600158D85 /* Satoshi-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B62926E70600158D85 /* Satoshi-BlackItalic.otf */; };
+		B98FE8C12926E70600158D85 /* Satoshi-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B72926E70600158D85 /* Satoshi-Italic.otf */; };
+		B98FE8C22926E70600158D85 /* Satoshi-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B82926E70600158D85 /* Satoshi-LightItalic.otf */; };
+		B98FE8C32926E70600158D85 /* Satoshi-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8B92926E70600158D85 /* Satoshi-Black.otf */; };
+		B98FE8C42926E70600158D85 /* Satoshi-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B98FE8BA2926E70600158D85 /* Satoshi-MediumItalic.otf */; };
 		D74FA9F33C18819D5587F2EE /* libPods-rn_starter_kit-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84355D0EDC098834F5EBE7E6 /* libPods-rn_starter_kit-tvOSTests.a */; };
 		E4C5A9D74EF7C08B938A50F7 /* libPods-rn_starter_kit-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E77008E118CE43F3C03135 /* libPods-rn_starter_kit-tvOS.a */; };
 /* End PBXBuildFile section */
@@ -65,6 +75,16 @@
 		84355D0EDC098834F5EBE7E6 /* libPods-rn_starter_kit-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rn_starter_kit-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8B3CA77CFE2C5FDD927D3B5 /* Pods-rn_starter_kit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rn_starter_kit.debug.xcconfig"; path = "Target Support Files/Pods-rn_starter_kit/Pods-rn_starter_kit.debug.xcconfig"; sourceTree = "<group>"; };
 		AF09E70B5F4CC5E74378921C /* libPods-rn_starter_kit-rn_starter_kitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rn_starter_kit-rn_starter_kitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B98FE8B12926E70500158D85 /* Satoshi-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Medium.otf"; sourceTree = "<group>"; };
+		B98FE8B22926E70600158D85 /* Satoshi-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Bold.otf"; sourceTree = "<group>"; };
+		B98FE8B32926E70600158D85 /* Satoshi-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-BoldItalic.otf"; sourceTree = "<group>"; };
+		B98FE8B42926E70600158D85 /* Satoshi-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Regular.otf"; sourceTree = "<group>"; };
+		B98FE8B52926E70600158D85 /* Satoshi-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Light.otf"; sourceTree = "<group>"; };
+		B98FE8B62926E70600158D85 /* Satoshi-BlackItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-BlackItalic.otf"; sourceTree = "<group>"; };
+		B98FE8B72926E70600158D85 /* Satoshi-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Italic.otf"; sourceTree = "<group>"; };
+		B98FE8B82926E70600158D85 /* Satoshi-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-LightItalic.otf"; sourceTree = "<group>"; };
+		B98FE8B92926E70600158D85 /* Satoshi-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-Black.otf"; sourceTree = "<group>"; };
+		B98FE8BA2926E70600158D85 /* Satoshi-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Satoshi-MediumItalic.otf"; sourceTree = "<group>"; };
 		CC738D1A5C915B756ADB9C82 /* Pods-rn_starter_kit-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rn_starter_kit-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-rn_starter_kit-tvOSTests/Pods-rn_starter_kit-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		E0AB49CD7BE13A8D7CDD499F /* Pods-rn_starter_kit-rn_starter_kitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rn_starter_kit-rn_starter_kitTests.release.xcconfig"; path = "Target Support Files/Pods-rn_starter_kit-rn_starter_kitTests/Pods-rn_starter_kit-rn_starter_kitTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -178,6 +198,16 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B98FE8B92926E70600158D85 /* Satoshi-Black.otf */,
+				B98FE8B62926E70600158D85 /* Satoshi-BlackItalic.otf */,
+				B98FE8B22926E70600158D85 /* Satoshi-Bold.otf */,
+				B98FE8B32926E70600158D85 /* Satoshi-BoldItalic.otf */,
+				B98FE8B72926E70600158D85 /* Satoshi-Italic.otf */,
+				B98FE8B52926E70600158D85 /* Satoshi-Light.otf */,
+				B98FE8B82926E70600158D85 /* Satoshi-LightItalic.otf */,
+				B98FE8B12926E70500158D85 /* Satoshi-Medium.otf */,
+				B98FE8BA2926E70600158D85 /* Satoshi-MediumItalic.otf */,
+				B98FE8B42926E70600158D85 /* Satoshi-Regular.otf */,
 				13B07FAE1A68108700A75B9A /* rn_starter_kit */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* rn_starter_kitTests */,
@@ -345,6 +375,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B98FE8BB2926E70600158D85 /* Satoshi-Medium.otf in Resources */,
+				B98FE8BC2926E70600158D85 /* Satoshi-Bold.otf in Resources */,
+				B98FE8BD2926E70600158D85 /* Satoshi-BoldItalic.otf in Resources */,
+				B98FE8BE2926E70600158D85 /* Satoshi-Regular.otf in Resources */,
+				B98FE8BF2926E70600158D85 /* Satoshi-Light.otf in Resources */,
+				B98FE8C02926E70600158D85 /* Satoshi-BlackItalic.otf in Resources */,
+				B98FE8C12926E70600158D85 /* Satoshi-Italic.otf in Resources */,
+				B98FE8C22926E70600158D85 /* Satoshi-LightItalic.otf in Resources */,
+				B98FE8C32926E70600158D85 /* Satoshi-Black.otf in Resources */,
+				B98FE8C42926E70600158D85 /* Satoshi-MediumItalic.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				170EF9E626038E1C00D5F244 /* GoogleService-Info.plist in Resources */,
