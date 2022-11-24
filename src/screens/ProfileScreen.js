@@ -19,7 +19,7 @@ const ProfileScreen = () => {
     // view with header and profile image, resorts to default if cannot find info
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{auth.user?.fullname.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}'s Profile</Text>
+            <Text style={styles.title}>{auth.user?.fullname ?? 'Stranger'}</Text>
             <View style={styles.profileImageCircle}>
                 <Image source={photo ? {uri: photo} : AppIcon.images.defaultProfile} style={styles.profileImage}/>
             </View>
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: AppStyles.fontSize.title,
-        fontWeight: 'bold',
+        fontFamily: AppStyles.fontFamily.bold,
         color: AppStyles.color.white,
-        marginTop: 50,
-        marginBottom: 50,
+        paddingTop: 80,
+        marginBottom: 48,
         textAlign: 'center',
     },
     profileImageCircle: {
