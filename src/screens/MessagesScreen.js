@@ -5,6 +5,7 @@ import {connect, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 
 // Clicking a Connection opens a Conversation with another user
+//
 const Conversation = () => {
 
 }
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: AppStyles.color.primarybg,
-        paddingBottom: 150,
+        paddingBottom: 100,
     },
     title: {
         fontSize: AppStyles.fontSize.title,
@@ -64,7 +65,6 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         borderRadius:12,
         backgroundColor: AppStyles.color.secondarybg,
-        
         alignItems:'center',
         flexDirection:'row',
     },
