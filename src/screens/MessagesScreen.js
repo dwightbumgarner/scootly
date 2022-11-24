@@ -5,6 +5,7 @@ import {connect, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 
 // Clicking a Connection opens a Conversation with another user
+//
 const Conversation = () => {
 
 }
@@ -43,56 +44,51 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: AppStyles.color.primarybg,
-        paddingBottom: 150,
+        paddingBottom: 100,
     },
     title: {
         fontSize: AppStyles.fontSize.title,
-        fontFamily: AppStyles.fontFamily.bold,
+        fontWeight: 'bold',
         color: AppStyles.color.white,
-        paddingTop: 80,
-        marginBottom: 48,
+        marginTop: 50,
+        marginBottom: 50,
         textAlign: 'center',
     },
     connectionList: {
         width:'100%',
         height:'100%',
+        
         alignItems:'center',
+        borderWidth:3,
+        borderColor:'white'
+
     },
     connection: {
-        width:'87%',
-        height:'15%',
-        marginBottom: 15,
-        borderRadius:12,
-        backgroundColor: AppStyles.color.secondarybg,
+        width:'90%',
+        height:'20%',
+        marginTop:20,
+        marginBottom:10,
+        borderRadius:30,
+        borderWidth:3,
+        borderColor:AppStyles.color.accent,
         
         alignItems:'center',
         flexDirection:'row',
     },
     connectionPhotoCircle: {
-        width: 40,
-        height: 40,
+        width: 80,
+        height: 80,
         backgroundColor:AppStyles.color.grey,
         borderRadius: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginLeft: 20,
-        marginRight: 20,
+        alignItems:'center',
+        justifyContent:'center',
+        marginLeft:20,
+        marginRight:20
     },
     connectionPhoto: {
-        width: 40,
-        height: 40,
-        tintColor: 'white'
-    },
-    name: {
-        fontSize: AppStyles.fontSize.content,
-        fontFamily: AppStyles.fontFamily.bold,
-        color: AppStyles.color.white,
-        marginBottom: 4,
-    },
-    lastMessage: {
-        fontSize: AppStyles.fontSize.normal,
-        fontFamily: AppStyles.fontFamily.regular,
-        color: AppStyles.color.white,
+        width: 60,
+        height: 60,
+        tintColor:'white'
     }
 });
 

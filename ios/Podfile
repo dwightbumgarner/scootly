@@ -9,6 +9,8 @@ target 'rn_starter_kit' do
   config = use_native_modules!
   use_react_native!(:path => config["reactNativePath"])
   
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'rn_starter_kitTests' do
     inherit! :complete
     # Pods for testing
