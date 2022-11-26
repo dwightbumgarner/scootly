@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   title: {
     paddingTop: 80,
     fontSize: AppStyles.fontSize.title,
-    fontWeight: 'bold',
+    fontFamily: AppStyles.fontFamily.bold,
     color: AppStyles.color.white,
     marginBottom: 80,
     alignItems: 'auto',
@@ -242,10 +242,11 @@ const styles = StyleSheet.create({
     borderRadius: AppStyles.borderRadius.main,
   },
   body: {
-    height: 42,
+    height: 50,
     paddingLeft: 20,
     paddingRight: 20,
     color: AppStyles.color.text,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   availability: {
     marginTop: 30,
@@ -283,9 +284,10 @@ const styles = StyleSheet.create({
     color: AppStyles.color.primarybg,
   },
   vehicleImage: {
-    width: 300,
-    height: 300,
-    borderRadius: 10,
+    width: 240,
+    height: 240,
+    borderRadius: 24,
+    marginBottom: 24
   },
 });
 
