@@ -3,7 +3,7 @@ import {Image, Pressable, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useRoute} from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
 import VendorHomeScreen from '../screens/VendorHomeScreen';
 import AddVehicleScreen from '../screens/AddVehicleScreen';
@@ -13,13 +13,13 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import MessagesScreen from '../screens/MessagesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {AppIcon, AppStyles} from '../AppStyles';
-import {Configuration} from '../Configuration';
 import DrawerContainer from '../components/DrawerContainer';
 
 const Stack = createStackNavigator();
 
 const homeIcon = require('../../assets/icons/home-icon.png')
 const profileIcon = require('../../assets/icons/profile.png')
+const messagesIcon = require('../../assets/icons/messages.png')
 
 // login stack
 const LoginStack = () => (
@@ -69,7 +69,6 @@ const HomeStack = () => (
       component={ProfileScreen}
       style={styles.homeHeader}
     />
-
   </Stack.Navigator>
 );
 
@@ -77,10 +76,27 @@ const VendorStack = () => (
   <Stack.Navigator
     initialRouteName="VendorHome"
     screenOptions={{
-      headerShown: false
+      headerShown: false,
     }}>
     <Stack.Screen name="VendorHome" component={VendorHomeScreen}/>
-    <Stack.Screen name="AddVehicle" component={AddVehicleScreen}/>
+    <Stack.Screen 
+      name="AddVehicle" 
+      component={AddVehicleScreen} 
+      options={{ tabBarVisible: false }}
+    />
+
+    <Stack.Screen
+      name="Messages"
+      component={MessagesScreen}
+      style={styles.homeHeader}
+      options={{headerShown:false}}
+    />
+
+    <Stack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      style={styles.homeHeader}
+    />
   </Stack.Navigator>
 );
 
@@ -97,7 +113,6 @@ const TabNavigator = () => (
         paddingBottom: 16,
         borderTopWidth: 2,
         height: '10%',
-        backgroundColor:'black',
       },
       tabBarInactiveTintColor: AppStyles.color.text,
       tabBarActiveTintColor: AppStyles.color.tint,
@@ -129,8 +144,8 @@ const TabNavigator = () => (
         tabBarIcon: ({focused}) => {
           return (
             <Image
-              style={{ tintColor: focused ? AppStyles.color.tint : 'lightgrey', height: 25, width: 25}}
-              source={AppIcon.images.messages}
+              style={{ tintColor: focused ? AppStyles.color.tint : AppStyles.color.text, height: 25, width: 25}}
+              source={messagesIcon}
             />
           );
         },
@@ -158,6 +173,78 @@ const TabNavigator = () => (
   </BottomTab.Navigator>
 );
 
+const VendorBottomTab = createBottomTabNavigator();
+const VendorTabNavigator = () => (
+  <VendorBottomTab.Navigator
+    initialRouteName="Home"
+    screenOptions={{
+      tabBarStyle: {
+        backgroundColor: AppStyles.color.primarybg,
+        borderTopColor: AppStyles.color.secondarybg,
+        paddingBottom: 16,
+        borderTopWidth: 2,
+        height: '10%',
+        display: useRoute().name == "AddVehicle" ? 'none' : 'flex' // TODO: get bottom tab bar to hide when on the AddVehicle page
+      },
+      tabBarInactiveTintColor: AppStyles.color.text,
+      tabBarActiveTintColor: AppStyles.color.tint,
+      headerShown: false,
+      tabBarShowLabel: false
+    }}>
+
+    {/* Add Screen Switch Buttons to Bottom Bar */}
+
+    <VendorBottomTab.Screen
+      options={{
+        tabBarLabel: 'Home',
+        tabBarIcon: ({focused}) => {
+          return (
+            <Image
+              style={{ tintColor: focused ? AppStyles.color.tint : AppStyles.color.text, height:25, width:25}}
+              source={homeIcon}
+            />
+          );
+        },
+      }}
+      name="VendorStack"
+      component={VendorStack}
+    />
+
+    <VendorBottomTab.Screen
+      options={{
+        tabBarLabel:'Messages',
+        tabBarIcon: ({focused}) => {
+          return (
+            <Image
+              style={{ tintColor: focused ? AppStyles.color.tint : AppStyles.color.text, height: 25, width: 25}}
+              source={messagesIcon}
+            />
+          );
+        },
+      }}
+      name="MessagesScreen"
+      component={MessagesScreen}
+    />
+
+    <VendorBottomTab.Screen
+      options={{
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({focused}) => {
+          return (
+            <Image
+              style={{ tintColor: focused ? AppStyles.color.tint : AppStyles.color.text, width:20, height: 25}}
+              source={profileIcon}
+            />
+          );
+        },
+      }}
+      name="ProfileScreen"
+      component={ProfileScreen}
+    />
+
+  </VendorBottomTab.Navigator>
+);
+
 // drawer stack
 const Drawer = createDrawerNavigator();
 const DrawerStack = () => (
@@ -174,13 +261,28 @@ const DrawerStack = () => (
   </Drawer.Navigator>
 );
 
+const VendorDrawer = createDrawerNavigator();
+const VendorDrawerStack = () => (
+  <VendorDrawer.Navigator
+    screenOptions={{
+      drawerStyle: {outerWidth: 200},
+      drawerPosition: 'left',
+      headerShown: false,
+    }}
+    drawerContent={({navigation}) => (
+      <DrawerContainer navigation={navigation} />
+    )}>
+    <VendorDrawer.Screen name="Tab" component={VendorTabNavigator} />
+  </VendorDrawer.Navigator>
+);
+
 // Manifest of possible screens
 const RootNavigator = () => (
   <Stack.Navigator
     initialRouteName="LoginStack"
     screenOptions={{headerShown: false}}>
     <Stack.Screen name="LoginStack" component={LoginStack} />
-    <Stack.Screen name="VendorStack" component={VendorStack} />
+    <Stack.Screen name="VendorStack" component={VendorDrawerStack} />
     <Stack.Screen name="DrawerStack" component={DrawerStack} />
   </Stack.Navigator>
 );

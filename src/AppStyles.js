@@ -73,7 +73,8 @@ export const AppIcon = {
     logout: require("../assets/icons/shutdown.png"),
     menu: require("../assets/icons/menu.png"),
     defaultProfile: require("../assets/icons/profile_image_default.png"),
-    messages: require("../assets/icons/message.png")
+    messages: require("../assets/icons/message.png"),
+    defaultVehicle: require("../assets/images/scooter.jpeg"),
   }
 };
 

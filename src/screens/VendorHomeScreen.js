@@ -19,7 +19,7 @@ function VendorHomeScreen({navigation}) {
         containerStyle={styles.addVehicleContainer}
         style={styles.addVehicleText}
         onPress={() => navigation.navigate('AddVehicle')}>
-        Add Vehicle
+        Add a Vehicle
       </Button>
       </View>
   );
@@ -34,20 +34,22 @@ const styles = StyleSheet.create({
   },
   addVehicleContainer: {
     position: 'absolute',
-    bottom:50,
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    bottom: 50,
+    right: 24,
+    backgroundColor: AppStyles.color.accent,
     borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     marginTop: 30,
   },
   addVehicleText: {
-    color: AppStyles.color.primarybg,
+    color: AppStyles.color.background,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   title: {
-    paddingTop: 80,
+    paddingTop: 65,
     fontSize: AppStyles.fontSize.title,
-    fontWeight: 'bold',
+    fontFamily: AppStyles.fontFamily.bold,
     color: AppStyles.color.white,
     marginBottom: 40,
   },
