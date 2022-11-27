@@ -6,6 +6,7 @@ import {
   View,
   Alert,
   ActivityIndicator,
+  Image
 } from 'react-native';
 import Button from 'react-native-button';
 import {AppStyles} from '../AppStyles';
@@ -21,7 +22,13 @@ import {useDispatch} from 'react-redux';
 const FBSDK = require('react-native-fbsdk');
 const {LoginManager, AccessToken} = FBSDK;
 import {login} from '../reducers';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
+import { SocialIcon } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+// import { FontAwesome } from '@expo/vector-icons/FontAwesome';
+// import { Icon } from 'react-native-vector-icons/dist/FontAwesome';
+
+
 
 function LoginScreen({navigation}) {
   const [loading, setLoading] = useState(false);
@@ -219,12 +226,30 @@ function LoginScreen({navigation}) {
           color={AppStyles.color.tint}
         />
       ) : (
-        <GoogleSigninButton
-          style={styles.googleContainer}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Light}
+        <TouchableOpacity
           onPress={onPressGoogle}
-        />
+          containerStyle={styles.googleContainer}
+          style={styles.Button}>
+          <View style={{
+            justifyContent: "space-evenly",
+            flexDirection: "row",
+          }}>
+            <View style={{
+              //backgroundColor:AppStyles.color.accent
+            }}>
+              <SocialIcon
+              style
+              title='Sign in with google'
+              iconColor={AppStyles.color.primarybg}
+              type='google'
+              underlayColor= {AppStyles.color.accent}
+              iconSize={20}
+              light={true}
+              />
+            </View>
+            <Text style={styles.googleText}>Sign in with Google</Text>
+          </View>
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -269,7 +294,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   loginText: {
-    color: AppStyles.color.primarybg,
+    color: AppStyles.color.loginText,
     fontFamily: AppStyles.fontFamily.regular,
   },
   placeholder: {
@@ -301,12 +326,19 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
   },
   googleContainer: {
-    width: 192,
-    height: 48,
+    width: 200,
+    height: 65,
     marginTop: 30,
+    backgroundColor: AppStyles.color.accent,
+    borderRadius: AppStyles.borderRadius.main
   },
   googleText: {
-    color: AppStyles.color.white,
+    color: AppStyles.color.loginText,
+    fontFamily: AppStyles.fontFamily.regular, 
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 0,
+    marginTop: 25
   },
 });
 

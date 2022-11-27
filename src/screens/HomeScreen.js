@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    paddingTop: 80,
+    paddingTop: 65,
     fontSize: AppStyles.fontSize.title,
     fontFamily: AppStyles.fontFamily.bold,
     color: AppStyles.color.white,
