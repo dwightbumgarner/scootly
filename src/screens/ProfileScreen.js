@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
+import Button from 'react-native-button';
 import {connect, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-picker';
@@ -12,7 +13,7 @@ import ImagePicker from 'react-native-image-picker';
         // change name
     // button to switch between vendor/renter mode
 
-function ProfileScreen(){
+function ProfileScreen({navigation}){
     // find current user's data and store the photo
     const auth = useSelector((state) => state.auth);
     const [image, setImage] = useState(null);
@@ -86,8 +87,8 @@ function ProfileScreen(){
             <View style={styles.profileImageCircle}>
                 <TouchableOpacity onPress={()=>selectImage()}>
                 <Image
-                style={styles.profileImage}
-                source={image ? {uri: (image?.uri)} : (AppIcon.images.defaultProfile)}
+                    style={styles.profileImage}
+                    source={image ? {uri: (image?.uri)} : (AppIcon.images.defaultProfile)}
                 />
             </TouchableOpacity>
             </View>
@@ -102,6 +103,36 @@ function ProfileScreen(){
                 underlineColorAndroid="transparent"
                 />
             </View>
+            <View style={{
+                flexDirection: "row",
+                paddingHorizontal: 10,
+                justifyContent: "space-around",
+            }}>
+            <Button
+                containerStyle={styles.flowContainer}
+                style={styles.flowText}
+                title="RENTER FLOW"
+                // source={AppIcon.images.logout}
+                onPress={() => {
+                    navigation.navigate('HomeStack');
+                }}
+            >
+                Renter
+            </Button>
+            <View style={styles.space} />
+            <Button
+                containerStyle = {styles.flowContainer}
+                style={styles.flowText}
+                title="VENDOR FLOW"
+                // source={AppIcon.images.logout}
+                onPress={() => {
+                    navigation.navigate('VendorStack');
+                }}
+             >
+                 Vendor
+             </Button>
+            </View>
+            
         </View>
     );
 }
@@ -137,13 +168,6 @@ const styles = StyleSheet.create({
         height: 200,
         /*tintColor:AppStyles.color.accent,*/
     },
-    content: {
-        paddingLeft: 50,
-        paddingRight: 50,
-        textAlign: 'center',
-        fontSize: AppStyles.fontSize.content,
-        color: AppStyles.color.text,
-      },
     body: {
         height: 50,
         paddingLeft: 20,
@@ -154,12 +178,27 @@ const styles = StyleSheet.create({
     InputContainer: {
         width: AppStyles.textInputWidth.main,
         height: 50,
-        marginTop: 100,
+        marginTop: 90,
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: AppStyles.color.white,
         borderRadius: AppStyles.borderRadius.main,
-      }
+    },
+    flowContainer:{
+        width: "28%",
+        backgroundColor: AppStyles.color.accent,
+        borderRadius: AppStyles.borderRadius.main,
+        padding: 15,
+        marginTop: 45,
+    },
+    flowText: {
+        color: AppStyles.color.primarybg,
+        fontFamily: AppStyles.fontFamily.regular,
+    },
+    space: {
+        width: 20,
+        height: 20,
+    },
 });
 
 export default ProfileScreen;

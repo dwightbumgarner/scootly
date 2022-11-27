@@ -184,7 +184,7 @@ function LoginScreen({navigation}) {
       <View style={{
             paddingHorizontal: 10,
             flexDirection: "row",
-            justifyContent: "space-between",
+            justifyContent: "space-around",
             alignItems: "center"
         }}>
           <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('Welcome')}></Icon>
