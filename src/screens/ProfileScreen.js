@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
 import {connect, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
@@ -16,6 +16,7 @@ function ProfileScreen(){
     // find current user's data and store the photo
     const auth = useSelector((state) => state.auth);
     const [image, setImage] = useState(null);
+    const [userName, changeUserName] = useState('');
     var photo = auth?.user?.photoURL;
     console.log(photo)
 
@@ -25,7 +26,7 @@ function ProfileScreen(){
           maxHeight: 2000,
           storageOptions: {
             skipBackup: true,
-            path: 'vehicleImages'
+            path: 'profileImages'
           }
         };
         ImagePicker.showImagePicker(options, response => {
@@ -43,40 +44,40 @@ function ProfileScreen(){
           });
         };
 
-        const uploadData = async () => {
-            console.log(image);
-            const { uri } = image;
-            const filename = uri.substring(uri.lastIndexOf('/') + 1);
-            const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-            setUploading(true);
-            setTransferred(0);
-            const task = storage()
-              .ref(filename)
-              .putFile(uploadUri);
-            // set progress state
-            task.on('state_changed', snapshot => {
-              setTransferred(
-                Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
-              );
-              console.log(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
-            });
-            try {
-              await task;
-            } catch (e) {
-              console.error(e);
-            }
-            setUploading(false);
+    const uploadData = async () => {
+        console.log(image);
+        const { uri } = image;
+        const filename = uri.substring(uri.lastIndexOf('/') + 1);
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        setUploading(true);
+        setTransferred(0);
+        const task = storage()
+          .ref(filename)
+          .putFile(uploadUri);
+        // set progress state
+        task.on('state_changed', snapshot => {
+          setTransferred(
+            Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+          );
+          console.log(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
+        });
+        try {
+          await task;
+        } catch (e) {
+          console.error(e);
+        }
+        setUploading(false);
         
-            task.snapshot.ref.getDownloadURL().then(downloadURL => {
-              //user.updateProfile({ photoURL: downloadURL })
-              console.log(downloadURL);
-            })
-            Alert.alert(
-              'Photo uploaded!',
-              'Your photo has been uploaded to Firebase Cloud Storage!'
-            );
-            setImage(null);
-          };
+        task.snapshot.ref.getDownloadURL().then(downloadURL => {
+          //user.updateProfile({ photoURL: downloadURL })
+          console.log(downloadURL);
+        })
+        Alert.alert(
+          'Photo uploaded!',
+          'Your photo has been uploaded to Firebase Cloud Storage!'
+        );
+        setImage(null);
+    };
 
     // view with header and profile image, resorts to default if cannot find info
     return (
@@ -89,6 +90,17 @@ function ProfileScreen(){
                 source={image ? {uri: (image?.uri)} : (AppIcon.images.defaultProfile)}
                 />
             </TouchableOpacity>
+            </View>
+            {/* connect to backend */}
+            <View style={styles.InputContainer}>
+                <TextInput
+                style={styles.body}
+                placeholder="Change Name"
+                onChangeText={changeUserName}
+                value={userName}
+                placeholderTextColor={AppStyles.color.white}
+                underlineColorAndroid="transparent"
+                />
             </View>
         </View>
     );
@@ -124,7 +136,30 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         /*tintColor:AppStyles.color.accent,*/
-    }
+    },
+    content: {
+        paddingLeft: 50,
+        paddingRight: 50,
+        textAlign: 'center',
+        fontSize: AppStyles.fontSize.content,
+        color: AppStyles.color.text,
+      },
+    body: {
+        height: 50,
+        paddingLeft: 20,
+        paddingRight: 20,
+        color: AppStyles.color.text,
+        fontFamily: AppStyles.fontFamily.regular,
+    },
+    InputContainer: {
+        width: AppStyles.textInputWidth.main,
+        height: 50,
+        marginTop: 100,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: AppStyles.color.white,
+        borderRadius: AppStyles.borderRadius.main,
+      }
 });
 
 export default ProfileScreen;
