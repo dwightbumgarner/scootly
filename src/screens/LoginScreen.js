@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   googleText: {
     color: AppStyles.color.loginText,
     fontFamily: AppStyles.fontFamily.regular, 
-    fontWeight: 'lighter',
+    fontWeight: '500',
     textAlign: 'center',
     padding: 0,
     marginTop: 25
