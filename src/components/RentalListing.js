@@ -1,15 +1,39 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {Animated, TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator, Modal} from 'react-native';
 import {AppStyles, width} from '../AppStyles';
 import firestore from '@react-native-firebase/firestore';
 import { Rating } from 'react-native-ratings';
 import { SearchBar } from "react-native-elements";
+import CheckBox from '@react-native-community/checkbox';
+import {RadioButton} from 'react-native-paper';
 
 export default function RentalListing(props) {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [allData, setallData] = useState([]);
     const [searchValue, setSearchValue] = useState("");
+    //MODAL
+    const[animation, setAnimation]=useState(new Animated.Value(0));
+    const openModal = animation.interpolate({
+            inputRange: [0,1],
+            outputRange: [0,1],
+            extrapolate: "clamp",
+        });
+
+    //CHECKBOXES
+    const [toggleEScooter, setToggleEScooter] = useState(false);
+    const [toggleEBike, setToggleEBike] = useState(false);
+    const [toggleScooter, setToggleScooter] = useState(false);
+    const [toggleBike, setToggleBike] = useState(false);
+    const [toggleSkateBoard, setToggleSkateBoard] = useState(false);
+    const [toggleOther, setToggleOther] = useState(false);
+
+    //RADIOBUTTONS
+    const [checkedProx, setCheckedProx] = React.useState('0.05')
+    const [checkedPrice, setCheckedPrice] = React.useState('5')
+    const [checkedRev, setCheckedRev] = React.useState('4.75')
+
+
 
     const searchIcon = require('../../assets/icons/search.png');
 
@@ -107,7 +131,7 @@ export default function RentalListing(props) {
                 source={{uri: item?.vehicleImage}}
                 />
                 <View>
-                    <Text style={styles.availability}>Availabile From {item?.availability}</Text>
+                    <Text style={styles.availability}>Available From {item?.availability}</Text>
                     <Text style={styles.price}>Price: ${item?.hourlyRate}/hr</Text>
                 </View>
             </View>
@@ -118,6 +142,42 @@ export default function RentalListing(props) {
         return <View style={{ height: 30, marginHorizontal:10}} />;
     };
 
+
+//MODAL FUNCTIONALITY
+    const modalTrigger=()=>{
+        Animated.timing(animation, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+    };
+
+    const filterFunction = () => {
+        console.log("Data being filtered");
+        const updatedData = allData.filter((item) =>
+            item.hourlyRate < checkedPrice &&
+            item.vendorRating >= checkedRev
+        );
+        console.log(checkedRev);
+        setData(updatedData);
+
+    };
+
+    const close=()=>{
+        Animated.timing(animation, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: false,
+        }).start();
+        filterFunction();
+    };
+
+    const open={
+        transform: [
+            {scale:openModal},
+        ]
+    };
+
     if (loading) {
         return(<ActivityIndicator
           style={{marginTop: 30}}
@@ -126,7 +186,9 @@ export default function RentalListing(props) {
           color={AppStyles.color.tint}
         />);
     }
-      
+
+
+
     searchFunction = (text) => {
         console.log("THIS ALL LISTINGS: ", allData);
     const updatedData = allData.filter((item) => {
@@ -138,27 +200,277 @@ export default function RentalListing(props) {
     setData(updatedData);
     };
 
+
     return (
         <SafeAreaView>
-            <View>
-                <SearchBar
-                    placeholder="Search for a vehicle"
-                    style={styles.searchBar}
-                    containerStyle={styles.searchBarContainer}
-                    inputContainerStyle={styles.searchBarInput}
-                    value={searchValue}
-                    onChangeText={(text) => searchFunction(text)}
-                    autoCorrect={false}
-                    placeholderTextColor={AppStyles.color.secondarytext}
-                    searchIcon={{color: AppStyles.color.text}}
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{flex: 5}}>
+                        <SearchBar
+                          placeholder="Search for a vehicle"
+                          style={styles.searchBar}
+                          containerStyle={styles.searchBarContainer}
+                          inputContainerStyle={styles.searchBarInput}
+                          value={searchValue}
+                          onChangeText={(text) => searchFunction(text)}
+                          autoCorrect={false}
+                          placeholderTextColor={AppStyles.color.secondarytext}
+                          searchIcon={{color: AppStyles.color.text}}
+                      />
+                    </View>
+                    <View style={{flex: 1}}>
+                        <TouchableOpacity
+                            onPress={modalTrigger}
+                            style={styles.button}>
+                                  <Text> *** </Text>
+                        </TouchableOpacity>
+                    </View>
+               </View>
+                <FlatList
+                    data={data}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                    ItemSeparatorComponent={itemSeparator}
                 />
-            </View>
-            <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                ItemSeparatorComponent={itemSeparator}
-            />
+                <Animated.View style={[styles.background, open]} pointerEvents="box-none">
+                    <View style={[styles.modal]}>
+                      <View style={{flexDirection:"row"}}>
+                          <Text style={[styles.modalText]}> Filter </Text>
+                          <TouchableOpacity onPress={close} style={styles.modalButton}>
+                              <Text> X </Text>
+                          </TouchableOpacity>
+                      </View>
+
+
+                      <View>
+                        <Text style={[styles.modalText]}> Vehicle </Text>
+                        <View style={{flexDirection:"row"}}>
+                            <View>
+                                <View style={{flexDirection:"row"}}>
+                                    <CheckBox
+                                        tintColors={{true: AppStyles.color.accent}}
+                                        disabled={false}
+                                        value={toggleEScooter}
+                                        onValueChange={(newValue) => setToggleEScooter(newValue)}
+                                    />
+                                    <Text> E-Scooter </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <CheckBox
+                                        disabled={false}
+                                        tintColors={{true: AppStyles.color.accent}}
+                                        value={toggleEBike}
+                                        onValueChange={(newValue) => setToggleEBike(newValue)}
+                                    />
+                                    <Text> E-Bike </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <CheckBox
+                                        disabled={false}
+                                        tintColors={{true: AppStyles.color.accent}}
+                                        value={toggleScooter}
+                                        onValueChange={(newValue) => setToggleScooter(newValue)}
+                                    />
+                                    <Text> Scooter </Text>
+                                </View>
+                            </View>
+
+                            <View>
+                                <View style={{flexDirection:"row"}}>
+                                    <CheckBox
+                                        disabled={false}
+                                        tintColors={{true: AppStyles.color.accent}}
+                                        value={toggleBike}
+                                        onValueChange={(newValue) => setToggleBike(newValue)}
+                                    />
+                                    <Text> Bike </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <CheckBox
+                                        disabled={false}
+                                        tintColors={{true: AppStyles.color.accent}}
+                                        value={toggleSkateBoard}
+                                        onValueChange={(newValue) => setToggleSkateBoard(newValue)}
+                                    />
+                                    <Text> SkateBoard </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <CheckBox
+                                        disabled={false}
+                                        tintColors={{true: AppStyles.color.accent}}
+                                        value={toggleOther}
+                                        onValueChange={(newValue) => setToggleOther(newValue)}
+                                    />
+                                    <Text> Other </Text>
+                                </View>
+                            </View>
+                        </View>
+                      </View>
+
+
+                      <View>
+                        <Text style={[styles.modalText]}> Proximity </Text>
+                        <View style={{flexDirection:"row"}}>
+                            <View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="0.05"
+                                        color={AppStyles.color.accent}
+                                        status={checkedProx === '0.05' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedProx('0.05')}
+                                    />
+                                    <Text> {'< '}0.05 miles </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="0.1"
+                                        color={AppStyles.color.accent}
+                                        status={checkedProx === '0.1' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedProx('0.1')}
+                                    />
+                                    <Text> {'< '}0.1 miles </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="0.2"
+                                        color={AppStyles.color.accent}
+                                        status={checkedProx === '0.2' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedProx('0.2')}
+                                    />
+                                    <Text> {'< '}0.2 miles </Text>
+                                </View>
+                            </View>
+                            <View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="0.3"
+                                        color={AppStyles.color.accent}
+                                        status={checkedProx === '0.3' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedProx('0.3')}
+                                    />
+                                    <Text> {'< '}0.3 miles </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="0.5"
+                                        color={AppStyles.color.accent}
+                                        status={checkedProx === '0.5' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedProx('0.5')}
+                                    />
+                                    <Text> {'< '}0.5 miles </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="1"
+                                        color={AppStyles.color.accent}
+                                        status={checkedProx === '1' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedProx('1')}
+                                    />
+                                    <Text> {'< '}1 miles </Text>
+                                </View>
+                            </View>
+
+                        </View>
+                      </View>
+
+
+
+                      <View>
+                        <Text style={[styles.modalText]}> Price </Text>
+                        <View style={{flexDirection:"row"}}>
+                            <View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="5"
+                                        color={AppStyles.color.accent}
+                                        status={checkedPrice === '5' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedPrice('5')}
+                                    />
+                                    <Text> {'< $'}5/hr </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="10"
+                                        color={AppStyles.color.accent}
+                                        status={checkedPrice === '10' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedPrice('10')}
+                                    />
+                                    <Text> {'< $'}10/hr </Text>
+                                </View>
+                            </View>
+                            <View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="15"
+                                        color={AppStyles.color.accent}
+                                        status={checkedPrice === '15' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedPrice('15')}
+                                    />
+                                    <Text> {'< $'}15/hr </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="20"
+                                        color={AppStyles.color.accent}
+                                        status={checkedPrice === '20' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedPrice('20')}
+                                    />
+                                    <Text> {'< $'}20 miles </Text>
+                                </View>
+                            </View>
+
+                        </View>
+                      </View>
+
+
+
+                      <View>
+                        <Text style={[styles.modalText]}> Reviews </Text>
+                        <View style={{flexDirection:"row"}}>
+                            <View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="4.75"
+                                        color={AppStyles.color.accent}
+                                        status={checkedRev === '4.75' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedRev('4.75')}
+                                    />
+                                    <Text> 4.75+ </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="4.5"
+                                        color={AppStyles.color.accent}
+                                        status={checkedRev === '4.5' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedRev('4.5')}
+                                    />
+                                    <Text> 4.5+ </Text>
+                                </View>
+                            </View>
+                            <View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="4"
+                                        color={AppStyles.color.accent}
+                                        status={checkedRev === '4' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedRev('4')}
+                                    />
+                                    <Text> 4+ </Text>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <RadioButton
+                                        value="3"
+                                        color={AppStyles.color.accent}
+                                        status={checkedRev === '3' ? 'checked' : 'unchecked'}
+                                        onPress={() => setCheckedRev('3')}
+                                    />
+                                    <Text> 3+ </Text>
+                                </View>
+                            </View>
+
+                        </View>
+                      </View>
+                    </View>
+                </Animated.View>
         </SafeAreaView>
     );
 }
@@ -181,7 +493,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: AppStyles.color.secondarybg, 
+        backgroundColor: AppStyles.color.secondarybg,
         padding: 20,
         borderRadius: 12,
         width: '95%',
@@ -237,22 +549,62 @@ const styles = StyleSheet.create({
 
     },
     searchBarContainer: {
-        backgroundColor: AppStyles.color.primarybg, 
+        backgroundColor: AppStyles.color.primarybg,
         paddingBottom: 30,
         borderTopWidth: 0,
+        borderWidth: 1,
         borderBottomWidth: 0,
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        marginLeft: 10,
+        marginRight: 0,
+        width: '85%',
+        marginHorizontal: 0
     },
     searchBarInput: {
-        backgroundColor: AppStyles.color.secondarybg, 
+        backgroundColor: AppStyles.color.secondarybg,
         borderWidth: 1,
         borderBottomWidth: 1,
         borderColor: AppStyles.color.white,
         borderRadius: 8,
-        width: '98%',
+        width: '85%',
     },
     rating: {
         justifySelf: 'flex-end'
-    }
+    },
+    modalButton: {
+        marginTop: 0,
+        alignSelf: 'flex-end',                  //moves x to right
+        flex: 1,
+        flexDirection: 'row-reverse',
+    },
+    modalText: {
+        textAlign: "left",
+        fontFamily: AppStyles.fontFamily.regular,
+    },
+    modal: {
+        padding: 20,
+        borderRadius: 8,
+        marginBottom: 300,
+        backgroundColor: AppStyles.color.secondarybg,
+        justifySelf: 'center',
+    },
+    button: {
+        backgroundColor: AppStyles.color.secondarybg,
+        borderColor: AppStyles.color.white,
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingBottom: 30,
+    },
+    background: {                   //regular items
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top:0,
+        bottom: 0,
+        alignItems: "center",
+        justifyContent: "center",
+        elevation: 5,
+    },
+    checkbox: {
+
+    },
   });

@@ -64,8 +64,8 @@ export const AppIcon = {
   },
   style: {
     tintColor: AppStyles.color.tint,
-    width: 25,
-    height: 25
+    width: 30,
+    height: 30
   },
   images: {
     home: require("../assets/icons/home.png"),
@@ -75,6 +75,8 @@ export const AppIcon = {
     defaultProfile: require("../assets/icons/profile_image_default.png"),
     messages: require("../assets/icons/message.png"),
     defaultVehicle: require("../assets/images/scooter.jpeg"),
+    backArrow: require("../assets/icons/back_arrow.png"),
+    upArrow: require("../assets/icons/up_arrow.png")
   }
 };
 
