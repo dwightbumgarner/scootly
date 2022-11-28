@@ -62,7 +62,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -91,6 +91,8 @@
 		<string>Satoshi-Medium.otf</string>
 		<string>Satoshi-MediumItalic.otf</string>
 		<string>Satoshi-Regular.otf</string>
+		<string>Noto Sans Bold.ttf</string>
+		<string>Noto Sans.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

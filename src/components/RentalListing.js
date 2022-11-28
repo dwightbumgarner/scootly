@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         marginLeft: 'auto',
         marginRight: 'auto',
-        width: '90%',
+        width: '95%',
     },
     vendorMetaSubcontainer: {
         flexDirection: "row",
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
         backgroundColor: AppStyles.color.secondarybg,
         padding: 20,
         borderRadius: 12,
-        width: '90%',
+        width: '95%',
         marginLeft: 'auto',
         marginRight: 'auto'
     },
