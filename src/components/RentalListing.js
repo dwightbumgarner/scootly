@@ -4,8 +4,8 @@ import {AppStyles, width} from '../AppStyles';
 import firestore from '@react-native-firebase/firestore';
 import { Rating } from 'react-native-ratings';
 import { SearchBar } from "react-native-elements";
-import CheckBox from '@react-native-community/checkbox';
 import {RadioButton} from 'react-native-paper';
+import {SelectList} from 'react-native-dropdown-select-list'
 
 export default function RentalListing(props) {
     const [loading, setLoading] = useState(false);
@@ -20,18 +20,40 @@ export default function RentalListing(props) {
             extrapolate: "clamp",
         });
 
-    //CHECKBOXES
-    const [toggleEScooter, setToggleEScooter] = useState(false);
-    const [toggleEBike, setToggleEBike] = useState(false);
-    const [toggleScooter, setToggleScooter] = useState(false);
-    const [toggleBike, setToggleBike] = useState(false);
-    const [toggleSkateBoard, setToggleSkateBoard] = useState(false);
-    const [toggleOther, setToggleOther] = useState(false);
+    //RADIOBUTTONS - set default values that will guarantee all data to show
+    const [checkedProx, setCheckedProx] = React.useState('50')
+    const [checkedPrice, setCheckedPrice] = React.useState('1000')
+    const [checkedRev, setCheckedRev] = React.useState('0')
 
-    //RADIOBUTTONS
-    const [checkedProx, setCheckedProx] = React.useState('0.05')
-    const [checkedPrice, setCheckedPrice] = React.useState('5')
-    const [checkedRev, setCheckedRev] = React.useState('4.75')
+    //DROPDOWN - set default values that will guarantee all data to show
+    const [startSelected, setSSelected] = React.useState('01:00 AM');
+    const [endSelected, setESelected] = React.useState('11:00 PM');
+    const timeData = [
+        {key:'1', value:'12:00 AM'},
+        {key:'2', value:'01:00 AM'},
+        {key:'3', value:'02:00 AM'},
+        {key:'4', value:'03:00 AM'},
+        {key:'5', value:'04:00 AM'},
+        {key:'6', value:'05:00 AM'},
+        {key:'7', value:'06:00 AM'},
+        {key:'8', value:'07:00 AM'},
+        {key:'9', value:'08:00 AM'},
+        {key:'10', value:'09:00 AM'},
+        {key:'11', value:'10:00 AM'},
+        {key:'12', value:'11:00 AM'},
+        {key:'13', value:'12:00 PM'},
+        {key:'14', value:'01:00 PM'},
+        {key:'15', value:'02:00 PM'},
+        {key:'16', value:'03:00 PM'},
+        {key:'17', value:'04:00 PM'},
+        {key:'18', value:'05:00 PM'},
+        {key:'19', value:'06:00 PM'},
+        {key:'20', value:'07:00 PM'},
+        {key:'21', value:'08:00 PM'},
+        {key:'22', value:'09:00 PM'},
+        {key:'23', value:'10:00 PM'},
+        {key:'24', value:'11:00 PM'},
+    ];
 
 
 
@@ -133,6 +155,7 @@ export default function RentalListing(props) {
                 <View>
                     <Text style={styles.availability}>Available From {item?.availability}</Text>
                     <Text style={styles.price}>Price: ${item?.hourlyRate}/hr</Text>
+                    <Text style={styles.proximity}>Proximity: {item?.proximity} miles</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -154,11 +177,21 @@ export default function RentalListing(props) {
 
     const filterFunction = () => {
         console.log("Data being filtered");
+        console.log(startSelected)
+        console.log(endSelected)
+
         const updatedData = allData.filter((item) =>
             item.hourlyRate < checkedPrice &&
-            item.vendorRating >= checkedRev
+            item.vendorRating >= checkedRev &&
+            item.proximity <= checkedProx &&
+            (
+                ((item.availability).substring(0,item.availability.indexOf(" - ")) >= startSelected &&
+                (item.availability).substring(item.availability.indexOf(" - ") + 3, item.availability.length) <= endSelected)
+            ||
+                ((item.availability).substring(0,item.availability.indexOf(" - ")) <= startSelected &&
+                (item.availability).substring(item.availability.indexOf(" - ") + 3, item.availability.length) >= endSelected)
+            )
         );
-        console.log(checkedRev);
         setData(updatedData);
 
     };
@@ -239,73 +272,6 @@ export default function RentalListing(props) {
                               <Text> X </Text>
                           </TouchableOpacity>
                       </View>
-
-
-                      <View>
-                        <Text style={[styles.modalText]}> Vehicle </Text>
-                        <View style={{flexDirection:"row"}}>
-                            <View>
-                                <View style={{flexDirection:"row"}}>
-                                    <CheckBox
-                                        tintColors={{true: AppStyles.color.accent}}
-                                        disabled={false}
-                                        value={toggleEScooter}
-                                        onValueChange={(newValue) => setToggleEScooter(newValue)}
-                                    />
-                                    <Text> E-Scooter </Text>
-                                </View>
-                                <View style={{flexDirection:"row"}}>
-                                    <CheckBox
-                                        disabled={false}
-                                        tintColors={{true: AppStyles.color.accent}}
-                                        value={toggleEBike}
-                                        onValueChange={(newValue) => setToggleEBike(newValue)}
-                                    />
-                                    <Text> E-Bike </Text>
-                                </View>
-                                <View style={{flexDirection:"row"}}>
-                                    <CheckBox
-                                        disabled={false}
-                                        tintColors={{true: AppStyles.color.accent}}
-                                        value={toggleScooter}
-                                        onValueChange={(newValue) => setToggleScooter(newValue)}
-                                    />
-                                    <Text> Scooter </Text>
-                                </View>
-                            </View>
-
-                            <View>
-                                <View style={{flexDirection:"row"}}>
-                                    <CheckBox
-                                        disabled={false}
-                                        tintColors={{true: AppStyles.color.accent}}
-                                        value={toggleBike}
-                                        onValueChange={(newValue) => setToggleBike(newValue)}
-                                    />
-                                    <Text> Bike </Text>
-                                </View>
-                                <View style={{flexDirection:"row"}}>
-                                    <CheckBox
-                                        disabled={false}
-                                        tintColors={{true: AppStyles.color.accent}}
-                                        value={toggleSkateBoard}
-                                        onValueChange={(newValue) => setToggleSkateBoard(newValue)}
-                                    />
-                                    <Text> SkateBoard </Text>
-                                </View>
-                                <View style={{flexDirection:"row"}}>
-                                    <CheckBox
-                                        disabled={false}
-                                        tintColors={{true: AppStyles.color.accent}}
-                                        value={toggleOther}
-                                        onValueChange={(newValue) => setToggleOther(newValue)}
-                                    />
-                                    <Text> Other </Text>
-                                </View>
-                            </View>
-                        </View>
-                      </View>
-
 
                       <View>
                         <Text style={[styles.modalText]}> Proximity </Text>
@@ -469,6 +435,27 @@ export default function RentalListing(props) {
 
                         </View>
                       </View>
+
+                      <View>
+                        <Text style={[styles.modalText]}> Availability </Text>
+                        <SelectList
+                            data={timeData}
+                            setSelected={(val) => setSSelected(val)}
+                            save="value"
+                            dropdownTextStyles={{color:AppStyles.color.accent}}
+                            placeholder="Select Start Time"
+                        />
+                        <SelectList
+                            data={timeData}
+                            setSelected={(val) => setESelected(val)}
+                            save="value"
+                            style={[styles.dropdown]}
+                            boxStyles={{color:AppStyles.color.accent}}
+                            dropdownTextStyles={{color:AppStyles.color.accent}}
+                            placeholder="Select End Time"
+                        />
+                      </View>
+
                     </View>
                 </Animated.View>
         </SafeAreaView>
@@ -541,8 +528,15 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.regular,
         paddingRight: 100,
-        marginBottom: 50
+        marginBottom: 20
     },
+    proximity: {
+            color: AppStyles.color.white,
+            fontSize: AppStyles.fontSize.normal,
+            fontFamily: AppStyles.fontFamily.regular,
+            width: '80%',
+            marginBottom: 20
+        },
     searchBar: {
         fontFamily: AppStyles.fontFamily.regular,
 
@@ -604,7 +598,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         elevation: 5,
     },
-    checkbox: {
-
+    dropdown: {
+        paddingBottom: 5
     },
   });
