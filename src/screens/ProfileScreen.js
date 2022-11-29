@@ -15,7 +15,9 @@ import ImagePicker from 'react-native-image-picker';
 function ProfileScreen({navigation}){
     // find current user's data and store the photo
     const auth = useSelector((state) => state.auth);
+    // var initialName = auth.user?.fullname ?? 'Stranger';
     const [image, setImage] = useState(null);
+    const [initialName, changeInitialName] = useState(auth.user?.fullname ?? 'Stranger')
     const [userName, changeUserName] = useState('');
     var photo = auth?.user?.photoURL;
     console.log(photo)
@@ -46,8 +48,9 @@ function ProfileScreen({navigation}){
 
     const saveButton = () => {
         const update = {displayName: userName}
-
         firebase.auth().currentUser.updateProfile(update)
+        
+        changeInitialName(userName)
     };
 
     
@@ -91,7 +94,7 @@ function ProfileScreen({navigation}){
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                {auth.user?.fullname ?? 'Stranger'}
+                {initialName}
             </Text>
             <View style={styles.profileImageCircle}>
                 <TouchableOpacity onPress={()=>selectImage()}>
