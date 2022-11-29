@@ -673,7 +673,7 @@ PODS:
   - RNGoogleSignin (7.0.1):
     - GoogleSignIn (~> 6.0.0)
     - React-Core
-  - RNReanimated (1.13.3):
+  - RNReanimated (1.13.4):
     - React-Core
   - RNScreens (3.18.0):
     - React-Core
