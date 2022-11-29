@@ -10,7 +10,7 @@ import AddVehicleScreen from '../screens/AddVehicleScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
-import MessageScreen from '../screens/MessageScreen';
+import MessageScreen from '../screens/MessagesScreen';
 import Conversation from '../components/Conversation';
 import ListingView from '../screens/ListingView';
 import ProfileScreen from '../screens/ProfileScreen';
