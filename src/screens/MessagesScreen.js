@@ -110,8 +110,7 @@ const MessageScreen = ({navigation, route}) => {
         });
     }
     else {
-        // return empty message if no conversations or error
-        convoList = <Text style={styles.title}>No conversations found.</Text>;
+        convoList = <Text style={styles.noConversationsText}>You don't seem to have any conversations yet... why not get out there and start one?</Text>;
     }
 
     return (
@@ -141,9 +140,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     connection: {
-        width: 300,
-        height:100,
-        marginTop: 5,
+        width:'87%',
+        height:'14%',
         marginBottom: 15,
         borderRadius:30,
         backgroundColor: AppStyles.color.secondarybg,
@@ -177,4 +175,15 @@ const styles = StyleSheet.create({
         color: AppStyles.color.white,
         marginLeft: 10
     },
+      noConversationsText: {
+        width: '75%',
+        textAlign: 'center',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: '50%',
+        color: AppStyles.color.text,
+        fontFamily: AppStyles.fontFamily.regular,
+        fontSize: AppStyles.fontSize.normal,
+      }
 });
+export default MessagesScreen;

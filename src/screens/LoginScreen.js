@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
   },
   googleContainer: {
-    width: 200,
+    width: 205,
     height: 65,
     marginTop: 30,
     backgroundColor: AppStyles.color.accent,
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   googleText: {
     color: AppStyles.color.loginText,
     fontFamily: AppStyles.fontFamily.regular, 
-    fontWeight: 'bold',
+    fontWeight: '500',
     textAlign: 'center',
     padding: 0,
     marginTop: 25

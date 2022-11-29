@@ -96,6 +96,12 @@ export default function VendorListing(props) {
         </TouchableOpacity>
     );
 
+    const renderNoItems = () => {
+        return <View style={styles.noItemsContainer}>
+            <Text style={styles.noItemsText}>It looks like you don't have any vehicles up and running yet. Tap the button below to add your first one!</Text>
+        </View>;
+    };
+
     const itemSeparator = () => {
         return <View style={{ height: 30, marginHorizontal:10}} />;
     };
@@ -127,6 +133,7 @@ export default function VendorListing(props) {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={itemSeparator}
+                ListEmptyComponent={renderNoItems}
             />
         </SafeAreaView>
     );
@@ -190,5 +197,14 @@ const styles = StyleSheet.create({
         paddingRight: 100,
         marginBottom: 50
     },
-
+    noItemsText: {
+        width: '75%',
+        textAlign: 'center',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: '50%',
+        color: AppStyles.color.text,
+        fontFamily: AppStyles.fontFamily.regular,
+        fontSize: AppStyles.fontSize.normal,
+    },
   });
