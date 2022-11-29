@@ -13,7 +13,7 @@ import firestore from '@react-native-firebase/firestore';
 const ProfileScreen = () => {
     // find current user's data and store the photo
     const auth = useSelector((state) => state.auth);
-    var photo = auth.user.photoURL;
+    var photo = auth?.user?.photoURL;
     console.log(photo)
 
     // view with header and profile image, resorts to default if cannot find info

@@ -1,6 +1,6 @@
 import React, {useLayoutEffect, useState, useEffect} from 'react';
 import Button from 'react-native-button';
-import {View, StyleSheet, Text, TextInput, Image, TouchableOpacity, Alert} from 'react-native';
+import {View, StyleSheet, Text, TextInput, Image, TouchableOpacity, ActivityIndicator, Alert} from 'react-native';
 import {connect, useSelector} from 'react-redux';
 import {AppStyles, AppIcon} from '../AppStyles';
 import {Configuration} from '../Configuration';
@@ -11,7 +11,6 @@ import firestore from '@react-native-firebase/firestore';
 import NumericInput from 'react-native-numeric-input'
 import DatePicker from 'react-native-date-picker'
 import { DayPicker } from 'react-native-picker-weekday'
-
 
 
 function AddVehicleScreen({navigation}) {
@@ -68,23 +67,39 @@ function AddVehicleScreen({navigation}) {
       setTransferred(
         Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
       );
-      console.log(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
+      //console.log(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
     });
     try {
       await task;
     } catch (e) {
       console.error(e);
     }
-    setUploading(false);
 
     task.snapshot.ref.getDownloadURL().then(downloadURL => {
       //user.updateProfile({ photoURL: downloadURL })
-      console.log(downloadURL);
+      //console.log(downloadURL);
+      firestore()
+      .collection('rentals')
+      .add({
+        vehicleImage: downloadURL,
+        hourlyRate: hourlyRate,
+        vehicleName: vehicleName,
+        vehicleDescription, vehicleDescription,
+        availability: "09:00 AM - 05:00 PM",
+        vendorUID: auth.user?.id
+      })
+      .then(() => {
+        setUploading(false);
+        //console.log('Listing added!');
+        navigation.navigate('VendorHome', {refreshKey: Math.random()});
+      });
     })
+    /*
     Alert.alert(
       'Photo uploaded!',
       'Your photo has been uploaded to Firebase Cloud Storage!'
     );
+    */
     setImage(null);
   };
 
@@ -210,6 +225,11 @@ function AddVehicleScreen({navigation}) {
       onPress={uploadData}>
       Done
     </Button>
+    {uploading &&
+    <View style={styles.loading}>
+      <ActivityIndicator size='large' />
+    </View>
+    }
   </View>)
   );
 }
@@ -289,6 +309,17 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginBottom: 24
   },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
 
 const mapStateToProps = (state) => ({
