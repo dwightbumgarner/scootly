@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import {TouchableOpacity, StyleSheet, Image, ScrollView, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
 import firestore, { firebase } from '@react-native-firebase/firestore';
-import Conversation from '../components/Conversation'
 
 // TODO: 
     // add time sent (already exists) to message blurb
@@ -12,7 +11,6 @@ import Conversation from '../components/Conversation'
     // automatically scroll to bottom when new message or opening convo
     // CHANGE TO FLATLIST
     // safeAreaContext for iphone profile photo getting cut off
-    // change to different stack
 
 // Main screen showing list of conversations
 const MessageScreen = ({navigation, route}) => {
@@ -122,7 +120,7 @@ const MessageScreen = ({navigation, route}) => {
         </View>
     ); 
 }
-export default MessageScreen;
+export default MessageScreen
 
 const styles = StyleSheet.create({
     container: {
@@ -186,4 +184,3 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.normal,
       }
 });
-export default MessagesScreen;
