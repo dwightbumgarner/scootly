@@ -144,9 +144,9 @@ export default function RentalListing(props) {
         });
     }, []);
 
-
+    // key is bruh in this case (json format)
     const renderItem = ({item}) => (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {props.navigation.navigate("Listing", {itemData: item})}}>
             <View style={styles.vendorMetaContainer}>
 
                 <View style={styles.vendorMetaSubcontainer}>
