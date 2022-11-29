@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import {TouchableOpacity, StyleSheet, Image, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, StyleSheet, Image, ScrollView, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import {connect, useSelector} from 'react-redux';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import { create } from 'lodash';
 
-// Clicking a Connection opens a Conversation with another user
+// Clicking a Connection opens a Conversation with another user 
 
 // TODO: 
     // separate into different files
     // add time sent to message
-    // style properly
-    // fix positioning of components while composing new message
-    // fix overflow of messages, add scroll
+    // fix positioning of components while text input is up (distorts screen upwards)
     // add CONVERSATION creation (probably on listings page, create new conversation with two users)
+    // proportional sizing of messages
+    // order conversations on screen by RECENCY
+    // automatically scroll to bottom when new message or opening convo
 
+// Create conversation document in database; to be called in homescreen
 export function createConversation(user1, user2, opener){
     var a = firestore()
         .collection('conversations')
@@ -35,13 +37,14 @@ export function createConversation(user1, user2, opener){
     );
 }
 
+// add a message to current conversation
 export function writeMessage(convoId, content, sender) {
-
+    // cannot send empty message
     if (content == '') {
         console.log('No message to be sent.');
         return;
     }
-
+    // add message content into array
     var a = firestore().collection('conversations').doc(convoId).update({
         messages: firestore.FieldValue.arrayUnion({content: content, sender: sender, sentAt: Date.now()}),
         updatedAt: firestore.FieldValue.serverTimestamp()
@@ -50,22 +53,26 @@ export function writeMessage(convoId, content, sender) {
         console.log('New message sent.');
     })
     .catch(() => {
+        // ERROR
         console.log('Message failed to send.');
     })
 }
 
+// Screen for specific converesation with other user
 const ConversationScreen = (props) => {
     const user = firebase.auth().currentUser;
     const friend = props.convObject.friend;
     const [messageBuffer, setMessageBuffer] = useState('');
     const [messageList, setMessageList] = useState([]);
 
+    // when text is typed into input buffer, fetch recent updates to conversation
     useEffect(() => {
         firestore().collection('conversations').doc(props.convObject.id).get().then(doc => {
             setMessageList(doc.data().messages);
         })
-    }, [messageBuffer])
+    }, [messageBuffer]);
 
+    // Create map of message array, each item becomes a blurb depending on sender
     const MessageList = () => {
         return(
             messageList.map(message => {
@@ -96,22 +103,18 @@ const ConversationScreen = (props) => {
                 </View>
             </View>
 
-            <View style={styles.messageContainer}>
+            <ScrollView style={styles.messageContainer}>
                 <MessageList/>
-            </View>
+            </ScrollView>
 
             <View style={styles.composeBar}>
                 <View style={styles.InputContainer}>
                     <TextInput
                     style={styles.inputBody}
                     placeholder="Message"
-                    
                     value={messageBuffer}
                     onChangeText={setMessageBuffer}
-                    
                     />
-
-                    
                 </View>
                 <Button 
                 containerStyle={styles.sendButton} 
@@ -129,6 +132,7 @@ const ConversationScreen = (props) => {
     );
 };
 
+// Main screen showing list of conversations
 const MessagesScreen = () => {
     // find user, get list of conversations
     const user = firebase.auth().currentUser;
@@ -139,6 +143,8 @@ const MessagesScreen = () => {
     const [friendData, setFriendData] = useState([]);
     const [focusedConvo, setFocusedConvo] = useState(null);
 
+    // occurs in background while loading:
+        // get list of conversations that include current suer
     useEffect(() => {
         firestore()
         .collection('conversations')
@@ -146,23 +152,28 @@ const MessagesScreen = () => {
         .get()
         .then(collectionSnapshot => {
             setCount(collectionSnapshot.size);
-            console.log("Total conversations: " + count);
 
             collectionSnapshot.forEach(docSnapshot => {
+
+                // set index of other user based on position in array
+                let part = docSnapshot.data().participants;
+                var friendIndex = part[0] === user.uid ? 1 : 0;
                 
-                // TODO: change participants[1] to OTHER participant
+                // get data of other participant
                 firestore()
                     .collection('users')
-                    .doc(docSnapshot.data().participants[1])
+                    .doc(part[friendIndex])
                     .get()
                     .then(userSnapshot => {
-                        //console.log(userSnapshot.data());
+                        // load data into state variable if non duplicate
                         if (!convoIds.includes(docSnapshot.id)){
+                            
                             setConvoIds(convoIds.concat(docSnapshot.id));
                             setConvoData(convoData.concat(docSnapshot.data()));
                             setFriendData(friendData.concat(userSnapshot.data()));
                         }
-                        if (convoIds.length == count){
+                        if (convoIds.length === count){
+                            console.log("Total conversations: " + count);
                             setLoading(false);
                         }
                 });
@@ -181,15 +192,18 @@ const MessagesScreen = () => {
           />);
     }
     else if (count > 0){
+        // create convo scructure for singular conversation, including all 3 data elements
         var convos = [];
         for (let i = 0; i < count; i++){
             convos.push({id: convoIds[i], data: convoData[i], friend: friendData[i]});
         }
 
+        // map out list of conversations user is involved in--onto the screen
         var convoList = convos.map(convo => {
             
+            let mesLen = convo.data?.messages?.length;
             var name = convo.friend ? convo.friend.fullname : 'name';
-            var latestMessage = convo.data ? convo.data.messages[0].content : 'message';
+            var latestMessage = convo.data ? convo.data.messages[mesLen - 1].content : 'message';
             var photo = convo.friend?.photoURL;
             
             return (
@@ -217,6 +231,7 @@ const MessagesScreen = () => {
         convoList = <Text style={styles.noConversationsText}>You don't seem to have any conversations yet... why not get out there and start one?</Text>;
     }
 
+    // switch screen to focused conversation on press
     if (focusedConvo != null) {
         return <ConversationScreen 
                 convObject={focusedConvo} 
@@ -227,9 +242,9 @@ const MessagesScreen = () => {
         return (
             <View style={styles.container}>
                 <Text style={styles.title}> Messages </Text>
-                <View style={styles.connectionList}>
-                { convoList }
-                </View>
+                <ScrollView>
+                    { convoList }
+                </ScrollView>
             </View>
         );
     }   
@@ -241,7 +256,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: AppStyles.color.primarybg,
-        paddingBottom: 100,
     },
     title: {
         fontSize: AppStyles.fontSize.title,
@@ -251,16 +265,11 @@ const styles = StyleSheet.create({
         marginBottom: 48,
         textAlign: 'center',
     },
-    connectionList: {
-        width:'100%',
-        height:'100%',
-        alignItems:'center',
-    },
     connection: {
         width:'87%',
         height:'14%',
         marginBottom: 15,
-        borderRadius:12,
+        borderRadius:30,
         backgroundColor: AppStyles.color.secondarybg,
         alignItems:'center',
         flexDirection:'row',
@@ -290,6 +299,7 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.regular,
         color: AppStyles.color.white,
+        marginLeft: 10
     },
     convoHeader: {
         height: '20%',
@@ -313,14 +323,8 @@ const styles = StyleSheet.create({
 
     },
     messageContainer: {
-        height: '75%',
         width: '95%',
-
-        display: 'flex',
-        flexDirection:'column',
-        alignItems:'center',
-        justifyContent:'flex-end',
-        overflow:'scroll'
+        
     },
     sentMessageBlurb: {
         minWidth:120,
@@ -335,7 +339,7 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     recMessageBlurb: {
-        minWidth:120,
+        minWidth: 120,
         minHeight: 60,
         display:'flex',
         alignItems:'center',
@@ -347,10 +351,10 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     composeBar: {
-        width: '95%',
-        height: '10%',
+        width: '100%',
+        height: '7%',
         backgroundColor:'black',
-        marginTop:30,
+        marginTop:10,
         display: 'flex',
         flexDirection:'row',
         alignItems:'center',
@@ -358,7 +362,7 @@ const styles = StyleSheet.create({
     },
     InputContainer: {
         width: '60%',
-        height: '80%',
+        height: '70%',
         borderRadius: 20,
         borderWidth: 1,
         borderStyle: 'solid',
