@@ -16,6 +16,8 @@ import { create } from 'lodash';
     // proportional sizing of messages
     // order conversations on screen by RECENCY
     // automatically scroll to bottom when new message or opening convo
+    // CHANGE TO FLATLIST
+    // safeAreaContext for iphone profile photo getting cut off
 
 // Create conversation document in database; to be called in homescreen
 export function createConversation(user1, user2, opener){
@@ -70,7 +72,8 @@ const ConversationScreen = (props) => {
         firestore().collection('conversations').doc(props.convObject.id).get().then(doc => {
             setMessageList(doc.data().messages);
         })
-    }, [messageBuffer]);
+        
+    });
 
     // Create map of message array, each item becomes a blurb depending on sender
     const MessageList = () => {
@@ -103,7 +106,9 @@ const ConversationScreen = (props) => {
                 </View>
             </View>
 
-            <ScrollView style={styles.messageContainer}>
+            <ScrollView 
+            style={styles.messageContainer}
+            >
                 <MessageList/>
             </ScrollView>
 

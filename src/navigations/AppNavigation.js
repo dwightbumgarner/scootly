@@ -11,6 +11,7 @@ import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import MessagesScreen from '../screens/MessagesScreen';
+import ListingView from '../screens/ListingView';
 import ProfileScreen from '../screens/ProfileScreen';
 import {AppIcon, AppStyles} from '../AppStyles';
 import DrawerContainer from '../components/DrawerContainer';
@@ -69,6 +70,14 @@ const HomeStack = () => (
       component={ProfileScreen}
       style={styles.homeHeader}
     />
+
+    <Stack.Screen
+      name="Listing"
+      component={ListingView}
+      style={styles.homeHeader}
+    >
+    </Stack.Screen>
+
   </Stack.Navigator>
 );
 
@@ -97,6 +106,7 @@ const VendorStack = () => (
       component={ProfileScreen}
       style={styles.homeHeader}
     />
+
   </Stack.Navigator>
 );
 
