@@ -3,9 +3,8 @@ import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, FlatList, Sa
 import {AppStyles, width, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import {connect, useSelector} from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
+import firestore, { firebase } from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-picker';
-
 
 // TODO:
     // button to change info (not with google)
@@ -42,8 +41,16 @@ function ProfileScreen({navigation}){
               console.log(source);
               setImage(source);
             }
-          });
-        };
+        });
+    };
+
+    const saveButton = () => {
+        const update = {displayName: userName}
+
+        firebase.auth().currentUser.updateProfile(update)
+    };
+
+    
 
     const uploadData = async () => {
         console.log(image);
@@ -83,7 +90,9 @@ function ProfileScreen({navigation}){
     // view with header and profile image, resorts to default if cannot find info
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{auth.user?.fullname ?? 'Stranger'}</Text>
+            <Text style={styles.title}>
+                {auth.user?.fullname ?? 'Stranger'}
+            </Text>
             <View style={styles.profileImageCircle}>
                 <TouchableOpacity onPress={()=>selectImage()}>
                 <Image
@@ -132,7 +141,12 @@ function ProfileScreen({navigation}){
                  Vendor
              </Button>
             </View>
-            
+            <Button onPress={()=>saveButton()}
+                containerStyle={styles.saveContainer}
+                style={styles.flowText}
+                title="SAVE">
+                    Save
+            </Button>
         </View>
     );
 }
@@ -195,8 +209,18 @@ const styles = StyleSheet.create({
         color: AppStyles.color.primarybg,
         fontFamily: AppStyles.fontFamily.regular,
     },
+    saveContainer:{
+        position: 'absolute',
+        bottom: 20,
+        right: 24,
+        backgroundColor: AppStyles.color.accent,
+        borderRadius: AppStyles.borderRadius.main,
+        paddingVertical: 16,
+        paddingHorizontal: 24,
+        marginTop: 30,
+    },
     space: {
-        width: 20,
+        width: 30,
         height: 20,
     },
 });

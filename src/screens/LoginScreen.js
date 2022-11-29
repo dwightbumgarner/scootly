@@ -184,7 +184,7 @@ function LoginScreen({navigation}) {
       <View style={{
             paddingHorizontal: 10,
             flexDirection: "row",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
             alignItems: "center"
         }}>
           <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('Welcome')}></Icon>
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
   },
   googleContainer: {
-    width: 200,
+    width: 205,
     height: 65,
     marginTop: 30,
     backgroundColor: AppStyles.color.accent,
