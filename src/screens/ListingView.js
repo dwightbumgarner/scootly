@@ -1,15 +1,52 @@
 import React, {useState, useEffect} from 'react';
 import {Animated, TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator, Modal} from 'react-native';
 import {AppStyles, AppIcon, width} from '../AppStyles';
-import firestore from '@react-native-firebase/firestore';
-import { Rating } from 'react-native-ratings';
-import { SearchBar } from "react-native-elements";
-import {RadioButton} from 'react-native-paper';
-import {SelectList} from 'react-native-dropdown-select-list'
+import firestore, { firebase } from '@react-native-firebase/firestore';
 
+// TODO:  
+    // create booking screen
 
+function messageVendor(item, nav){
+    // get user
+    const user = firebase.auth().currentUser;
+    
+    //search for conversation including both user and vendor
+    firestore()
+    .collection('conversations')
+    .where('participants', 'array-contains', item.vendorUID, user.uid)
+    .get()
+    .then(collectionSnapshot => {
+        console.log(collectionSnapshot.size);
+        // if conversation doesn't exist, make new one and recursively call function
+        if (collectionSnapshot.size === 0) {
+            
+            console.log('Creating conversation with ' + item.vendorName);
+            firestore().collection('conversations').add({
+                participants: [user.uid, item.vendorUID],
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                updatedAt: firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                //messageVendor(item);
+            });
+        }
+        // otherwise open existing conversation.
+        else {
+            console.log('Existing conversation found.');
+
+            firestore().collection('users').doc(item.vendorUID).get().then(userDoc => {
+                let colDoc = collectionSnapshot.docs[0];
+                let convo = {id: colDoc.id, data: colDoc.data(), friend: userDoc.data()}
+
+                console.log('Opening conversation with ' + item.vendorName);
+                nav.navigate("Conversation", {convObject: convo})
+            }) 
+            
+        }
+    })
+}
 
 const ListingView = ({navigation, route}) => {
+
     const item = route.params.itemData;
     
     return (
@@ -24,7 +61,7 @@ const ListingView = ({navigation, route}) => {
                 <Image source={{uri: item?.vehicleImage}} style={{height: 300, width: 300}}/>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.messageContainer}>
+                <TouchableOpacity style={styles.messageContainer} onPress={() => {messageVendor(item, navigation)}}>
                     <Text style={styles.buttonText}> 
                         Send Message
                     </Text>
