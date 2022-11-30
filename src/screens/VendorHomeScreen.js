@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   addVehicleContainer: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 30,
     right: 24,
     backgroundColor: AppStyles.color.accent,
     borderRadius: AppStyles.borderRadius.main,

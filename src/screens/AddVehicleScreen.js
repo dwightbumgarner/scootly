@@ -23,34 +23,60 @@ function AddVehicleScreen({navigation}) {
   const [transferred, setTransferred] = useState(0);
   const [currentScreen, setCurrentScreen] = useState(true);
   const [weekdays, setWeekdays] = React.useState([-1]);
-  const [startSelected, setSSelected] = React.useState('10:00 AM');
-    const [endSelected, setESelected] = React.useState('10:00 PM');
-    const timeData = [
-        {key:'1', value:'12:00 AM'},
-        {key:'2', value:'01:00 AM'},
-        {key:'3', value:'02:00 AM'},
-        {key:'4', value:'03:00 AM'},
-        {key:'5', value:'04:00 AM'},
-        {key:'6', value:'05:00 AM'},
-        {key:'7', value:'06:00 AM'},
-        {key:'8', value:'07:00 AM'},
-        {key:'9', value:'08:00 AM'},
-        {key:'10', value:'09:00 AM'},
-        {key:'11', value:'10:00 AM'},
-        {key:'12', value:'11:00 AM'},
-        {key:'13', value:'12:00 PM'},
-        {key:'14', value:'01:00 PM'},
-        {key:'15', value:'02:00 PM'},
-        {key:'16', value:'03:00 PM'},
-        {key:'17', value:'04:00 PM'},
-        {key:'18', value:'05:00 PM'},
-        {key:'19', value:'06:00 PM'},
-        {key:'20', value:'07:00 PM'},
-        {key:'21', value:'08:00 PM'},
-        {key:'22', value:'09:00 PM'},
-        {key:'23', value:'10:00 PM'},
-        {key:'24', value:'11:00 PM'},
-    ];
+  const [startSelected, setSSelected] = React.useState('');
+  const [endSelected, setESelected] = React.useState('');
+  const startTimeData = [
+      {key:'1', value:'12:00 AM'},
+      {key:'2', value:'01:00 AM'},
+      {key:'3', value:'02:00 AM'},
+      {key:'4', value:'03:00 AM'},
+      {key:'5', value:'04:00 AM'},
+      {key:'6', value:'05:00 AM'},
+      {key:'7', value:'06:00 AM'},
+      {key:'8', value:'07:00 AM'},
+      {key:'9', value:'08:00 AM'},
+      {key:'10', value:'09:00 AM'},
+      {key:'11', value:'10:00 AM'},
+      {key:'12', value:'11:00 AM'},
+      {key:'13', value:'12:00 PM'},
+      {key:'14', value:'01:00 PM'},
+      {key:'15', value:'02:00 PM'},
+      {key:'16', value:'03:00 PM'},
+      {key:'17', value:'04:00 PM'},
+      {key:'18', value:'05:00 PM'},
+      {key:'19', value:'06:00 PM'},
+      {key:'20', value:'07:00 PM'},
+      {key:'21', value:'08:00 PM'},
+      {key:'22', value:'09:00 PM'},
+      {key:'23', value:'10:00 PM'},
+      {key:'24', value:'11:00 PM'},
+  ];
+  const endTimeData = [
+      {key:'1', value:'12:00 AM'},
+      {key:'2', value:'01:00 AM'},
+      {key:'3', value:'02:00 AM'},
+      {key:'4', value:'03:00 AM'},
+      {key:'5', value:'04:00 AM'},
+      {key:'6', value:'05:00 AM'},
+      {key:'7', value:'06:00 AM'},
+      {key:'8', value:'07:00 AM'},
+      {key:'9', value:'08:00 AM'},
+      {key:'10', value:'09:00 AM'},
+      {key:'11', value:'10:00 AM'},
+      {key:'12', value:'11:00 AM'},
+      {key:'13', value:'12:00 PM'},
+      {key:'14', value:'01:00 PM'},
+      {key:'15', value:'02:00 PM'},
+      {key:'16', value:'03:00 PM'},
+      {key:'17', value:'04:00 PM'},
+      {key:'18', value:'05:00 PM'},
+      {key:'19', value:'06:00 PM'},
+      {key:'20', value:'07:00 PM'},
+      {key:'21', value:'08:00 PM'},
+      {key:'22', value:'09:00 PM'},
+      {key:'23', value:'10:00 PM'},
+      {key:'24', value:'11:00 PM'},
+  ];
 
   const selectImage = () => {
     const options = {
@@ -77,6 +103,48 @@ function AddVehicleScreen({navigation}) {
   };
 
   const uploadData = async () => {
+    if(!image){
+      Alert.alert(
+        'Please add an image of your scooter!'
+      );
+      return;
+    }
+    if(!vehicleName){
+      Alert.alert(
+        'Please add a name for your scooter!'
+      );
+      return;
+    }
+    if(!vehicleDescription){
+      Alert.alert(
+        'Please add a description for your scooter!'
+      );
+      return;
+    }
+    if(hourlyRate == 0){
+      Alert.alert(
+        'Please add an hourly rate for your scooter!'
+      );
+      return;
+    }
+    if(!weekdays[1]){
+      Alert.alert(
+        'Please select the days when your scooter is available!'
+      );
+      return;
+    }
+    if(!startSelected){
+      Alert.alert(
+        'Please select the start time of your scooter\'s availability!'
+      );
+      return;
+    }
+    if(!endSelected){
+      Alert.alert(
+        'Please select the end time of your scooter\'s availability!'
+      );
+      return;
+    }
     console.log(image);
     const { uri } = image;
     const filename = uri.substring(uri.lastIndexOf('/') + 1);
@@ -102,6 +170,8 @@ function AddVehicleScreen({navigation}) {
     task.snapshot.ref.getDownloadURL().then(downloadURL => {
       //user.updateProfile({ photoURL: downloadURL })
       //console.log(downloadURL);
+      var cleanedDays = weekdays;
+      cleanedDays.splice(0, 1);
       firestore()
       .collection('rentals')
       .add({
@@ -119,12 +189,6 @@ function AddVehicleScreen({navigation}) {
         navigation.navigate('VendorHome', {refreshKey: Math.random()});
       });
     })
-    /*
-    Alert.alert(
-      'Photo uploaded!',
-      'Your photo has been uploaded to Firebase Cloud Storage!'
-    );
-    */
     setImage(null);
   };
 
@@ -206,20 +270,24 @@ function AddVehicleScreen({navigation}) {
       inactiveColor={AppStyles.color.secondarytext}
     />
     <SelectList
-        data={timeData}
+        data={startTimeData}
         setSelected={(val) => setSSelected(val)}
         save="value"
+        search={false}
         dropdownTextStyles={{color:AppStyles.color.accent}}
+        inputStyles={{color:AppStyles.color.accent}}
         placeholder="Select Start Time"
     />
     <Text style={styles.availability}>To</Text>
     <SelectList
-        data={timeData}
+        data={endTimeData}
         setSelected={(val) => setESelected(val)}
         save="value"
+        search={false}
         style={[styles.dropdown]}
         boxStyles={{color:AppStyles.color.accent}}
         dropdownTextStyles={{color:AppStyles.color.accent}}
+        inputStyles={{color:AppStyles.color.accent}}
         placeholder="Select End Time"
     />
     <Button
@@ -286,7 +354,7 @@ const styles = StyleSheet.create({
   },
   addVehicleContainer: {
     position: 'absolute',
-    bottom:50,
+    bottom:15,
     width: AppStyles.buttonWidth.main,
     backgroundColor: AppStyles.color.tint,
     borderRadius: AppStyles.borderRadius.main,
