@@ -8,7 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 // add a message to current conversation
 export function writeMessage(convoId, content, sender) {
     // cannot send empty message
-    if (content == '') {
+    if (content === '') {
         console.log('No message to be sent.');
         return;
     }
@@ -25,6 +25,7 @@ export function writeMessage(convoId, content, sender) {
 const Conversation = ({navigation, route}) => {
     const [messageBuffer, setMessageBuffer] = useState('');
     const [messageList, setMessageList] = useState([]);
+    const [listRef, setListRef] = useState(null);
 
     const convObject = route.params?.convObject;
     const user = firebase.auth().currentUser;
@@ -38,27 +39,21 @@ const Conversation = ({navigation, route}) => {
             .doc(convObject?.id)
             .onSnapshot(doc => {
                 setMessageList(doc.data().messages ?? []);
-                console.log('Messages updated.')
+                console.log('Messages updated.');
             });
 
+            
             // Do something when the screen is unfocused
             // Useful for cleanup functions
             return () => sub();
         }, [user.uid])
     );
 
-    // Create map of message array, each item becomes a blurb depending on sender
-    const MessageList = () => {
-        return(
-            messageList.map(message => {
-            return (
-                <View style={user.uid == message.sender ? styles.sentMessageBlurb : styles.recMessageBlurb}>
-                    <Text>{message.content}</Text>
-                </View>
-            )
-        })
-        )
-    };
+    const Message = ({item}) => (
+        <View style={user.uid == item.sender ? styles.sentMessageBlurb : styles.recMessageBlurb}>
+            <Text>{item.content}</Text>
+        </View>
+    )
 
     return (
         <View style={styles.container}>
@@ -78,11 +73,15 @@ const Conversation = ({navigation, route}) => {
                 </View>
             </View>
 
-            <ScrollView 
-            style={styles.messageContainer}
-            >
-                <MessageList/>
-            </ScrollView>
+            <SafeAreaView style={styles.messageContainer}>
+                <FlatList 
+                data={messageList} 
+                renderItem={Message} 
+                keyExtractor={(item) => {item.id}}
+                
+                ref={(ref) => {setListRef(ref);}}
+                />
+            </SafeAreaView>
 
             <View style={styles.composeBar}>
                 <View style={styles.inputContainer}>
@@ -95,10 +94,11 @@ const Conversation = ({navigation, route}) => {
                 </View>
                 <Button 
                 containerStyle={styles.sendButton} 
-                onPress={() => { 
+                onPress={() => {
                     writeMessage(convObject?.id, messageBuffer, user.uid);
                     setMessageBuffer('');
-                }}
+                    listRef.scrollToEnd({ animated: true });
+                  }}
                 >
                     <Image source={AppIcon.images.upArrow} style={AppIcon.style}/>    
                 </Button>
@@ -148,31 +148,31 @@ const styles = StyleSheet.create({
     },
     messageContainer: {
         width: '95%',
-        
+        height: '70%',
     },
     sentMessageBlurb: {
-        minWidth:120,
-        minHeight: 60,
-        display:'flex',
+        minHeight: 50,
+        maxWidth: "45%",
         alignItems:'center',
         justifyContent:'center',
         borderRadius:20,
         backgroundColor: AppStyles.color.accent,
         marginLeft: 200,
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        padding: 10
     },
     recMessageBlurb: {
-        minWidth: 120,
-        minHeight: 60,
-        display:'flex',
+        minHeight: 50,
+        maxWidth: "45%",
         alignItems:'center',
         justifyContent:'center',
         borderRadius:20,
-        backgroundColor: AppStyles.color.grey,
+        backgroundColor: AppStyles.color.description,
         marginRight: 200,
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        padding: 10,
     },
     composeBar: {
         width: '100%',
