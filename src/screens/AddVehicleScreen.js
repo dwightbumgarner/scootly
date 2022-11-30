@@ -9,7 +9,6 @@ import ImagePicker from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import NumericInput from 'react-native-numeric-input'
-import DatePicker from 'react-native-date-picker'
 import { DayPicker } from 'react-native-picker-weekday'
 
 
@@ -171,19 +170,6 @@ function AddVehicleScreen({navigation}) {
     onPress={() => setStartAvailabilityOpen(true)}>
     Set Start Time
     </Button>
-    <DatePicker
-      modal
-      mode="time"
-      open={startAvailabilityOpen}
-      date={startAvailabilityDate}
-      onConfirm={(date) => {
-        setStartAvailabilityOpen(false)
-        setStartAvailabilityDate(startAvailabilityDate)
-      }}
-      onCancel={() => {
-        setStartAvailabilityOpen(false)
-      }}
-    />
     <Text style={styles.availability}>To</Text>
     <Button
     containerStyle={styles.availabilityButtonContainer}
@@ -191,19 +177,6 @@ function AddVehicleScreen({navigation}) {
     onPress={() => setEndAvailabilityOpen(true)}>
     Set End Time
     </Button>
-    <DatePicker
-      modal
-      mode="time"
-      open={endAvailabilityOpen}
-      date={endAvailabilityDate}
-      onConfirm={(date) => {
-        setEndAvailabilityOpen(false)
-        setEndAvailabilityDate(endAvailabilityDate)
-      }}
-      onCancel={() => {
-        setEndAvailabilityOpen(false)
-      }}
-    />
     <Button
       containerStyle={styles.addVehicleContainer}
       style={styles.addVehicleText}
