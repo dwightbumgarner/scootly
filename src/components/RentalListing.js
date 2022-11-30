@@ -26,8 +26,8 @@ export default function RentalListing(props) {
     const [checkedRev, setCheckedRev] = React.useState('0')
 
     //DROPDOWN - set default values that will guarantee all data to show
-    const [startSelected, setSSelected] = React.useState('01:00 AM');
-    const [endSelected, setESelected] = React.useState('11:00 PM');
+    const [startSelected, setSSelected] = React.useState('10:00 AM');
+    const [endSelected, setESelected] = React.useState('10:00 PM');
     const timeData = [
         {key:'1', value:'12:00 AM'},
         {key:'2', value:'01:00 AM'},
@@ -223,7 +223,6 @@ export default function RentalListing(props) {
 
 
     searchFunction = (text) => {
-        console.log("THIS ALL LISTINGS: ", allData);
     const updatedData = allData.filter((item) => {
         const item_data = `${item.vehicleName.toUpperCase()})`;
         const text_data = text.toUpperCase();

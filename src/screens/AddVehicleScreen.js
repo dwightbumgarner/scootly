@@ -9,8 +9,8 @@ import ImagePicker from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import NumericInput from 'react-native-numeric-input'
-import DatePicker from 'react-native-date-picker'
 import { DayPicker } from 'react-native-picker-weekday'
+import {SelectList} from 'react-native-dropdown-select-list'
 
 
 function AddVehicleScreen({navigation}) {
@@ -22,11 +22,35 @@ function AddVehicleScreen({navigation}) {
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [currentScreen, setCurrentScreen] = useState(true);
-  const [startAvailabilityDate, setStartAvailabilityDate] = useState(new Date())
-  const [startAvailabilityOpen, setStartAvailabilityOpen] = useState(false)
-  const [endAvailabilityDate, setEndAvailabilityDate] = useState(new Date())
-  const [endAvailabilityOpen, setEndAvailabilityOpen] = useState(false)
-  const [weekdays, setWeekdays] = React.useState([-1])
+  const [weekdays, setWeekdays] = React.useState([-1]);
+  const [startSelected, setSSelected] = React.useState('10:00 AM');
+    const [endSelected, setESelected] = React.useState('10:00 PM');
+    const timeData = [
+        {key:'1', value:'12:00 AM'},
+        {key:'2', value:'01:00 AM'},
+        {key:'3', value:'02:00 AM'},
+        {key:'4', value:'03:00 AM'},
+        {key:'5', value:'04:00 AM'},
+        {key:'6', value:'05:00 AM'},
+        {key:'7', value:'06:00 AM'},
+        {key:'8', value:'07:00 AM'},
+        {key:'9', value:'08:00 AM'},
+        {key:'10', value:'09:00 AM'},
+        {key:'11', value:'10:00 AM'},
+        {key:'12', value:'11:00 AM'},
+        {key:'13', value:'12:00 PM'},
+        {key:'14', value:'01:00 PM'},
+        {key:'15', value:'02:00 PM'},
+        {key:'16', value:'03:00 PM'},
+        {key:'17', value:'04:00 PM'},
+        {key:'18', value:'05:00 PM'},
+        {key:'19', value:'06:00 PM'},
+        {key:'20', value:'07:00 PM'},
+        {key:'21', value:'08:00 PM'},
+        {key:'22', value:'09:00 PM'},
+        {key:'23', value:'10:00 PM'},
+        {key:'24', value:'11:00 PM'},
+    ];
 
   const selectImage = () => {
     const options = {
@@ -85,7 +109,8 @@ function AddVehicleScreen({navigation}) {
         hourlyRate: hourlyRate,
         vehicleName: vehicleName,
         vehicleDescription, vehicleDescription,
-        availability: "09:00 AM - 05:00 PM",
+        availableDays: weekdays,
+        availability: startSelected + ' - ' + endSelected,
         vendorUID: auth.user?.id
       })
       .then(() => {
@@ -180,44 +205,22 @@ function AddVehicleScreen({navigation}) {
       textColor={AppStyles.color.primarybg}
       inactiveColor={AppStyles.color.secondarytext}
     />
-    <Button
-    containerStyle={styles.availabilityButtonContainer}
-    style={styles.availabilityButtonText}
-    onPress={() => setStartAvailabilityOpen(true)}>
-    Set Start Time
-    </Button>
-    <DatePicker
-      modal
-      mode="time"
-      open={startAvailabilityOpen}
-      date={startAvailabilityDate}
-      onConfirm={(date) => {
-        setStartAvailabilityOpen(false)
-        setStartAvailabilityDate(startAvailabilityDate)
-      }}
-      onCancel={() => {
-        setStartAvailabilityOpen(false)
-      }}
+    <SelectList
+        data={timeData}
+        setSelected={(val) => setSSelected(val)}
+        save="value"
+        dropdownTextStyles={{color:AppStyles.color.accent}}
+        placeholder="Select Start Time"
     />
     <Text style={styles.availability}>To</Text>
-    <Button
-    containerStyle={styles.availabilityButtonContainer}
-    style={styles.availabilityButtonText}
-    onPress={() => setEndAvailabilityOpen(true)}>
-    Set End Time
-    </Button>
-    <DatePicker
-      modal
-      mode="time"
-      open={endAvailabilityOpen}
-      date={endAvailabilityDate}
-      onConfirm={(date) => {
-        setEndAvailabilityOpen(false)
-        setEndAvailabilityDate(endAvailabilityDate)
-      }}
-      onCancel={() => {
-        setEndAvailabilityOpen(false)
-      }}
+    <SelectList
+        data={timeData}
+        setSelected={(val) => setESelected(val)}
+        save="value"
+        style={[styles.dropdown]}
+        boxStyles={{color:AppStyles.color.accent}}
+        dropdownTextStyles={{color:AppStyles.color.accent}}
+        placeholder="Select End Time"
     />
     <Button
       containerStyle={styles.addVehicleContainer}
@@ -262,15 +265,15 @@ const styles = StyleSheet.create({
     borderRadius: AppStyles.borderRadius.main,
   },
   body: {
-    height: 50,
+    height: 40,
     paddingLeft: 20,
     paddingRight: 20,
     color: AppStyles.color.text,
     fontFamily: AppStyles.fontFamily.regular,
   },
   availability: {
-    marginTop: 30,
-    height: 42,
+    marginTop: 20,
+    marginBottom: 0,
     paddingLeft: 20,
     paddingRight: 20,
     color: AppStyles.color.text,
@@ -298,7 +301,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppStyles.color.tint,
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
-    marginTop: 30,
+    marginTop: 10,
   },
   availabilityButtonText: {
     color: AppStyles.color.primarybg,
