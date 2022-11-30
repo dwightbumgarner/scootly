@@ -26,7 +26,8 @@ function messageVendor(item, nav){
                 createdAt: firestore.FieldValue.serverTimestamp(),
                 updatedAt: firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                //messageVendor(item);
+                console.log('Opening conversation with ' + item.vendorName);
+                nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
             });
         }
         // otherwise open existing conversation.
@@ -38,7 +39,7 @@ function messageVendor(item, nav){
                 let convo = {id: colDoc.id, data: colDoc.data(), friend: userDoc.data()}
 
                 console.log('Opening conversation with ' + item.vendorName);
-                nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}},)
+                nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
             }) 
             
         }
