@@ -256,7 +256,6 @@ export default function RentalListing(props) {
 
 
     searchFunction = (text) => {
-        console.log("THIS ALL LISTINGS: ", allData);
     const updatedData = allData.filter((item) => {
         const item_data = `${item.vehicleName.toUpperCase()})`;
         const text_data = text.toUpperCase();
