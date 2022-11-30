@@ -8,13 +8,17 @@ import VendorListing from '../components/VendorListing';
 
 
 
-function VendorHomeScreen({navigation}) {
+function VendorHomeScreen({navigation, refreshKey}) {
   const auth = useSelector((state) => state.auth);
+  const [updateKey, setUpdateKey] = useState(0);
+  useEffect(() => {
+      setUpdateKey(Math.random());
+    }, []);
 
   return (
       <View style={styles.container}>
         <Text style={styles.title}>Hi, {auth.user?.fullname.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
-        {<VendorListing></VendorListing>}
+        {<VendorListing refreshKey={updateKey}></VendorListing>}
         <Button
         containerStyle={styles.addVehicleContainer}
         style={styles.addVehicleText}
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
   },
   addVehicleContainer: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 30,
     right: 24,
     backgroundColor: AppStyles.color.accent,
     borderRadius: AppStyles.borderRadius.main,
