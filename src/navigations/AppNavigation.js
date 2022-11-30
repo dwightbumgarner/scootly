@@ -12,7 +12,7 @@ import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import MessageScreen from '../screens/MessageScreen';
 import Conversation from '../components/Conversation';
-import ListingScreen from '../screens/ListingScreen';
+import ListingView from '../screens/ListingView';
 import ProfileScreen from '../screens/ProfileScreen';
 import {AppIcon, AppStyles} from '../AppStyles';
 import DrawerContainer from '../components/DrawerContainer';
@@ -97,7 +97,7 @@ const HomeStack = () => (
 
     <Stack.Screen
       name="Listing"
-      component={ListingScreen}
+      component={ListingView}
       style={styles.homeHeader}
     />
 
