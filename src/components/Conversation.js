@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import {TouchableOpacity, StyleSheet, Image, ScrollView, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import firestore, { firebase } from '@react-native-firebase/firestore';
-
-// TODO: Find better way to check for updates and refresh automatically
-    // boundless useEffect() causes memory leak
+import { useFocusEffect } from '@react-navigation/native';
 
 // add a message to current conversation
 export function writeMessage(convoId, content, sender) {
@@ -28,17 +26,26 @@ const Conversation = ({navigation, route}) => {
     const [messageBuffer, setMessageBuffer] = useState('');
     const [messageList, setMessageList] = useState([]);
 
-    const convObject = route.params.convObject;
+    const convObject = route.params?.convObject;
     const user = firebase.auth().currentUser;
     const friend = convObject?.friend;
 
-    // when text is typed into input buffer, fetch recent updates to conversation
-    useEffect(() => {
-        // causing memory leak
-        firestore().collection('conversations').doc(convObject.id).get().then(doc => {
-            setMessageList(doc.data().messages ?? []);
-        })
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            // Do something when the screen is focused
+            const sub = firestore()
+            .collection('conversations')
+            .doc(convObject?.id)
+            .onSnapshot(doc => {
+                setMessageList(doc.data().messages ?? []);
+                console.log('Messages updated.')
+            });
+
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+            return () => sub();
+        }, [user.uid])
+    );
 
     // Create map of message array, each item becomes a blurb depending on sender
     const MessageList = () => {
@@ -57,13 +64,13 @@ const Conversation = ({navigation, route}) => {
         <View style={styles.container}>
 
             <View style={styles.convoHeader}>
-                <Button onPress={() => {navigation.goBack()}}>
+                <Button onPress={() => {navigation.navigate("Messages")}}>
                    <Image source={AppIcon.images.backArrow} style={AppIcon.style}/>
                 </Button>
 
                 <View style={styles.friendBox}>
-                    <Image source={{uri: friend.photoURL}} style={{height: 75, width: 75, borderRadius: 75}}/>
-                    <Text style={{color:'white', fontSize:20}}> {friend.fullname} </Text>
+                    <Image source={{uri: friend?.photoURL}} style={{height: 75, width: 75, borderRadius: 75}}/>
+                    <Text style={{color:'white', fontSize:20}}> {friend?.fullname} </Text>
                 </View>
 
                 <View>
@@ -89,7 +96,7 @@ const Conversation = ({navigation, route}) => {
                 <Button 
                 containerStyle={styles.sendButton} 
                 onPress={() => { 
-                    writeMessage(convObject.id, messageBuffer, user.uid);
+                    writeMessage(convObject?.id, messageBuffer, user.uid);
                     setMessageBuffer('');
                 }}
                 >

@@ -39,7 +39,7 @@ function messageVendor(item, nav){
                 let convo = {id: colDoc.id, data: colDoc.data(), friend: userDoc.data()}
 
                 console.log('Opening conversation with ' + item.vendorName);
-                nav.navigate("Conversation", {convObject: convo})
+                nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}},)
             }) 
             
         }

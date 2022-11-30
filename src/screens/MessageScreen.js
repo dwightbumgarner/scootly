@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import {TouchableOpacity, StyleSheet, Image, ScrollView, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
 import firestore, { firebase } from '@react-native-firebase/firestore';
+import { useFocusEffect } from '@react-navigation/native';
 
 // TODO: 
     // add time sent (already exists) to message blurb
@@ -11,6 +12,7 @@ import firestore, { firebase } from '@react-native-firebase/firestore';
     // automatically scroll to bottom when new message or opening convo
     // CHANGE TO FLATLIST
     // safeAreaContext for iphone profile photo getting cut off
+    // add subscriber to conversation list
 
 // Main screen showing list of conversations
 const MessageScreen = ({navigation, route}) => {
@@ -25,41 +27,53 @@ const MessageScreen = ({navigation, route}) => {
 
     // get list of conversations involving the user
     useEffect(() => {
-        firestore()
-        .collection('conversations')
-        .where('participants', 'array-contains', user.uid)
-        .get()
-        .then(collectionSnapshot => {
-            setCount(collectionSnapshot.size);
-
-            collectionSnapshot.forEach(docSnapshot => {
-
-                // set index of other user based on position in array
-                let part = docSnapshot.data().participants;
-                var friendIndex = part[0] === user.uid ? 1 : 0;
-                
-                // get data of other participant
-                firestore()
-                    .collection('users')
-                    .doc(part[friendIndex])
-                    .get()
-                    .then(userSnapshot => {
-                        // load data into state variable if non duplicate
-                        if (!convoIds.includes(docSnapshot.id)){
-                            
-                            setConvoIds(convoIds.concat(docSnapshot.id));
-                            setConvoData(convoData.concat(docSnapshot.data()));
-                            setFriendData(friendData.concat(userSnapshot.data()));
-                        }
-                        if (convoIds.length === count){
-                            setLoading(false);
-                            console.log("Total conversations: " + count);
-                        }
-                });
-            });
-        });
+        
         
     }, [loading == true]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // Do something when the screen is focused
+
+            firestore()
+            .collection('conversations')
+            .where('participants', 'array-contains', user.uid)
+            .get()
+            .then(collectionSnapshot => {
+                setCount(collectionSnapshot.size);
+
+                collectionSnapshot.forEach(docSnapshot => {
+
+                    // set index of other user based on position in array
+                    let part = docSnapshot.data().participants;
+                    var friendIndex = part[0] === user.uid ? 1 : 0;
+                    
+                    // get data of other participant
+                    firestore()
+                        .collection('users')
+                        .doc(part[friendIndex])
+                        .get()
+                        .then(userSnapshot => {
+                            // load data into state variable if non duplicate
+                            if (!convoIds.includes(docSnapshot.id)){
+                                console.log("Total conversations: " + count);
+                                setConvoIds(convoIds.concat(docSnapshot.id));
+                                setConvoData(convoData.concat(docSnapshot.data()));
+                                setFriendData(friendData.concat(userSnapshot.data()));
+                            }
+                            if (convoIds.length === count){
+                                setLoading(false);
+                            }
+                    });
+                });
+            });
+            
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
+        }, [loading == true])
+    );
 
     // if user has conversations, list them
     if(loading){
@@ -81,7 +95,7 @@ const MessageScreen = ({navigation, route}) => {
         var convoList = convos.map(convo => {
             
             let mesLen = convo.data?.messages?.length;
-            var name = convo.friend ? convo.friend.fullname : 'name';
+            var name = convo.friend ? convo.friend?.fullname : 'name';
             var latestMessage = convo.data?.messages ? convo.data.messages[mesLen]?.content : 'No messages yet';
             var photo = convo.friend?.photoURL;
             
@@ -90,7 +104,7 @@ const MessageScreen = ({navigation, route}) => {
                 <TouchableOpacity 
                 style={styles.connection} 
                 onPress={() => {
-                    console.log('Opened conversation with ' + convo.friend.fullname);
+                    console.log('Opened conversation with ' + convo.friend?.fullname);
                     navigation.navigate("Conversation", {convObject: convo});
                 }}
                 >
@@ -138,8 +152,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     connection: {
-        width:'87%',
-        height:'14%',
+        width:300,
+        height:100,
         marginBottom: 15,
         borderRadius:30,
         backgroundColor: AppStyles.color.secondarybg,
@@ -173,7 +187,7 @@ const styles = StyleSheet.create({
         color: AppStyles.color.white,
         marginLeft: 10
     },
-      noConversationsText: {
+    noConversationsText: {
         width: '75%',
         textAlign: 'center',
         marginLeft: 'auto',
@@ -182,5 +196,5 @@ const styles = StyleSheet.create({
         color: AppStyles.color.text,
         fontFamily: AppStyles.fontFamily.regular,
         fontSize: AppStyles.fontSize.normal,
-      }
+    }
 });
