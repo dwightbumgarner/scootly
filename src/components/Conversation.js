@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     convoHeader: {
-        height: '20%',
+        height: '35%',
+        paddingTop: 10,
         width: '90%',
         display: 'flex',
         flexDirection:'row',
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     },
     friendBox: {
         width: '50%',
-        height: '100%',
+        height: '60%',
         
         display:'flex',
         flexDirection:'column',
@@ -147,30 +148,33 @@ const styles = StyleSheet.create({
 
     },
     messageContainer: {
-        width: '95%',
+        width: '100%',
+        
         
     },
     sentMessageBlurb: {
         minWidth:120,
-        minHeight: 60,
+        minHeight: 40,
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:20,
+        borderRadius:15,
         backgroundColor: AppStyles.color.accent,
         marginLeft: 200,
+        marginRight: 15,
         marginTop: 5,
         marginBottom: 5
     },
     recMessageBlurb: {
         minWidth: 120,
-        minHeight: 60,
+        minHeight: 50,
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:20,
+        borderRadius:15,
         backgroundColor: AppStyles.color.grey,
         marginRight: 200,
+        marginLeft: 15,
         marginTop: 5,
         marginBottom: 5
     },
