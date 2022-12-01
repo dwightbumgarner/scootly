@@ -7,6 +7,9 @@ import { SearchBar } from "react-native-elements";
 import {RadioButton} from 'react-native-paper';
 import {SelectList} from 'react-native-dropdown-select-list'
 
+const filterIcon = require('../../assets/icons/filter-icon.png')
+const xIcon = require('../../assets/icons/x-icon.png')
+
 export default function RentalListing(props) {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
@@ -28,7 +31,8 @@ export default function RentalListing(props) {
     //DROPDOWN - set default values that will guarantee all data to show
     const [startSelected, setSSelected] = React.useState('01:00 AM');
     const [endSelected, setESelected] = React.useState('11:00 PM');
-    const timeData = [
+    const startTimeData = [
+        {key:'0', value:'Select Start Time'},
         {key:'1', value:'12:00 AM'},
         {key:'2', value:'01:00 AM'},
         {key:'3', value:'02:00 AM'},
@@ -54,10 +58,33 @@ export default function RentalListing(props) {
         {key:'23', value:'10:00 PM'},
         {key:'24', value:'11:00 PM'},
     ];
-
-
-
-    const searchIcon = require('../../assets/icons/search.png');
+    const endTimeData = [
+        {key:'0', value:'Select End Time'},
+        {key:'1', value:'12:00 AM'},
+        {key:'2', value:'01:00 AM'},
+        {key:'3', value:'02:00 AM'},
+        {key:'4', value:'03:00 AM'},
+        {key:'5', value:'04:00 AM'},
+        {key:'6', value:'05:00 AM'},
+        {key:'7', value:'06:00 AM'},
+        {key:'8', value:'07:00 AM'},
+        {key:'9', value:'08:00 AM'},
+        {key:'10', value:'09:00 AM'},
+        {key:'11', value:'10:00 AM'},
+        {key:'12', value:'11:00 AM'},
+        {key:'13', value:'12:00 PM'},
+        {key:'14', value:'01:00 PM'},
+        {key:'15', value:'02:00 PM'},
+        {key:'16', value:'03:00 PM'},
+        {key:'17', value:'04:00 PM'},
+        {key:'18', value:'05:00 PM'},
+        {key:'19', value:'06:00 PM'},
+        {key:'20', value:'07:00 PM'},
+        {key:'21', value:'08:00 PM'},
+        {key:'22', value:'09:00 PM'},
+        {key:'23', value:'10:00 PM'},
+        {key:'24', value:'11:00 PM'},
+    ];
 
     // Here we retrieve all available rental listings
     useEffect(() => {
@@ -117,9 +144,9 @@ export default function RentalListing(props) {
         });
     }, []);
 
-
+    // key is bruh in this case (json format)
     const renderItem = ({item}) => (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {props.navigation.navigate("Listing", {itemData: item})}}>
             <View style={styles.vendorMetaContainer}>
 
                 <View style={styles.vendorMetaSubcontainer}>
@@ -161,6 +188,12 @@ export default function RentalListing(props) {
         </TouchableOpacity>
     );
 
+    const renderNoItems = () => {
+        return <View style={styles.noItemsContainer}>
+            <Text style={styles.noItemsText}>It looks like there are no vehicles matching your filters. Please try widening your search!</Text>
+        </View>;
+    };
+
     const itemSeparator = () => {
         return <View style={{ height: 30, marginHorizontal:10}} />;
     };
@@ -170,7 +203,7 @@ export default function RentalListing(props) {
     const modalTrigger=()=>{
         Animated.timing(animation, {
             toValue: 1,
-            duration: 500,
+            duration: 250,
             useNativeDriver: false,
         }).start();
     };
@@ -223,7 +256,6 @@ export default function RentalListing(props) {
 
 
     searchFunction = (text) => {
-        console.log("THIS ALL LISTINGS: ", allData);
     const updatedData = allData.filter((item) => {
         const item_data = `${item.vehicleName.toUpperCase()})`;
         const text_data = text.toUpperCase();
@@ -236,8 +268,8 @@ export default function RentalListing(props) {
 
     return (
         <SafeAreaView>
-                <View style={{flexDirection: 'row'}}>
-                    <View style={{flex: 5}}>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <View style={{flex: 7}}>
                         <SearchBar
                           placeholder="Search for a vehicle"
                           style={styles.searchBar}
@@ -246,7 +278,7 @@ export default function RentalListing(props) {
                           value={searchValue}
                           onChangeText={(text) => searchFunction(text)}
                           autoCorrect={false}
-                          placeholderTextColor={AppStyles.color.secondarytext}
+                          placeholderTextColor={AppStyles.color.text}
                           searchIcon={{color: AppStyles.color.text}}
                       />
                     </View>
@@ -254,7 +286,10 @@ export default function RentalListing(props) {
                         <TouchableOpacity
                             onPress={modalTrigger}
                             style={styles.button}>
-                                  <Text> *** </Text>
+                                <Image
+                                    style={{height:25, width:25}}
+                                    source={filterIcon}
+                                />
                         </TouchableOpacity>
                     </View>
                </View>
@@ -263,13 +298,17 @@ export default function RentalListing(props) {
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     ItemSeparatorComponent={itemSeparator}
+                    ListEmptyComponent={renderNoItems}
                 />
                 <Animated.View style={[styles.background, open]} pointerEvents="box-none">
                     <View style={[styles.modal]}>
                       <View style={{flexDirection:"row", justifyContent:'center', marginBottom: 10}}>
                           <Text style={[ styles.modalFilter]}> Filter </Text>
                           <TouchableOpacity onPress={close} style={styles.modalButton}>
-                              <Text> X </Text>
+                                <Image
+                                    style={{height:20, width:20}}
+                                    source={xIcon}
+                                />
                           </TouchableOpacity>
                       </View>
 
@@ -282,7 +321,7 @@ export default function RentalListing(props) {
                                         value="0.05"
                                         color={AppStyles.color.accent}
                                         status={checkedProx === '0.05' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedProx('0.05')}
+                                        onPress={checkedProx === '0.05' ? () => setCheckedProx('50') : () => setCheckedProx('0.05')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.05 miles </Text>
                                 </View>
@@ -291,7 +330,7 @@ export default function RentalListing(props) {
                                         value="0.1"
                                         color={AppStyles.color.accent}
                                         status={checkedProx === '0.1' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedProx('0.1')}
+                                        onPress={checkedProx === '0.1' ? () => setCheckedProx('50') : () => setCheckedProx('0.1')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.1 miles </Text>
                                 </View>
@@ -300,7 +339,7 @@ export default function RentalListing(props) {
                                         value="0.2"
                                         color={AppStyles.color.accent}
                                         status={checkedProx === '0.2' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedProx('0.2')}
+                                        onPress={checkedProx === '0.2' ? () => setCheckedProx('50') : () => setCheckedProx('0.2')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.2 miles </Text>
                                 </View>
@@ -311,7 +350,7 @@ export default function RentalListing(props) {
                                         value="0.3"
                                         color={AppStyles.color.accent}
                                         status={checkedProx === '0.3' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedProx('0.3')}
+                                        onPress={checkedProx === '0.3' ? () => setCheckedProx('50') : () => setCheckedProx('0.3')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.3 miles </Text>
                                 </View>
@@ -320,7 +359,7 @@ export default function RentalListing(props) {
                                         value="0.5"
                                         color={AppStyles.color.accent}
                                         status={checkedProx === '0.5' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedProx('0.5')}
+                                        onPress={checkedProx === '0.5' ? () => setCheckedProx('50') : () => setCheckedProx('0.5')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.5 miles </Text>
                                 </View>
@@ -329,7 +368,7 @@ export default function RentalListing(props) {
                                         value="1"
                                         color={AppStyles.color.accent}
                                         status={checkedProx === '1' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedProx('1')}
+                                        onPress={checkedProx === '1' ? () => setCheckedProx('50') : () => setCheckedProx('1')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}1 miles </Text>
                                 </View>
@@ -349,7 +388,7 @@ export default function RentalListing(props) {
                                         value="5"
                                         color={AppStyles.color.accent}
                                         status={checkedPrice === '5' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedPrice('5')}
+                                        onPress={checkedPrice === '5' ? () => setCheckedPrice('1000') : () => setCheckedPrice('5')}
                                     />
                                     <Text style={styles.modalNormal}> {'< $'}5/hr </Text>
                                 </View>
@@ -358,7 +397,7 @@ export default function RentalListing(props) {
                                         value="10"
                                         color={AppStyles.color.accent}
                                         status={checkedPrice === '10' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedPrice('10')}
+                                        onPress={checkedPrice === '10' ? () => setCheckedPrice('1000') : () => setCheckedPrice('10')}
                                     />
                                     <Text style={styles.modalNormal}> {'< $'}10/hr </Text>
                                 </View>
@@ -369,7 +408,7 @@ export default function RentalListing(props) {
                                         value="15"
                                         color={AppStyles.color.accent}
                                         status={checkedPrice === '15' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedPrice('15')}
+                                        onPress={checkedPrice === '15' ? () => setCheckedPrice('1000') : () => setCheckedPrice('15')}
                                     />
                                     <Text style={styles.modalNormal}> {'< $'}15/hr </Text>
                                 </View>
@@ -378,7 +417,7 @@ export default function RentalListing(props) {
                                         value="20"
                                         color={AppStyles.color.accent}
                                         status={checkedPrice === '20' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedPrice('20')}
+                                        onPress={checkedPrice === '20' ? () => setCheckedPrice('1000') : () => setCheckedPrice('20')}
                                     />
                                     <Text style={styles.modalNormal}> {'< $'}20 miles </Text>
                                 </View>
@@ -398,7 +437,7 @@ export default function RentalListing(props) {
                                         value="4.75"
                                         color={AppStyles.color.accent}
                                         status={checkedRev === '4.75' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedRev('4.75')}
+                                        onPress={checkedRev === '4.75' ? () => setCheckedRev('0') : () => setCheckedRev('4.75')}
                                     />
                                     <Text style={styles.modalNormal}> 4.75+ </Text>
                                 </View>
@@ -407,7 +446,7 @@ export default function RentalListing(props) {
                                         value="4.5"
                                         color={AppStyles.color.accent}
                                         status={checkedRev === '4.5' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedRev('4.5')}
+                                        onPress={checkedRev === '4.5' ? () => setCheckedRev('0') : () => setCheckedRev('4.5')}
                                     />
                                     <Text style={styles.modalNormal}> 4.5+ </Text>
                                 </View>
@@ -418,7 +457,7 @@ export default function RentalListing(props) {
                                         value="4"
                                         color={AppStyles.color.accent}
                                         status={checkedRev === '4' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedRev('4')}
+                                        onPress={checkedRev === '4' ? () => setCheckedRev('0') : () => setCheckedRev('4')}
                                     />
                                     <Text style={styles.modalNormal}> 4+ </Text>
                                 </View>
@@ -427,7 +466,7 @@ export default function RentalListing(props) {
                                         value="3"
                                         color={AppStyles.color.accent}
                                         status={checkedRev === '3' ? 'checked' : 'unchecked'}
-                                        onPress={() => setCheckedRev('3')}
+                                        onPress={checkedRev === '3' ? () => setCheckedRev('0') : () => setCheckedRev('3')}
                                     />
                                     <Text style={styles.modalNormal}> 3+ </Text>
                                 </View>
@@ -439,15 +478,15 @@ export default function RentalListing(props) {
                       <View>
                         <Text style={[styles.modalText]}> Availability </Text>
                         <SelectList
-                            data={timeData}
-                            setSelected={(val) => setSSelected(val)}
+                            data={startTimeData}
+                            setSelected={(val) => ((val) === 'Select Start Time') ? setSSelected("01:00 AM") : setSSelected(val)}
                             save="value"
                             dropdownTextStyles={{color:AppStyles.color.accent}}
                             placeholder="Select Start Time"
                         />
                         <SelectList
-                            data={timeData}
-                            setSelected={(val) => setESelected(val)}
+                            data={endTimeData}
+                            setSelected={(val) => ((val) === 'Select End Time') ? setSSelected("11:00 PM") : setESelected(val)}
                             save="value"
                             style={styles.dropdown}
                             boxStyles={{color:AppStyles.color.accent}}
@@ -520,7 +559,7 @@ const styles = StyleSheet.create({
         color: AppStyles.color.accent,
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.bold,
-        width: '70%',
+        width: '60%',
         marginBottom: 20
     },
     price: {
@@ -531,26 +570,23 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     proximity: {
-            color: AppStyles.color.white,
-            fontSize: AppStyles.fontSize.normal,
-            fontFamily: AppStyles.fontFamily.regular,
-            width: '80%',
-            marginBottom: 20
-        },
+        color: AppStyles.color.white,
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.regular,
+        width: '80%',
+        marginBottom: 20
+    },
     searchBar: {
         fontFamily: AppStyles.fontFamily.regular,
-
-
+        color: AppStyles.color.white,
     },
     searchBarContainer: {
         backgroundColor: AppStyles.color.primarybg,
         paddingBottom: 30,
         borderTopWidth: 0,
-        borderWidth: 1,
+        borderWidth: 0,
         borderBottomWidth: 0,
-        marginLeft: 10,
-        marginRight: 0,
-        width: '85%',
+        marginRight: 10,
         marginHorizontal: 0
     },
     searchBarInput: {
@@ -559,7 +595,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: AppStyles.color.white,
         borderRadius: 8,
-        width: '85%',
     },
     rating: {
         justifySelf: 'flex-end'
@@ -569,6 +604,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',                  //moves x to right
         flex: 1,
         flexDirection: 'row-reverse',
+        padding: 5
     },
     modalFilter: {
         fontFamily: AppStyles.fontFamily.bold,
@@ -595,11 +631,8 @@ const styles = StyleSheet.create({
         justifySelf: 'center',
     },
     button: {
-        backgroundColor: AppStyles.color.secondarybg,
-        borderColor: AppStyles.color.white,
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingBottom: 30,
+        marginTop: '50%',
+        left: 10,
     },
     background: {                   //regular items
         position: "absolute",
@@ -616,5 +649,18 @@ const styles = StyleSheet.create({
         fontFamily: AppStyles.fontFamily.bold,
         fontSize: AppStyles.fontSize.title,
         color: AppStyles.color.secondarytext,
+    },
+    noItemsContainer: {
+        width: '100%',
+    },
+    noItemsText: {
+        width: '75%',
+        textAlign: 'center',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: '50%',
+        color: AppStyles.color.text,
+        fontFamily: AppStyles.fontFamily.regular,
+        fontSize: AppStyles.fontSize.normal,
     },
   });
