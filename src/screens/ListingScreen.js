@@ -49,7 +49,7 @@ function messageVendor(item, nav){
     })
 }
 
-const ListingView = ({navigation, route}) => {
+const ListingScreen = ({navigation, route}) => {
 
     const item = route.params.itemData;
     
@@ -81,7 +81,7 @@ const ListingView = ({navigation, route}) => {
         </View>
     )
 }
-export default ListingView;
+export default ListingScreen;
 
 const styles = StyleSheet.create({
     container: {
