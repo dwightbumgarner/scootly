@@ -198,12 +198,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: AppStyles.color.white,
-        backgroundColor:AppStyles.color.grey,
+        backgroundColor:AppStyles.color.text,
     
       },
       inputBody: {
-        
-        fontColor: 'white',
+        paddingTop: 6,
+        left: 10,
+        fontColor: AppStyles.color.text,
         fontFamily: AppStyles.fontFamily.regular
       },
       sendButton: {
