@@ -4,6 +4,8 @@ import { Icon } from 'react-native-elements'
 import {AppStyles, AppIcon, width} from '../AppStyles';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 
+const messagesIcon = require('../../assets/icons/messages-icon-black.png')
+
 // TODO:  
     // create booking screen
 
@@ -53,14 +55,9 @@ const ListingView = ({navigation, route}) => {
     
     return (
         <View style={styles.container}>
-            <View style={{
-            paddingHorizontal: 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center"}}>
-                <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('Home')}></Icon>
-                <Text style={styles.title}>{item?.vehicleName}</Text>
-            </View>
+        <View style={styles.backArrowView}>
+            <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('Home')}></Icon></View>
+            <Text style={styles.title}>{item?.vehicleName}</Text>
             <Text style={styles.subtitle}>VENDOR: {item?.vendorName}</Text>
             <View style={styles.body}>
                 <Image source={{uri: item?.vehicleImage}} style={styles.vehicleImage}/>
@@ -74,11 +71,11 @@ const ListingView = ({navigation, route}) => {
                     <Text style={styles.messageButtonText}> 
                         Message {item?.vendorName?.split(' ').slice(0, -1).join(' ')}
                     </Text>
-                    <Image source={AppIcon.images.messages} style={AppIcon.style}/>
+                    <Image source={messagesIcon} style={styles.messageButtonIcon}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.bookButton}>
+                {/* <TouchableOpacity style={styles.bookButton}>
                     <Text style={styles.bookButtonText}>Book Now</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
             
         </View>
@@ -98,27 +95,25 @@ const styles = StyleSheet.create({
         fontFamily: AppStyles.fontFamily.bold,
         color: AppStyles.color.white,
         marginBottom: 0,
-        alignItems: 'auto',
-        paddingRight: 80
     },
     subtitle: {
         paddingTop: 10,
-        marginBottom: 60,
         color: AppStyles.color.secondarytext,
         fontSize: AppStyles.fontSize.small,
         fontFamily: AppStyles.fontFamily.bold,
         textTransform: 'uppercase',
     },
     vehicleImage: {
-        width: 260,
-        height: 260,
-        borderRadius: 24,
-        marginBottom: 24
+        width: 240,
+        height: 240,
+        borderRadius: 20,
+        marginTop: 40,
+        marginBottom: 40
     },
-    backArrow: {
-        paddingTop: 80,
-        marginRight: 70,
-        paddingBottom: 0,
+    backArrowView: {
+        position: 'absolute',
+        left: 30,
+        top: 82,
     },
     body: {
         width: '100%',
@@ -130,6 +125,7 @@ const styles = StyleSheet.create({
         fontFamily: AppStyles.fontFamily.bold,
         color: AppStyles.color.white,
         marginRight: 210,
+        marginBottom: 4
     },
     description: {
         paddingTop: 10,
@@ -140,7 +136,7 @@ const styles = StyleSheet.create({
     descriptionText: {
         width: "80%",
         textAlign: "left",
-        fontSize: AppStyles.fontSize.small,
+        fontSize: AppStyles.fontSize.body,
         fontFamily: AppStyles.fontFamily.regular,
         color: AppStyles.color.white,
     },
@@ -158,33 +154,37 @@ const styles = StyleSheet.create({
     messageContainer: {
         flexDirection:'row',
         alignItems:'center',
-        borderColor:'white',
-        borderRadius:10,
-        borderWidth:2,
-        padding:5,
-        height:45
+        padding:15,
+        backgroundColor: AppStyles.color.accent,
+        borderRadius: AppStyles.borderRadius.main,
+        marginTop: 30,
     },
-    bookButtonText: {
-        color: AppStyles.color.background,
-        fontFamily: AppStyles.fontFamily.regular,
-        paddingHorizontal: 10
-    },
+    // bookButtonText: {
+    //     color: AppStyles.color.background,
+    //     fontFamily: AppStyles.fontFamily.regular,
+    //     paddingHorizontal: 10
+    // },
     messageButtonText: {
-        color: AppStyles.color.white,
+        color: AppStyles.color.background,
         fontFamily: AppStyles.fontFamily.regular,
         paddingRight: 10,
         paddingLeft: 5
     },
-    bookButton: {
-        backgroundColor: AppStyles.color.accent,
-        borderRadius: AppStyles.borderRadius.main,
-        height:45,
-        padding:5,
-        fontSize:15,
-        borderWidth:2,
-        marginLeft:20,
-        marginRight:10,
-        justifyContent:'center',
-        alignItems:'center'
+    messageButtonIcon: {
+        tint: AppStyles.color.background,
+        height: 16,
+        width: 16
     }
+    // bookButton: {
+    //     backgroundColor: AppStyles.color.accent,
+    //     borderRadius: AppStyles.borderRadius.main,
+    //     height:45,
+    //     padding:5,
+    //     fontSize:15,
+    //     borderWidth:2,
+    //     marginLeft:20,
+    //     marginRight:10,
+    //     justifyContent:'center',
+    //     alignItems:'center'
+    // }
 });

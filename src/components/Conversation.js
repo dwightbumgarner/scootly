@@ -4,6 +4,7 @@ import {AppStyles, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
+import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 
 // add a message to current conversation
 export function writeMessage(convoId, content, sender) {
@@ -68,7 +69,7 @@ const Conversation = ({navigation, route}) => {
 
                 <View style={styles.friendBox}>
                     <Image source={{uri: friend?.photoURL}} style={{height: 75, width: 75, borderRadius: 75}}/>
-                    <Text style={{color:'white', fontSize:20}}> {friend?.fullname} </Text>
+                    <Text style={{color:'white', fontSize:20, paddingTop:20}}> {friend?.fullname} </Text>
                 </View>
 
                 <View>
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: AppStyles.color.primarybg,
+        backgroundColor: AppStyles.color.primarybg
     },
     title: {
         fontSize: AppStyles.fontSize.title,
@@ -138,44 +139,51 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems: 'center',
         borderBottomStyle:'solid',
-        borderBottomColor:'black',
-        borderBottomWidth: 1,
+        borderBottomColor: AppStyles.color.primarybg,
+        borderBottomWidth: 1 
     },
     friendBox: {
         width: '50%',
-        height: '100%',
-        
+        height: '60%',
         display:'flex',
         flexDirection:'column',
         justifyContent:'space-evenly',
-        alignItems:'center'
+        alignItems:'center',
+        marginTop: 10
 
     },
     messageContainer: {
         flex:1,
-        width: '95%',
+        width: '100%',
         maxHeight: '70%',
+        paddingBottom: 10,
+        backgroundColor: AppStyles.color.primarybg
     },
     sentMessageBlurb: {
-        minHeight: 50,
+        display:'flex',
+        minWidth:120,
+        minHeight: 40,
         maxWidth: "45%",
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:20,
+        borderRadius:15,
         backgroundColor: AppStyles.color.accent,
-        marginLeft: 220,
+        marginLeft: 200,
+        marginRight: 15,
         marginTop: 5,
         marginBottom: 5,
         padding: 10
     },
     recMessageBlurb: {
-        minHeight: 50,
-        maxWidth: "45%",
+        minWidth: 120,
+        minHeight: 40,
+        display:'flex',
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:20,
-        backgroundColor: AppStyles.color.description,
-        marginRight: 220,
+        borderRadius:15,
+        backgroundColor: AppStyles.color.grey,
+        marginRight: 200,
+        marginLeft: 15,
         marginTop: 5,
         marginBottom: 5,
         padding: 10,
@@ -183,7 +191,7 @@ const styles = StyleSheet.create({
     composeBar: {
         width: '100%',
         minHeight: 60,
-        backgroundColor:'black',
+        backgroundColor:AppStyles.color.primarybg,
         marginTop:10,
         display: 'flex',
         flexDirection:'row',
@@ -194,6 +202,8 @@ const styles = StyleSheet.create({
         width: 250,
         height: 40,
         borderRadius: 20,
+        marginLeft: 3,
+        borderRadius: 10,
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: AppStyles.color.white,
@@ -208,10 +218,11 @@ const styles = StyleSheet.create({
       sendButton: {
         height: 45,
         width: 45,
-        borderRadius: 25,
+        borderRadius: 30,
         backgroundColor: AppStyles.color.grey,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        marginRight: 5
       },
       sendIcon: {
         tintColor:AppStyles.color.accent,
