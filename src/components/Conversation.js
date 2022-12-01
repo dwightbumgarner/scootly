@@ -4,6 +4,7 @@ import {AppStyles, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
+import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 
 // add a message to current conversation
 export function writeMessage(convoId, content, sender) {
@@ -70,7 +71,7 @@ const Conversation = ({navigation, route}) => {
 
                 <View style={styles.friendBox}>
                     <Image source={{uri: friend?.photoURL}} style={{height: 75, width: 75, borderRadius: 75}}/>
-                    <Text style={{color:'white', fontSize:20}}> {friend?.fullname} </Text>
+                    <Text style={{color:'white', fontSize:20, paddingTop:20}}> {friend?.fullname} </Text>
                 </View>
 
                 <View>
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: AppStyles.color.primarybg,
+        backgroundColor: AppStyles.color.primarybg
     },
     title: {
         fontSize: AppStyles.fontSize.title,
@@ -126,31 +127,32 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     convoHeader: {
-        height: '35%',
-        paddingTop: 10,
+        height: '25%',
+        paddingTop: 30,
         width: '90%',
         display: 'flex',
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems: 'center',
         borderBottomStyle:'solid',
-        borderBottomColor:'black',
-        borderBottomWidth: 1
+        borderBottomColor: AppStyles.color.primarybg,
+        borderBottomWidth: 1 
     },
     friendBox: {
         width: '50%',
         height: '60%',
-        
         display:'flex',
         flexDirection:'column',
         justifyContent:'space-evenly',
-        alignItems:'center'
+        alignItems:'center',
+        marginTop: 10
 
     },
     messageContainer: {
         width: '100%',
-        
-        
+        paddingBottom: 10,
+        backgroundColor: AppStyles.color.primarybg
+  
     },
     sentMessageBlurb: {
         minWidth:120,
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
     },
     recMessageBlurb: {
         minWidth: 120,
-        minHeight: 50,
+        minHeight: 40,
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
@@ -181,21 +183,23 @@ const styles = StyleSheet.create({
     composeBar: {
         width: '100%',
         height: '7%',
-        backgroundColor:'black',
-        marginTop:10,
+        backgroundColor: AppStyles.color.primarybg,
+        marginTop: 10,
         display: 'flex',
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-around'
     },
     inputContainer: {
-        width: '60%',
+        width: '80%',
         height: '70%',
-        borderRadius: 20,
+        marginLeft: 3,
+        borderRadius: 10,
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: AppStyles.color.white,
-        backgroundColor:AppStyles.color.grey
+        backgroundColor:AppStyles.color.grey,
+    
       },
       inputBody: {
         
@@ -203,11 +207,12 @@ const styles = StyleSheet.create({
         fontFamily: AppStyles.fontFamily.regular
       },
       sendButton: {
-        height: 50,
-        width: 50,
-        borderRadius: 25,
+        height: 45,
+        width: 45,
+        borderRadius: 30,
         backgroundColor: AppStyles.color.grey,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        marginRight: 5
       }
 })

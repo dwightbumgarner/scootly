@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     connection: {
-        width:300,
-        height:100,
+        width:340,
+        height:90,
         marginBottom: 15,
         borderRadius:30,
         backgroundColor: AppStyles.color.secondarybg,
