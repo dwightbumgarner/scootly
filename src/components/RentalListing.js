@@ -16,7 +16,7 @@ export default function RentalListing(props) {
     const [allData, setallData] = useState([]);
     const [searchValue, setSearchValue] = useState("");
     //MODAL
-    const[animation, setAnimation]=useState(new Animated.Value(1));     //debug change to 0
+    const[animation, setAnimation]=useState(new Animated.Value(0));     
     const openModal = animation.interpolate({
             inputRange: [0,1],
             outputRange: [0,1],
