@@ -210,8 +210,8 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.title,
         fontFamily: AppStyles.fontFamily.bold,
         color: AppStyles.color.white,
-        paddingTop: 80,
-        marginBottom: 48,
+        paddingTop: 90,
+        marginBottom: 50,
         textAlign: 'center',
     },
     profileImageCircle: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     InputContainer: {
         width: AppStyles.textInputWidth.main,
         height: 50,
-        marginTop: 90,
+        marginTop: 50,
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: AppStyles.color.white,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     space: {
-        width: 30,
+        width: 40,
         height: 20,
     },
     tinylogout:{

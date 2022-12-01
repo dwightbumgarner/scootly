@@ -573,8 +573,6 @@ PODS:
     - React
   - react-native-image-picker (2.3.4):
     - React-Core
-  - react-native-picker-weekday (1.1.2):
-    - React
   - react-native-safe-area-context (3.4.1):
     - React-Core
   - React-perflogger (0.66.5)
@@ -670,7 +668,7 @@ PODS:
   - RNGoogleSignin (7.0.1):
     - GoogleSignIn (~> 6.0.0)
     - React-Core
-  - RNReanimated (1.13.4):
+  - RNReanimated (1.13.3):
     - React-Core
   - RNScreens (3.18.0):
     - React-Core
@@ -710,7 +708,6 @@ DEPENDENCIES:
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-  - react-native-picker-weekday (from `../node_modules/react-native-picker-weekday`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -809,8 +806,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fbsdk"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
-  react-native-picker-weekday:
-    :path: "../node_modules/react-native-picker-weekday"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-perflogger:
@@ -911,7 +906,6 @@ SPEC CHECKSUMS:
   react-native-date-picker: 93e43b3084cea595b4d68b1405d6d99849663bd6
   react-native-fbsdk: 8e92c7a334fd8d9c2b5d8b8fcd7ae2c314161099
   react-native-image-picker: c6d75c4ab2cf46f9289f341242b219cb3c1180d3
-  react-native-picker-weekday: bff6813b730df1e5c943b12a660c11a6b22b4c89
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   React-perflogger: 169fb34f60c5fd793b370002ee9c916eba9bc4ae
   React-RCTActionSheet: 2355539e02ad5cd4b1328682ab046487e1e1e920
@@ -934,7 +928,7 @@ SPEC CHECKSUMS:
   RNFBStorage: 2dec95b3511dc346f6ad680d1304901a4d760c76
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
-  RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
+  RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f3230dd008a7d0ce5c0a8bc78ff12cf2315bda24
   RNSVG: 38ca962c970dbce1ca38991a5aebf26d163f9efb
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
@@ -944,4 +938,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: d43d91928406af8dee9cdf4f350b899bb1e2189b
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2
