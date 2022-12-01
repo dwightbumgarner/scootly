@@ -14,9 +14,8 @@ import { useFocusEffect } from '@react-navigation/native';
     // safeAreaContext for iphone profile photo getting cut off
     // add subscriber to conversation list
 
-// Main screen showing list of conversations
 const MessageScreen = ({navigation, route}) => {
-    // find user, get list of conversations
+ 
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(0);
     const [convoIds, setConvoIds] = useState([]);
@@ -26,11 +25,6 @@ const MessageScreen = ({navigation, route}) => {
     const user = firebase.auth().currentUser;
 
     // get list of conversations involving the user
-    useEffect(() => {
-        
-        
-    }, [loading == true]);
-
     useFocusEffect(
         React.useCallback(() => {
             // Do something when the screen is focused
@@ -152,8 +146,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     connection: {
-        width:300,
-        height:100,
+        width:340,
+        height:90,
         marginBottom: 15,
         borderRadius:30,
         backgroundColor: AppStyles.color.secondarybg,
