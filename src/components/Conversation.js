@@ -31,6 +31,10 @@ const Conversation = ({navigation, route}) => {
     const user = firebase.auth().currentUser;
     const friend = convObject?.friend;
 
+    async function doRef(ref) {
+        setListRef(ref);
+    }
+
     useFocusEffect(
         React.useCallback(() => {
             // Do something when the screen is focused
@@ -40,8 +44,7 @@ const Conversation = ({navigation, route}) => {
             .onSnapshot(doc => {
                 setMessageList(doc.data().messages ?? []);
                 console.log('Messages updated.');
-            });
-
+            })
             
             // Do something when the screen is unfocused
             // Useful for cleanup functions
@@ -77,9 +80,9 @@ const Conversation = ({navigation, route}) => {
                 <FlatList 
                 data={messageList} 
                 renderItem={Message} 
-                keyExtractor={(item) => {item.id}}
-                
+                keyExtractor={(item, key) => {item.id}}
                 ref={(ref) => {setListRef(ref);}}
+                onContentSizeChange={() => {listRef.scrollToEnd()}}
                 />
             </SafeAreaView>
 
@@ -87,9 +90,11 @@ const Conversation = ({navigation, route}) => {
                 <View style={styles.inputContainer}>
                     <TextInput
                     style={styles.inputBody}
-                    placeholder="Message"
+                    placeholder=" Message"
                     value={messageBuffer}
                     onChangeText={setMessageBuffer}
+                    placeholderTextColor={'grey'}
+                    cursorColor={AppStyles.color.accent}
                     />
                 </View>
                 <Button 
@@ -100,7 +105,7 @@ const Conversation = ({navigation, route}) => {
                     listRef.scrollToEnd({ animated: true });
                   }}
                 >
-                    <Image source={AppIcon.images.upArrow} style={AppIcon.style}/>    
+                    <Image source={AppIcon.images.upArrow} style={styles.sendIcon}/>    
                 </Button>
                 
             </View>
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     convoHeader: {
-        height: '20%',
+        height: 150,
         width: '90%',
         display: 'flex',
         flexDirection:'row',
@@ -134,7 +139,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomStyle:'solid',
         borderBottomColor:'black',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
     },
     friendBox: {
         width: '50%',
@@ -147,8 +152,9 @@ const styles = StyleSheet.create({
 
     },
     messageContainer: {
+        flex:1,
         width: '95%',
-        height: '70%',
+        maxHeight: '70%',
     },
     sentMessageBlurb: {
         minHeight: 50,
@@ -157,7 +163,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:20,
         backgroundColor: AppStyles.color.accent,
-        marginLeft: 200,
+        marginLeft: 220,
         marginTop: 5,
         marginBottom: 5,
         padding: 10
@@ -169,14 +175,14 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:20,
         backgroundColor: AppStyles.color.description,
-        marginRight: 200,
+        marginRight: 220,
         marginTop: 5,
         marginBottom: 5,
         padding: 10,
     },
     composeBar: {
         width: '100%',
-        height: '7%',
+        minHeight: 60,
         backgroundColor:'black',
         marginTop:10,
         display: 'flex',
@@ -185,25 +191,31 @@ const styles = StyleSheet.create({
         justifyContent:'space-around'
     },
     inputContainer: {
-        width: '60%',
-        height: '70%',
+        width: 250,
+        height: 40,
         borderRadius: 20,
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: AppStyles.color.white,
-        backgroundColor:AppStyles.color.grey
+        backgroundColor:AppStyles.color.grey,
+        paddingLeft:10,
+        paddingRight:10
       },
       inputBody: {
-        
-        fontColor: 'white',
+        color: 'white',
         fontFamily: AppStyles.fontFamily.regular
       },
       sendButton: {
-        height: 50,
-        width: 50,
+        height: 45,
+        width: 45,
         borderRadius: 25,
         backgroundColor: AppStyles.color.grey,
         alignItems:'center',
         justifyContent:'center'
+      },
+      sendIcon: {
+        tintColor:AppStyles.color.accent,
+        height: 20,
+        width: 20,
       }
 })

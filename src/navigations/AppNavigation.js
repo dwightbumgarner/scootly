@@ -150,7 +150,8 @@ const TabNavigator = () => (
       tabBarInactiveTintColor: AppStyles.color.text,
       tabBarActiveTintColor: AppStyles.color.tint,
       headerShown: false,
-      tabBarShowLabel: false
+      tabBarShowLabel: false,
+      tabBarHideOnKeyboard: true
     }}>
 
     <BottomTab.Screen
