@@ -16,7 +16,7 @@ export default function RentalListing(props) {
     const [allData, setallData] = useState([]);
     const [searchValue, setSearchValue] = useState("");
     //MODAL
-    const[animation, setAnimation]=useState(new Animated.Value(0));
+    const[animation, setAnimation]=useState(new Animated.Value(1));     //debug change to 0
     const openModal = animation.interpolate({
             inputRange: [0,1],
             outputRange: [0,1],
@@ -302,7 +302,7 @@ export default function RentalListing(props) {
                 />
                 <Animated.View style={[styles.background, open]} pointerEvents="box-none">
                     <View style={[styles.modal]}>
-                      <View style={{flexDirection:"row", justifyContent:'center', marginBottom: 10}}>
+                      <View style={{flexDirection:"row", justifyContent:'center', marginBottom: 30}}>
                           <Text style={[ styles.modalFilter]}> Filter </Text>
                           <TouchableOpacity onPress={close} style={styles.modalButton}>
                                 <Image
@@ -312,32 +312,35 @@ export default function RentalListing(props) {
                           </TouchableOpacity>
                       </View>
 
-                      <View>
+                      <View style={{marginBottom: 15}}>
                         <Text style={[styles.modalText]}> Proximity </Text>
                         <View style={{flexDirection:"row"}}>
                             <View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="0.05"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedProx === '0.05' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.05' ? () => setCheckedProx('50') : () => setCheckedProx('0.05')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.05 miles </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="0.1"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedProx === '0.1' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.1' ? () => setCheckedProx('50') : () => setCheckedProx('0.1')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.1 miles </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="0.2"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedProx === '0.2' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.2' ? () => setCheckedProx('50') : () => setCheckedProx('0.2')}
                                     />
@@ -346,27 +349,30 @@ export default function RentalListing(props) {
                             </View>
                             <View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="0.3"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedProx === '0.3' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.3' ? () => setCheckedProx('50') : () => setCheckedProx('0.3')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.3 miles </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="0.5"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedProx === '0.5' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.5' ? () => setCheckedProx('50') : () => setCheckedProx('0.5')}
                                     />
                                     <Text style={styles.modalNormal}> {'< '}0.5 miles </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="1"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedProx === '1' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '1' ? () => setCheckedProx('50') : () => setCheckedProx('1')}
                                     />
@@ -379,23 +385,25 @@ export default function RentalListing(props) {
 
 
 
-                      <View>
+                      <View style={{marginBottom: 15}}>
                         <Text style={[styles.modalText]}> Price </Text>
                         <View style={{flexDirection:"row"}}>
-                            <View>
+                            <View style={{marginRight: 25}}>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="5"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedPrice === '5' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '5' ? () => setCheckedPrice('1000') : () => setCheckedPrice('5')}
                                     />
                                     <Text style={styles.modalNormal}> {'< $'}5/hr </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="10"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedPrice === '10' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '10' ? () => setCheckedPrice('1000') : () => setCheckedPrice('10')}
                                     />
@@ -404,18 +412,20 @@ export default function RentalListing(props) {
                             </View>
                             <View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="15"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedPrice === '15' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '15' ? () => setCheckedPrice('1000') : () => setCheckedPrice('15')}
                                     />
                                     <Text style={styles.modalNormal}> {'< $'}15/hr </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="20"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedPrice === '20' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '20' ? () => setCheckedPrice('1000') : () => setCheckedPrice('20')}
                                     />
@@ -428,23 +438,25 @@ export default function RentalListing(props) {
 
 
 
-                      <View>
+                      <View style={{marginBottom: 15}}>
                         <Text style={[styles.modalText]}> Reviews </Text>
                         <View style={{flexDirection:"row"}}>
-                            <View>
+                            <View style={{marginRight: 45}}>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="4.75"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedRev === '4.75' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '4.75' ? () => setCheckedRev('0') : () => setCheckedRev('4.75')}
                                     />
                                     <Text style={styles.modalNormal}> 4.75+ </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="4.5"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedRev === '4.5' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '4.5' ? () => setCheckedRev('0') : () => setCheckedRev('4.5')}
                                     />
@@ -453,18 +465,21 @@ export default function RentalListing(props) {
                             </View>
                             <View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="4"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedRev === '4' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '4' ? () => setCheckedRev('0') : () => setCheckedRev('4')}
                                     />
                                     <Text style={styles.modalNormal}> 4+ </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
-                                    <RadioButton
+                                    <RadioButton.Android
                                         value="3"
                                         color={AppStyles.color.accent}
+                                        uncheckedColor={AppStyles.color.white}
+                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedRev === '3' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '3' ? () => setCheckedRev('0') : () => setCheckedRev('3')}
                                     />
@@ -483,15 +498,20 @@ export default function RentalListing(props) {
                             save="value"
                             dropdownTextStyles={{color:AppStyles.color.accent}}
                             placeholder="Select Start Time"
+                            inputStyles={{color:AppStyles.color.accent}}
+                            fontFamily={AppStyles.fontFamily.regular}
                         />
+                        <Text> </Text>
                         <SelectList
                             data={endTimeData}
                             setSelected={(val) => ((val) === 'Select End Time') ? setSSelected("11:00 PM") : setESelected(val)}
                             save="value"
-                            style={styles.dropdown}
                             boxStyles={{color:AppStyles.color.accent}}
                             dropdownTextStyles={{color:AppStyles.color.accent}}
                             placeholder="Select End Time"
+                            inputStyles={{color:AppStyles.color.accent}}
+                            boxStyles={{color:AppStyles.color.accent}}
+                            fontFamily={AppStyles.fontFamily.regular}
                         />
                       </View>
 
@@ -617,11 +637,13 @@ const styles = StyleSheet.create({
         fontFamily: AppStyles.fontFamily.bold,
         fontSize: AppStyles.fontSize.content,
         color: AppStyles.color.white,
+        marginBottom: 8,
     },
     modalNormal: {
         fontFamily: AppStyles.fontFamily.regular,
-        fontSize: AppStyles.fontSize.content,
+        fontSize: AppStyles.fontSize.normal,
         color: AppStyles.color.white,
+        marginTop: 2,
     },
     modal: {
         padding: 30,
