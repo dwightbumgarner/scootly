@@ -6,52 +6,64 @@ import firestore, { firebase } from '@react-native-firebase/firestore';
 
 const messagesIcon = require('../../assets/icons/messages-icon-black.png')
 
-// TODO:  
-    // create booking screen
+async function messageVendor(item, setConvo){
 
-function messageVendor(item, nav){
-    // get user
     const user = firebase.auth().currentUser;
-    
-    //search for conversation including both user and vendor
-    firestore()
-    .collection('conversations')
-    .where('participants', 'array-contains', item.vendorUID, user.uid)
-    .get()
-    .then(collectionSnapshot => {
-        console.log(collectionSnapshot.size);
-        // if conversation doesn't exist, make new one and recursively call function
-        if (collectionSnapshot.size === 0) {
-            
-            console.log('Creating conversation with ' + item.vendorName);
-            firestore().collection('conversations').add({
-                participants: [user.uid, item.vendorUID],
-                createdAt: firestore.FieldValue.serverTimestamp(),
-                updatedAt: firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                console.log('Opening conversation with ' + item.vendorName);
-                nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
-            });
-        }
-        // otherwise open existing conversation.
-        else {
-            console.log('Existing conversation found.');
 
-            firestore().collection('users').doc(item.vendorUID).get().then(userDoc => {
-                let colDoc = collectionSnapshot.docs[0];
-                let convo = {id: colDoc.id, data: colDoc.data(), friend: userDoc.data()}
+    firestore().collection('users').doc(item.vendorUID).get().then(friendDoc => {
 
-                console.log('Opening conversation with ' + item.vendorName);
-                nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
-            }) 
-            
-        }
+        firestore()
+        .collection('conversations')
+        .where('participants', 'array-contains', user.uid)
+        .get()
+        .then(collectionSnapshot => {
+            console.log(collectionSnapshot.size + " conversations found.");
+
+            let docs = collectionSnapshot.docs;
+            let found = false;
+            for (let i = 0; i < docs.length; i++) {
+                if (docs[i].data().participants.includes(item.vendorUID)){
+
+                    console.log("Found conversation with " + item.vendorName);
+                    setConvo({id: docs[i].id, data: docs[i].data(), friend: friendDoc.data()});
+                    found = true;
+                }
+            }
+
+            if (collectionSnapshot.size === 0 || found === false) {
+                firestore().collection('conversations').add({
+                    participants: [user.uid, item.vendorUID],
+                    createdAt: firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firestore.FieldValue.serverTimestamp(),
+                    messages: []
+                })
+                .then(newDoc => {
+                    firestore().collection('conversations').doc(newDoc.id).get()
+                    .then(doc => {
+                        setConvo({id: doc.id, data: doc.data(), friend: friendDoc.data()})
+                    })
+                })
+            }
+        })
+    })
+    .catch(() => {
+        console.log("Could not find vendor.");
     })
 }
 
 const ListingScreen = ({navigation, route}) => {
 
     const item = route.params.itemData;
+    const [convo, setConvo] = useState(null);
+
+    useEffect(() => {
+        
+        if (convo !== null) {
+            console.log("Opening conversation with " + convo.friend.fullname);
+            navigation.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
+            setConvo(null);
+        }
+    }, convo);
     
     return (
         <View style={styles.container}>
@@ -67,7 +79,10 @@ const ListingScreen = ({navigation, route}) => {
                 <Text style={styles.descriptionText}>{item?.vehicleDescription}</Text>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.messageContainer} onPress={() => {messageVendor(item, navigation)}}>
+                <TouchableOpacity 
+                style={styles.messageContainer} 
+                onPress={() => {messageVendor(item, setConvo)} }
+                >
                     <Text style={styles.messageButtonText}> 
                         Message {item?.vendorName?.split(' ').slice(0, -1).join(' ')}
                     </Text>
@@ -171,7 +186,7 @@ const styles = StyleSheet.create({
         paddingLeft: 5
     },
     messageButtonIcon: {
-        tint: AppStyles.color.background,
+        tintColor: AppStyles.color.background,
         height: 16,
         width: 16
     }
