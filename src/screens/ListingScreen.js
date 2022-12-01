@@ -10,20 +10,29 @@ const messagesIcon = require('../../assets/icons/messages-icon-black.png')
     // create booking screen
 
 function messageVendor(item, nav){
-    // get user
+
     const user = firebase.auth().currentUser;
     
     //search for conversation including both user and vendor
     firestore()
     .collection('conversations')
-    .where('participants', 'array-contains', item.vendorUID, user.uid)
+    .where('participants', 'array-contains', user.uid)
     .get()
     .then(collectionSnapshot => {
-        console.log(collectionSnapshot.size);
-        // if conversation doesn't exist, make new one and recursively call function
-        if (collectionSnapshot.size === 0) {
-            
+        console.log(collectionSnapshot.size + " conversations found.");
+
+        let docs = collectionSnapshot.docs;
+        let containsVendor = false;
+        for (let i = 0; i < docs.length; i++) {
+            if (docs[i].data().participants.includes(item.vendorUID)){
+                containsVendor = true;
+                console.log("Found conversation with " + item.vendorName);
+            }
+        }
+        
+        if (containsVendor === false) {
             console.log('Creating conversation with ' + item.vendorName);
+
             firestore().collection('conversations').add({
                 participants: [user.uid, item.vendorUID],
                 createdAt: firestore.FieldValue.serverTimestamp(),
@@ -33,9 +42,7 @@ function messageVendor(item, nav){
                 nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
             });
         }
-        // otherwise open existing conversation.
         else {
-            console.log('Existing conversation found.');
 
             firestore().collection('users').doc(item.vendorUID).get().then(userDoc => {
                 let colDoc = collectionSnapshot.docs[0];
@@ -46,6 +53,9 @@ function messageVendor(item, nav){
             }) 
             
         }
+        })
+    .catch(() => {
+        console.log("Error creating conversation. Check user ID values?")
     })
 }
 
@@ -171,7 +181,7 @@ const styles = StyleSheet.create({
         paddingLeft: 5
     },
     messageButtonIcon: {
-        tint: AppStyles.color.background,
+        tintColor: AppStyles.color.background,
         height: 16,
         width: 16
     }

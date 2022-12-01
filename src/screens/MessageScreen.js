@@ -6,13 +6,10 @@ import { useFocusEffect } from '@react-navigation/native';
 
 // TODO: 
     // add time sent (already exists) to message blurb
-    // fix positioning of components while text input is up (distorts screen upwards)
-    // proportional sizing of messages
     // order conversations on screen by RECENCY
-    // automatically scroll to bottom when new message or opening convo
-    // CHANGE TO FLATLIST
-    // safeAreaContext for iphone profile photo getting cut off
     // add subscriber to conversation list
+    // CHANGE TO FLATLIST
+    // noconversationsText not showing on android
 
 const MessageScreen = ({navigation, route}) => {
  
@@ -35,6 +32,9 @@ const MessageScreen = ({navigation, route}) => {
             .get()
             .then(collectionSnapshot => {
                 setCount(collectionSnapshot.size);
+                if (collectionSnapshot.size === 0) {
+                    setLoading(false);
+                }
 
                 collectionSnapshot.forEach(docSnapshot => {
 
@@ -50,17 +50,21 @@ const MessageScreen = ({navigation, route}) => {
                         .then(userSnapshot => {
                             // load data into state variable if non duplicate
                             if (!convoIds.includes(docSnapshot.id)){
-                                console.log("Total conversations: " + count);
+                                
                                 setConvoIds(convoIds.concat(docSnapshot.id));
                                 setConvoData(convoData.concat(docSnapshot.data()));
                                 setFriendData(friendData.concat(userSnapshot.data()));
                             }
                             if (convoIds.length === count){
+                                console.log("Total conversations: " + count);
                                 setLoading(false);
                             }
                     });
                 });
-            });
+            })
+            .catch(() => {
+                console.log("Error loading conversations")
+            })
             
             return () => {
                 // Do something when the screen is unfocused
@@ -70,53 +74,57 @@ const MessageScreen = ({navigation, route}) => {
     );
 
     // if user has conversations, list them
-    if(loading){
+    if (loading === true){
         return(<ActivityIndicator
-            style={{marginTop: 30}}
+            style={{backgroundColor: AppStyles.color.primarybg, height: '100%'}}
             size="large"
             animating={loading}
             color={AppStyles.color.tint}
           />);
     }
-    else if (count > 0){
-        // create convo scructure for singular conversation, including all 3 data elements
-        var convos = [];
-        for (let i = 0; i < count; i++){
-            convos.push({id: convoIds[i], data: convoData[i], friend: friendData[i]});
-        }
-
-        // map out list of conversations user is involved in--onto the screen
-        var convoList = convos.map(convo => {
-            
-            let mesLen = convo.data?.messages?.length;
-            var name = convo.friend ? convo.friend?.fullname : 'name';
-            var latestMessage = convo.data?.messages ? convo.data.messages[mesLen]?.content : 'No messages yet';
-            var photo = convo.friend?.photoURL;
-            
-            // Clicking a Connection opens a Conversation with another user 
-            return (
-                <TouchableOpacity 
-                style={styles.connection} 
-                onPress={() => {
-                    console.log('Opened conversation with ' + convo.friend?.fullname);
-                    navigation.navigate("Conversation", {convObject: convo});
-                }}
-                >
-                    <View style={styles.connectionPhotoCircle}> 
-                        <Image 
-                        source={photo ? {uri: photo} : AppIcon.images.defaultProfile} 
-                        style={styles.connectionPhoto}/>
-                    </View>
-                    <View>
-                        <Text style={styles.name}> {name} </Text>
-                        <Text style={styles.lastMessage}> {latestMessage} </Text>
-                    </View>
-                </TouchableOpacity>
-            )
-        });
-    }
     else {
-        convoList = <Text style={styles.noConversationsText}>You don't seem to have any conversations yet... why not get out there and start one?</Text>;
+
+        if (count > 0) {
+
+            // create convo scructure for singular conversation, including all 3 data elements
+            var convos = [];
+            for (let i = 0; i < count; i++){
+                convos.push({id: convoIds[i], data: convoData[i], friend: friendData[i]});
+            }
+
+            // map out list of conversations user is involved in--onto the screen
+            var convoList = convos.map(convo => {
+                
+                let mesLen = convo.data?.messages?.length;
+                var name = convo.friend ? convo.friend?.fullname : 'name';
+                var latestMessage = convo.data?.messages ? convo.data.messages[mesLen]?.content : 'No messages yet';
+                var photo = convo.friend?.photoURL;
+                
+                // Clicking a Connection opens a Conversation with another user 
+                return (
+                    <TouchableOpacity 
+                    style={styles.connection} 
+                    onPress={() => {
+                        console.log('Opened conversation with ' + convo.friend?.fullname);
+                        navigation.navigate("Conversation", {convObject: convo});
+                    }}
+                    >
+                        <View style={styles.connectionPhotoCircle}> 
+                            <Image 
+                            source={photo ? {uri: photo} : AppIcon.images.defaultProfile} 
+                            style={styles.connectionPhoto}/>
+                        </View>
+                        <View>
+                            <Text style={styles.name}> {name} </Text>
+                            <Text style={styles.lastMessage}> {latestMessage} </Text>
+                        </View>
+                    </TouchableOpacity>
+                )
+            });
+        }
+        else {
+            convoList = <Text style={styles.noConversationsText}>You don't seem to have any conversations yet... why not get out there and start one?</Text>;
+        }
     }
 
     return (
@@ -187,7 +195,7 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: '50%',
-        color: AppStyles.color.text,
+        color: 'white',
         fontFamily: AppStyles.fontFamily.regular,
         fontSize: AppStyles.fontSize.normal,
     }
