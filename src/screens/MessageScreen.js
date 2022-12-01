@@ -8,7 +8,6 @@ import { useFocusEffect } from '@react-navigation/native';
     // add time sent (already exists) to message blurb
     // order conversations on screen by RECENCY
     // add subscriber to conversation list
-    // CHANGE TO FLATLIST
     // noconversationsText not showing on android
 
 const MessageScreen = ({navigation, route}) => {
@@ -16,8 +15,7 @@ const MessageScreen = ({navigation, route}) => {
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(0);
     const [convoIds, setConvoIds] = useState([]);
-    const [convoData, setConvoData] = useState([]);
-    const [friendData, setFriendData] = useState([]);
+    const [convos, setConvos] = useState([]);
 
     const user = firebase.auth().currentUser;
 
@@ -50,10 +48,10 @@ const MessageScreen = ({navigation, route}) => {
                         .then(userSnapshot => {
                             // load data into state variable if non duplicate
                             if (!convoIds.includes(docSnapshot.id)){
-                                
                                 setConvoIds(convoIds.concat(docSnapshot.id));
-                                setConvoData(convoData.concat(docSnapshot.data()));
-                                setFriendData(friendData.concat(userSnapshot.data()));
+                                setConvos(convos.concat({id: docSnapshot.id, data: docSnapshot.data(), friend: userSnapshot.data()}));
+                                console.log("added " + docSnapshot.id);
+                                console.log(convos);
                             }
                             if (convoIds.length === count){
                                 console.log("Total conversations: " + count);
@@ -73,68 +71,70 @@ const MessageScreen = ({navigation, route}) => {
         }, [loading == true])
     );
 
+
+    const ConvoBlurb = ({item}) => {
+        let mesLen = item.data?.messages?.length;
+        var name = item.friend ? item.friend?.fullname : 'name';
+        var latestMessage = item.data?.messages ? item.data.messages[mesLen - 1]?.content : 'No messages yet';
+        var photo = item.friend?.photoURL;
+        
+        // Clicking a Connection opens a Conversation with another user 
+
+        return (
+            <TouchableOpacity 
+            style={styles.connection} 
+            onPress={() => {
+                console.log('Opened conversation with ' + item.friend?.fullname);
+                navigation.navigate("Conversation", {convObject: item});
+            }}
+            >
+                <View style={styles.connectionPhotoCircle}> 
+                    <Image 
+                    source={photo ? {uri: photo} : AppIcon.images.defaultProfile} 
+                    style={styles.connectionPhoto}/>
+                </View>
+                <View>
+                    <Text style={styles.name}> {name} </Text>
+                    <Text style={styles.lastMessage}> {latestMessage} </Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     // if user has conversations, list them
     if (loading === true){
-        return(<ActivityIndicator
+        return(
+        <ActivityIndicator
             style={{backgroundColor: AppStyles.color.primarybg, height: '100%'}}
             size="large"
             animating={loading}
             color={AppStyles.color.tint}
-          />);
+          />
+        );
     }
     else {
-
-        if (count > 0) {
-
-            // create convo scructure for singular conversation, including all 3 data elements
-            var convos = [];
-            for (let i = 0; i < count; i++){
-                convos.push({id: convoIds[i], data: convoData[i], friend: friendData[i]});
-            }
-
-            // map out list of conversations user is involved in--onto the screen
-            var convoList = convos.map(convo => {
-                
-                let mesLen = convo.data?.messages?.length;
-                var name = convo.friend ? convo.friend?.fullname : 'name';
-                var latestMessage = convo.data?.messages ? convo.data.messages[mesLen]?.content : 'No messages yet';
-                var photo = convo.friend?.photoURL;
-                
-                // Clicking a Connection opens a Conversation with another user 
-                return (
-                    <TouchableOpacity 
-                    style={styles.connection} 
-                    onPress={() => {
-                        console.log('Opened conversation with ' + convo.friend?.fullname);
-                        navigation.navigate("Conversation", {convObject: convo});
-                    }}
-                    >
-                        <View style={styles.connectionPhotoCircle}> 
-                            <Image 
-                            source={photo ? {uri: photo} : AppIcon.images.defaultProfile} 
-                            style={styles.connectionPhoto}/>
-                        </View>
-                        <View>
-                            <Text style={styles.name}> {name} </Text>
-                            <Text style={styles.lastMessage}> {latestMessage} </Text>
-                        </View>
-                    </TouchableOpacity>
-                )
-            });
-        }
-        else {
-            convoList = <Text style={styles.noConversationsText}>You don't seem to have any conversations yet... why not get out there and start one?</Text>;
-        }
+        return (
+            <View style={styles.container}>
+                <Text style={styles.title}> Messages </Text>
+                <SafeAreaView>
+                    {
+                        convos.length > 0 
+                        ? 
+                        <FlatList
+                        data={convos}
+                        renderItem={ConvoBlurb}
+                        ketExtractor={(item, key) => {item.id}}
+                        />
+                        :
+                        <Text style={styles.noConversationsText}>
+                            You don't seem to have any conversations yet... why not get out there and start one?
+                        </Text>
+                    }
+                    
+                </SafeAreaView>
+            </View>
+        ); 
     }
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}> Messages </Text>
-            <ScrollView>
-                { convoList }
-            </ScrollView>
-        </View>
-    ); 
 }
 export default MessageScreen
 
