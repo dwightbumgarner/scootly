@@ -479,7 +479,6 @@ export default function RentalListing(props) {
                                         value="3"
                                         color={AppStyles.color.accent}
                                         uncheckedColor={AppStyles.color.white}
-                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedRev === '3' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '3' ? () => setCheckedRev('0') : () => setCheckedRev('3')}
                                     />
@@ -510,7 +509,6 @@ export default function RentalListing(props) {
                             dropdownTextStyles={{color:AppStyles.color.accent}}
                             placeholder="Select End Time"
                             inputStyles={{color:AppStyles.color.accent}}
-                            boxStyles={{color:AppStyles.color.accent}}
                             fontFamily={AppStyles.fontFamily.regular}
                         />
                       </View>

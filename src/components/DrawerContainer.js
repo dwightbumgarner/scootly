@@ -5,6 +5,7 @@ import {AppIcon} from '../AppStyles';
 import auther from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
 import {logout} from '../reducers';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DrawerContainer({navigation}) {
   const dispatch = useDispatch();
@@ -15,10 +16,15 @@ export default function DrawerContainer({navigation}) {
           title="LOG OUT"
           source={AppIcon.images.logout}
           onPress={() => {
+            
             auther()
               .signOut()
               .then(() => {
                 dispatch(logout());
+                AsyncStorage.setItem('@loggedInUserID:key', '0');
+                AsyncStorage.setItem('@loggedInUserID:password', '0');
+                AsyncStorage.setItem('@loggedInUserID:id', '0')
+                
                 navigation.navigate('LoginStack');
               }); //logout on redux
           }}
