@@ -10,7 +10,7 @@ import {login} from '../reducers';
 import {AppStyles} from '../AppStyles';
 
 
-function WelcomeScreen({navigation}) {
+function WelcomeScreen({navigation, route}) {
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ function WelcomeScreen({navigation}) {
     const password = await AsyncStorage.getItem('@loggedInUserID:password');
     const id = await AsyncStorage.getItem('@loggedInUserID:id');
     if (
+      route.params?.justLoggedOut != true &&
       id != null &&
       id.length > 0 &&
       password != null &&

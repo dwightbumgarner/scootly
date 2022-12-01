@@ -21,11 +21,8 @@ export default function DrawerContainer({navigation}) {
               .signOut()
               .then(() => {
                 dispatch(logout());
-                AsyncStorage.setItem('@loggedInUserID:key', '0');
-                AsyncStorage.setItem('@loggedInUserID:password', '0');
-                AsyncStorage.setItem('@loggedInUserID:id', '0')
                 
-                navigation.navigate('LoginStack');
+                navigation.navigate('LoginStack', {justLoggedOut: true});
               }); //logout on redux
           }}
         />
