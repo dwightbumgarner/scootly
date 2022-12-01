@@ -6,62 +6,64 @@ import firestore, { firebase } from '@react-native-firebase/firestore';
 
 const messagesIcon = require('../../assets/icons/messages-icon-black.png')
 
-// TODO:  
-    // create booking screen
-
-function messageVendor(item, nav){
+async function messageVendor(item, setConvo){
 
     const user = firebase.auth().currentUser;
-    
-    //search for conversation including both user and vendor
-    firestore()
-    .collection('conversations')
-    .where('participants', 'array-contains', user.uid)
-    .get()
-    .then(collectionSnapshot => {
-        console.log(collectionSnapshot.size + " conversations found.");
 
-        let docs = collectionSnapshot.docs;
-        let containsVendor = false;
-        for (let i = 0; i < docs.length; i++) {
-            if (docs[i].data().participants.includes(item.vendorUID)){
-                containsVendor = true;
-                console.log("Found conversation with " + item.vendorName);
+    firestore().collection('users').doc(item.vendorUID).get().then(friendDoc => {
+
+        firestore()
+        .collection('conversations')
+        .where('participants', 'array-contains', user.uid)
+        .get()
+        .then(collectionSnapshot => {
+            console.log(collectionSnapshot.size + " conversations found.");
+
+            let docs = collectionSnapshot.docs;
+            let found = false;
+            for (let i = 0; i < docs.length; i++) {
+                if (docs[i].data().participants.includes(item.vendorUID)){
+
+                    console.log("Found conversation with " + item.vendorName);
+                    setConvo({id: docs[i].id, data: docs[i].data(), friend: friendDoc.data()});
+                    found = true;
+                }
             }
-        }
-        
-        if (containsVendor === false) {
-            console.log('Creating conversation with ' + item.vendorName);
 
-            firestore().collection('conversations').add({
-                participants: [user.uid, item.vendorUID],
-                createdAt: firestore.FieldValue.serverTimestamp(),
-                updatedAt: firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                console.log('Opening conversation with ' + item.vendorName);
-                nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
-            });
-        }
-        else {
-
-            firestore().collection('users').doc(item.vendorUID).get().then(userDoc => {
-                let colDoc = collectionSnapshot.docs[0];
-                let convo = {id: colDoc.id, data: colDoc.data(), friend: userDoc.data()}
-
-                console.log('Opening conversation with ' + item.vendorName);
-                nav.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
-            }) 
-            
-        }
+            if (collectionSnapshot.size === 0 || found === false) {
+                firestore().collection('conversations').add({
+                    participants: [user.uid, item.vendorUID],
+                    createdAt: firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firestore.FieldValue.serverTimestamp(),
+                    messages: []
+                })
+                .then(newDoc => {
+                    firestore().collection('conversations').doc(newDoc.id).get()
+                    .then(doc => {
+                        setConvo({id: doc.id, data: doc.data(), friend: friendDoc.data()})
+                    })
+                })
+            }
         })
+    })
     .catch(() => {
-        console.log("Error creating conversation. Check user ID values?")
+        console.log("Could not find vendor.");
     })
 }
 
 const ListingScreen = ({navigation, route}) => {
 
     const item = route.params.itemData;
+    const [convo, setConvo] = useState(null);
+
+    useEffect(() => {
+        
+        if (convo !== null) {
+            console.log("Opening conversation with " + convo.friend.fullname);
+            navigation.navigate("MessageStack", {screen: "Conversation", params: {convObject: convo}});
+            setConvo(null);
+        }
+    }, convo);
     
     return (
         <View style={styles.container}>
@@ -77,7 +79,10 @@ const ListingScreen = ({navigation, route}) => {
                 <Text style={styles.descriptionText}>{item?.vehicleDescription}</Text>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.messageContainer} onPress={() => {messageVendor(item, navigation)}}>
+                <TouchableOpacity 
+                style={styles.messageContainer} 
+                onPress={() => {messageVendor(item, setConvo)} }
+                >
                     <Text style={styles.messageButtonText}> 
                         Message {item?.vendorName?.split(' ').slice(0, -1).join(' ')}
                     </Text>
