@@ -17,7 +17,7 @@ function AddVehicleScreen({navigation}) {
   const auth = useSelector((state) => state.auth);
   const [vehicleName, setVehicleName] = useState('');
   const [vehicleDescription, setVehicleDescription] = useState('');
-  const [hourlyRate, setHourlyRate] = useState(0);
+  const [hourlyRate, setHourlyRate] = useState(10);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
@@ -196,15 +196,11 @@ function AddVehicleScreen({navigation}) {
   return (
     currentScreen ? 
     (<View style={styles.container}>
-      <View style={{
-            paddingHorizontal: 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center"
-        }}>
-          <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('VendorHome')}></Icon>
-          <Text style={styles.title}>Add a Vehicle</Text>
+      <View style={styles.backArrowView}>
+          <Icon type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('VendorHome')}></Icon>      
       </View>
+      <Text style={styles.title}>Add a Vehicle</Text>
+
       <TouchableOpacity onPress={()=>selectImage()}>
         <Image
           style={styles.vehicleImage}
@@ -240,55 +236,60 @@ function AddVehicleScreen({navigation}) {
       </Button>
   </View>):
   (<View style={styles.container}>
-    <View style={{
-          paddingHorizontal: 10,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center"
-      }}>
-        <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => setCurrentScreen(true)}></Icon>
-        <Text style={styles.title}>Add a Vehicle</Text>
-    </View>
-    <Text style={styles.body}>Hourly Rate</Text>
+      <View style={styles.backArrowView}>
+        <Icon type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => setCurrentScreen(true)}></Icon>
+      </View>
+      <Text style={styles.title}>Add a Vehicle</Text>
+    <Text style={styles.label}>Hourly Rate</Text>
     <NumericInput 
             value={hourlyRate} 
-            type={'up-down'}
             onChange={setHourlyRate} 
-            minValue={0}
+            minValue={1}
             onLimitReached={(isMax,msg) => console.log(isMax,msg)}
-            totalWidth={240} 
+            totalWidth={140} 
             totalHeight={50} 
             valueType='integer'
             rounded 
-            textColor={AppStyles.color.text}  />
+            textColor={AppStyles.color.text}
+            leftButtonBackgroundColor={AppStyles.color.background}
+            rightButtonBackgroundColor={AppStyles.color.background}
+            style={styles.hourlyRate}
+            borderColor={AppStyles.color.text}
+            iconStyle= {{color: AppStyles.color.white}}
+            inputStyle= {{fontFamily: AppStyles.fontFamily.regular}}  />
 
-  <Text style={styles.availability}>Availability</Text>
+  <Text style={[styles.label, {marginTop: 50}]}>Availability</Text>
   <DayPicker
       weekdays={weekdays}
       setWeekdays={setWeekdays}
       activeColor={AppStyles.color.tint}
-      textColor={AppStyles.color.primarybg}
-      inactiveColor={AppStyles.color.secondarytext}
+      textColor={AppStyles.color.text}
+      text={AppStyles.color.white}
+      dayTextStyle={{fontFamily: AppStyles.fontFamily.regular}}
+      inactiveColor={AppStyles.color.secondarybg}
+      itemStyles={{marginHorizontal: 4, borderRadius: 6}}
+      wrapperStyles={{marginTop: 0, paddingTop: 0}}
     />
     <SelectList
         data={startTimeData}
         setSelected={(val) => setSSelected(val)}
         save="value"
         search={false}
-        dropdownTextStyles={{color:AppStyles.color.accent}}
-        inputStyles={{color:AppStyles.color.accent}}
+        dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
+        inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         placeholder="Select Start Time"
+        boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
     />
-    <Text style={styles.availability}>To</Text>
+    <Text style={[styles.label, {marginTop: 16}]}>To</Text>
     <SelectList
         data={endTimeData}
         setSelected={(val) => setESelected(val)}
         save="value"
         search={false}
         style={[styles.dropdown]}
-        boxStyles={{color:AppStyles.color.accent}}
-        dropdownTextStyles={{color:AppStyles.color.accent}}
-        inputStyles={{color:AppStyles.color.accent}}
+        dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
+        inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
+        boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
         placeholder="Select End Time"
     />
     <Button
@@ -319,22 +320,22 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
     marginBottom: 80,
     alignItems: 'auto',
-    paddingRight: 80
   },
-  backArrow: {
-    marginRight: 70,
-    paddingBottom: 0
+  backArrowView: {
+    position: 'absolute',
+    left: 30,
+    top: 82,
   },
   InputContainer: {
     width: AppStyles.textInputWidth.main,
-    marginTop: 30,
+    marginTop: 20,
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: AppStyles.color.white,
     borderRadius: AppStyles.borderRadius.main,
   },
   body: {
-    height: 40,
+    height: 50,
     paddingLeft: 20,
     paddingRight: 20,
     color: AppStyles.color.text,
@@ -348,22 +349,26 @@ const styles = StyleSheet.create({
     color: AppStyles.color.text,
   },
   description: {
-    height: 140,
+    height: 100,
     paddingLeft: 20,
     paddingRight: 20,
+    paddingTop: 15,
     color: AppStyles.color.text,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   addVehicleContainer: {
     position: 'absolute',
-    bottom:15,
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    bottom: 30,
+    right: 24,
+    backgroundColor: AppStyles.color.accent,
     borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     marginTop: 30,
   },
   addVehicleText: {
-    color: AppStyles.color.primarybg,
+    color: AppStyles.color.background,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   availabilityButtonContainer: {
     width: AppStyles.buttonWidth.main,
@@ -378,8 +383,8 @@ const styles = StyleSheet.create({
   vehicleImage: {
     width: 240,
     height: 240,
-    borderRadius: 24,
-    marginBottom: 24
+    borderRadius: 20,
+    marginBottom: 20,
   },
   loading: {
     position: 'absolute',
@@ -391,6 +396,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  label: {
+    color: AppStyles.color.accent,
+    fontFamily: AppStyles.fontFamily.bold,
+    textTransform: 'uppercase',
+    paddingBottom: 24,
+  },
+  hourlyRate: {
+    marginBottom: 40,
   }
 });
 

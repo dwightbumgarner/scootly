@@ -12,7 +12,7 @@ import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import MessageScreen from '../screens/MessageScreen';
 import Conversation from '../components/Conversation';
-import ListingView from '../screens/ListingView';
+import ListingScreen from '../screens/ListingScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {AppIcon, AppStyles} from '../AppStyles';
 import DrawerContainer from '../components/DrawerContainer';
@@ -97,7 +97,7 @@ const HomeStack = () => (
 
     <Stack.Screen
       name="Listing"
-      component={ListingView}
+      component={ListingScreen}
       style={styles.homeHeader}
     />
 
@@ -150,7 +150,8 @@ const TabNavigator = () => (
       tabBarInactiveTintColor: AppStyles.color.text,
       tabBarActiveTintColor: AppStyles.color.tint,
       headerShown: false,
-      tabBarShowLabel: false
+      tabBarShowLabel: false,
+      tabBarHideOnKeyboard: true
     }}>
 
     <BottomTab.Screen

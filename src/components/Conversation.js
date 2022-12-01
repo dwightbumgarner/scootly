@@ -4,11 +4,12 @@ import {AppStyles, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
+import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 
 // add a message to current conversation
 export function writeMessage(convoId, content, sender) {
     // cannot send empty message
-    if (content == '') {
+    if (content === '') {
         console.log('No message to be sent.');
         return;
     }
@@ -25,10 +26,15 @@ export function writeMessage(convoId, content, sender) {
 const Conversation = ({navigation, route}) => {
     const [messageBuffer, setMessageBuffer] = useState('');
     const [messageList, setMessageList] = useState([]);
+    const [listRef, setListRef] = useState(null);
 
     const convObject = route.params?.convObject;
     const user = firebase.auth().currentUser;
     const friend = convObject?.friend;
+
+    async function doRef(ref) {
+        setListRef(ref);
+    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -38,27 +44,20 @@ const Conversation = ({navigation, route}) => {
             .doc(convObject?.id)
             .onSnapshot(doc => {
                 setMessageList(doc.data().messages ?? []);
-                console.log('Messages updated.')
-            });
-
+                console.log('Messages updated.');
+            })
+            
             // Do something when the screen is unfocused
             // Useful for cleanup functions
             return () => sub();
         }, [user.uid])
     );
 
-    // Create map of message array, each item becomes a blurb depending on sender
-    const MessageList = () => {
-        return(
-            messageList.map(message => {
-            return (
-                <View style={user.uid == message.sender ? styles.sentMessageBlurb : styles.recMessageBlurb}>
-                    <Text>{message.content}</Text>
-                </View>
-            )
-        })
-        )
-    };
+    const Message = ({item}) => (
+        <View style={user.uid == item.sender ? styles.sentMessageBlurb : styles.recMessageBlurb}>
+            <Text>{item.content}</Text>
+        </View>
+    )
 
     return (
         <View style={styles.container}>
@@ -70,7 +69,7 @@ const Conversation = ({navigation, route}) => {
 
                 <View style={styles.friendBox}>
                     <Image source={{uri: friend?.photoURL}} style={{height: 75, width: 75, borderRadius: 75}}/>
-                    <Text style={{color:'white', fontSize:20}}> {friend?.fullname} </Text>
+                    <Text style={{color:'white', fontSize:20, paddingTop:20}}> {friend?.fullname} </Text>
                 </View>
 
                 <View>
@@ -78,29 +77,36 @@ const Conversation = ({navigation, route}) => {
                 </View>
             </View>
 
-            <ScrollView 
-            style={styles.messageContainer}
-            >
-                <MessageList/>
-            </ScrollView>
+            <SafeAreaView style={styles.messageContainer}>
+                <FlatList 
+                data={messageList} 
+                renderItem={Message} 
+                keyExtractor={(item, key) => {item.id}}
+                ref={(ref) => {setListRef(ref);}}
+                onContentSizeChange={() => {listRef.scrollToEnd()}}
+                />
+            </SafeAreaView>
 
             <View style={styles.composeBar}>
                 <View style={styles.inputContainer}>
                     <TextInput
                     style={styles.inputBody}
-                    placeholder="Message"
+                    placeholder=" Message"
                     value={messageBuffer}
                     onChangeText={setMessageBuffer}
+                    placeholderTextColor={'grey'}
+                    cursorColor={AppStyles.color.accent}
                     />
                 </View>
                 <Button 
                 containerStyle={styles.sendButton} 
-                onPress={() => { 
+                onPress={() => {
                     writeMessage(convObject?.id, messageBuffer, user.uid);
                     setMessageBuffer('');
-                }}
+                    listRef.scrollToEnd({ animated: true });
+                  }}
                 >
-                    <Image source={AppIcon.images.upArrow} style={AppIcon.style}/>    
+                    <Image source={AppIcon.images.upArrow} style={styles.sendIcon}/>    
                 </Button>
                 
             </View>
@@ -115,7 +121,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: AppStyles.color.primarybg,
+        backgroundColor: AppStyles.color.primarybg
     },
     title: {
         fontSize: AppStyles.fontSize.title,
@@ -126,58 +132,66 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     convoHeader: {
-        height: '20%',
+        height: 150,
         width: '90%',
         display: 'flex',
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems: 'center',
         borderBottomStyle:'solid',
-        borderBottomColor:'black',
-        borderBottomWidth: 1
+        borderBottomColor: AppStyles.color.primarybg,
+        borderBottomWidth: 1 
     },
     friendBox: {
         width: '50%',
-        height: '100%',
-        
+        height: '60%',
         display:'flex',
         flexDirection:'column',
         justifyContent:'space-evenly',
-        alignItems:'center'
+        alignItems:'center',
+        marginTop: 10
 
     },
     messageContainer: {
-        width: '95%',
-        
+        flex:1,
+        width: '100%',
+        maxHeight: '70%',
+        paddingBottom: 10,
+        backgroundColor: AppStyles.color.primarybg
     },
     sentMessageBlurb: {
-        minWidth:120,
-        minHeight: 60,
         display:'flex',
+        minWidth:120,
+        minHeight: 40,
+        maxWidth: "45%",
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:20,
+        borderRadius:15,
         backgroundColor: AppStyles.color.accent,
         marginLeft: 200,
+        marginRight: 15,
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        padding: 10
     },
     recMessageBlurb: {
         minWidth: 120,
-        minHeight: 60,
+        minHeight: 40,
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:20,
+        borderRadius:15,
         backgroundColor: AppStyles.color.grey,
         marginRight: 200,
+        marginLeft: 15,
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        padding: 10,
     },
     composeBar: {
         width: '100%',
-        height: '7%',
-        backgroundColor:'black',
+        minHeight: 60,
+        backgroundColor:AppStyles.color.primarybg,
         marginTop:10,
         display: 'flex',
         flexDirection:'row',
@@ -185,25 +199,34 @@ const styles = StyleSheet.create({
         justifyContent:'space-around'
     },
     inputContainer: {
-        width: '60%',
-        height: '70%',
+        width: 250,
+        height: 40,
         borderRadius: 20,
+        marginLeft: 3,
+        borderRadius: 10,
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: AppStyles.color.white,
-        backgroundColor:AppStyles.color.grey
+        backgroundColor:AppStyles.color.grey,
+        paddingLeft:10,
+        paddingRight:10
       },
       inputBody: {
-        
-        fontColor: 'white',
+        color: 'white',
         fontFamily: AppStyles.fontFamily.regular
       },
       sendButton: {
-        height: 50,
-        width: 50,
-        borderRadius: 25,
+        height: 45,
+        width: 45,
+        borderRadius: 30,
         backgroundColor: AppStyles.color.grey,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        marginRight: 5
+      },
+      sendIcon: {
+        tintColor:AppStyles.color.accent,
+        height: 20,
+        width: 20,
       }
 })
