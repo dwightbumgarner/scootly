@@ -8,9 +8,8 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import { ListItem, SearchBar } from "react-native-elements";
 import filter from "lodash.filter";
 
-export default function VendorListing(props) {
+export default function VendorListing(refreshKey) {
     const auth = useSelector((state) => state.auth);
-    console.log(auth.user);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [allData, setallData] = useState([]);
