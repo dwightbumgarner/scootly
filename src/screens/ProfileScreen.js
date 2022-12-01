@@ -109,20 +109,10 @@ function ProfileScreen({navigation}){
     // view with header and profile image, resorts to default if cannot find info
     return (
         <View style={styles.container}>
-            <View
-            style={{
-                flexDirection: 'row',
-                paddingHorizontal: 10,
-                justifyContent: "space-around",
-            }}>
+            <View style={{flexDirection: 'row'}}>
             <Text style={styles.title}>
                 {initialName}
             </Text>
-            <View style={{
-                alignSelf: 'flex-end',
-                // marginTop: -5,
-                position: 'absolute',
-            }}>
             <TouchableOpacity 
             onPress={() => {
                 auther()
@@ -137,7 +127,6 @@ function ProfileScreen({navigation}){
                   source = {AppIcon.images.logout}
                   />
             </TouchableOpacity>
-            </View>
             </View>
             <View style={styles.profileImageCircle}>
                 <TouchableOpacity onPress={()=>selectImage()}>
@@ -271,9 +260,11 @@ const styles = StyleSheet.create({
         height: 20,
     },
     tinylogout:{
-        width: 40,
-        height: 40,
-        left: 20,
+        width: 30,
+        height: 30,
+        marginTop: 90,
+        marginBottom: 50,
+        left: 45,
     }
 });
 
