@@ -12,8 +12,8 @@ function HomeScreen({navigation}) {
 
   return (
       <View style={styles.container}>
-        <Text style={styles.title}>Hi, {auth.user?.fullname.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
-        <RentalListing></RentalListing>
+        <Text style={styles.title}>Hi, {auth?.user?.fullname?.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
+        <RentalListing navigation={navigation}/>
       </View>
   );
 }

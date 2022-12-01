@@ -1,6 +1,6 @@
 import React, {useLayoutEffect, useState, useEffect} from 'react';
 import Button from 'react-native-button';
-import {View, StyleSheet, Text, TextInput, Image, TouchableOpacity, Alert} from 'react-native';
+import {View, StyleSheet, Text, TextInput, Image, TouchableOpacity, ActivityIndicator, Alert} from 'react-native';
 import {connect, useSelector} from 'react-redux';
 import {AppStyles, AppIcon} from '../AppStyles';
 import {Configuration} from '../Configuration';
@@ -10,23 +10,73 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import NumericInput from 'react-native-numeric-input'
 import { DayPicker } from 'react-native-picker-weekday'
-
+import {SelectList} from 'react-native-dropdown-select-list'
 
 
 function AddVehicleScreen({navigation}) {
   const auth = useSelector((state) => state.auth);
   const [vehicleName, setVehicleName] = useState('');
   const [vehicleDescription, setVehicleDescription] = useState('');
-  const [hourlyRate, setHourlyRate] = useState(0);
+  const [hourlyRate, setHourlyRate] = useState(10);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [currentScreen, setCurrentScreen] = useState(true);
-  const [startAvailabilityDate, setStartAvailabilityDate] = useState(new Date())
-  const [startAvailabilityOpen, setStartAvailabilityOpen] = useState(false)
-  const [endAvailabilityDate, setEndAvailabilityDate] = useState(new Date())
-  const [endAvailabilityOpen, setEndAvailabilityOpen] = useState(false)
-  const [weekdays, setWeekdays] = React.useState([-1])
+  const [weekdays, setWeekdays] = React.useState([-1]);
+  const [startSelected, setSSelected] = React.useState('');
+  const [endSelected, setESelected] = React.useState('');
+  const startTimeData = [
+      {key:'1', value:'12:00 AM'},
+      {key:'2', value:'01:00 AM'},
+      {key:'3', value:'02:00 AM'},
+      {key:'4', value:'03:00 AM'},
+      {key:'5', value:'04:00 AM'},
+      {key:'6', value:'05:00 AM'},
+      {key:'7', value:'06:00 AM'},
+      {key:'8', value:'07:00 AM'},
+      {key:'9', value:'08:00 AM'},
+      {key:'10', value:'09:00 AM'},
+      {key:'11', value:'10:00 AM'},
+      {key:'12', value:'11:00 AM'},
+      {key:'13', value:'12:00 PM'},
+      {key:'14', value:'01:00 PM'},
+      {key:'15', value:'02:00 PM'},
+      {key:'16', value:'03:00 PM'},
+      {key:'17', value:'04:00 PM'},
+      {key:'18', value:'05:00 PM'},
+      {key:'19', value:'06:00 PM'},
+      {key:'20', value:'07:00 PM'},
+      {key:'21', value:'08:00 PM'},
+      {key:'22', value:'09:00 PM'},
+      {key:'23', value:'10:00 PM'},
+      {key:'24', value:'11:00 PM'},
+  ];
+  const endTimeData = [
+      {key:'1', value:'12:00 AM'},
+      {key:'2', value:'01:00 AM'},
+      {key:'3', value:'02:00 AM'},
+      {key:'4', value:'03:00 AM'},
+      {key:'5', value:'04:00 AM'},
+      {key:'6', value:'05:00 AM'},
+      {key:'7', value:'06:00 AM'},
+      {key:'8', value:'07:00 AM'},
+      {key:'9', value:'08:00 AM'},
+      {key:'10', value:'09:00 AM'},
+      {key:'11', value:'10:00 AM'},
+      {key:'12', value:'11:00 AM'},
+      {key:'13', value:'12:00 PM'},
+      {key:'14', value:'01:00 PM'},
+      {key:'15', value:'02:00 PM'},
+      {key:'16', value:'03:00 PM'},
+      {key:'17', value:'04:00 PM'},
+      {key:'18', value:'05:00 PM'},
+      {key:'19', value:'06:00 PM'},
+      {key:'20', value:'07:00 PM'},
+      {key:'21', value:'08:00 PM'},
+      {key:'22', value:'09:00 PM'},
+      {key:'23', value:'10:00 PM'},
+      {key:'24', value:'11:00 PM'},
+  ];
 
   const selectImage = () => {
     const options = {
@@ -53,6 +103,48 @@ function AddVehicleScreen({navigation}) {
   };
 
   const uploadData = async () => {
+    if(!image){
+      Alert.alert(
+        'Please add an image of your scooter!'
+      );
+      return;
+    }
+    if(!vehicleName){
+      Alert.alert(
+        'Please add a name for your scooter!'
+      );
+      return;
+    }
+    if(!vehicleDescription){
+      Alert.alert(
+        'Please add a description for your scooter!'
+      );
+      return;
+    }
+    if(hourlyRate == 0){
+      Alert.alert(
+        'Please add an hourly rate for your scooter!'
+      );
+      return;
+    }
+    if(!weekdays[1]){
+      Alert.alert(
+        'Please select the days when your scooter is available!'
+      );
+      return;
+    }
+    if(!startSelected){
+      Alert.alert(
+        'Please select the start time of your scooter\'s availability!'
+      );
+      return;
+    }
+    if(!endSelected){
+      Alert.alert(
+        'Please select the end time of your scooter\'s availability!'
+      );
+      return;
+    }
     console.log(image);
     const { uri } = image;
     const filename = uri.substring(uri.lastIndexOf('/') + 1);
@@ -67,38 +159,47 @@ function AddVehicleScreen({navigation}) {
       setTransferred(
         Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
       );
-      console.log(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
+      //console.log(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
     });
     try {
       await task;
     } catch (e) {
       console.error(e);
     }
-    setUploading(false);
 
     task.snapshot.ref.getDownloadURL().then(downloadURL => {
       //user.updateProfile({ photoURL: downloadURL })
-      console.log(downloadURL);
+      //console.log(downloadURL);
+      var cleanedDays = weekdays;
+      cleanedDays.splice(0, 1);
+      firestore()
+      .collection('rentals')
+      .add({
+        vehicleImage: downloadURL,
+        hourlyRate: hourlyRate,
+        vehicleName: vehicleName,
+        vehicleDescription, vehicleDescription,
+        availableDays: weekdays,
+        availability: startSelected + ' - ' + endSelected,
+        vendorUID: auth.user?.id
+      })
+      .then(() => {
+        setUploading(false);
+        //console.log('Listing added!');
+        navigation.navigate('VendorHome', {refreshKey: Math.random()});
+      });
     })
-    Alert.alert(
-      'Photo uploaded!',
-      'Your photo has been uploaded to Firebase Cloud Storage!'
-    );
     setImage(null);
   };
 
   return (
     currentScreen ? 
     (<View style={styles.container}>
-      <View style={{
-            paddingHorizontal: 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center"
-        }}>
-          <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('VendorHome')}></Icon>
-          <Text style={styles.title}>Add a Vehicle</Text>
+      <View style={styles.backArrowView}>
+          <Icon type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('VendorHome')}></Icon>      
       </View>
+      <Text style={styles.title}>Add a Vehicle</Text>
+
       <TouchableOpacity onPress={()=>selectImage()}>
         <Image
           style={styles.vehicleImage}
@@ -134,55 +235,73 @@ function AddVehicleScreen({navigation}) {
       </Button>
   </View>):
   (<View style={styles.container}>
-    <View style={{
-          paddingHorizontal: 10,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center"
-      }}>
-        <Icon style={styles.backArrow} type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => setCurrentScreen(true)}></Icon>
-        <Text style={styles.title}>Add a Vehicle</Text>
-    </View>
-    <Text style={styles.body}>Hourly Rate</Text>
+      <View style={styles.backArrowView}>
+        <Icon type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => setCurrentScreen(true)}></Icon>
+      </View>
+      <Text style={styles.title}>Add a Vehicle</Text>
+    <Text style={styles.label}>Hourly Rate</Text>
     <NumericInput 
             value={hourlyRate} 
-            type={'up-down'}
             onChange={setHourlyRate} 
-            minValue={0}
+            minValue={1}
             onLimitReached={(isMax,msg) => console.log(isMax,msg)}
-            totalWidth={240} 
+            totalWidth={140} 
             totalHeight={50} 
             valueType='integer'
             rounded 
-            textColor={AppStyles.color.text}  />
+            textColor={AppStyles.color.text}
+            leftButtonBackgroundColor={AppStyles.color.background}
+            rightButtonBackgroundColor={AppStyles.color.background}
+            style={styles.hourlyRate}
+            borderColor={AppStyles.color.text}
+            iconStyle= {{color: AppStyles.color.white}}
+            inputStyle= {{fontFamily: AppStyles.fontFamily.regular}}  />
 
-  <Text style={styles.availability}>Availability</Text>
+  <Text style={[styles.label, {marginTop: 50}]}>Availability</Text>
   <DayPicker
       weekdays={weekdays}
       setWeekdays={setWeekdays}
       activeColor={AppStyles.color.tint}
-      textColor={AppStyles.color.primarybg}
-      inactiveColor={AppStyles.color.secondarytext}
+      textColor={AppStyles.color.text}
+      text={AppStyles.color.white}
+      dayTextStyle={{fontFamily: AppStyles.fontFamily.regular}}
+      inactiveColor={AppStyles.color.secondarybg}
+      itemStyles={{marginHorizontal: 4, borderRadius: 6}}
+      wrapperStyles={{marginTop: 0, paddingTop: 0}}
     />
-    <Button
-    containerStyle={styles.availabilityButtonContainer}
-    style={styles.availabilityButtonText}
-    onPress={() => setStartAvailabilityOpen(true)}>
-    Set Start Time
-    </Button>
-    <Text style={styles.availability}>To</Text>
-    <Button
-    containerStyle={styles.availabilityButtonContainer}
-    style={styles.availabilityButtonText}
-    onPress={() => setEndAvailabilityOpen(true)}>
-    Set End Time
-    </Button>
+    <SelectList
+        data={startTimeData}
+        setSelected={(val) => setSSelected(val)}
+        save="value"
+        search={false}
+        dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
+        inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
+        placeholder="Select Start Time"
+        boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+    />
+    <Text style={[styles.label, {marginTop: 16}]}>To</Text>
+    <SelectList
+        data={endTimeData}
+        setSelected={(val) => setESelected(val)}
+        save="value"
+        search={false}
+        style={[styles.dropdown]}
+        dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
+        inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
+        boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+        placeholder="Select End Time"
+    />
     <Button
       containerStyle={styles.addVehicleContainer}
       style={styles.addVehicleText}
       onPress={uploadData}>
       Done
     </Button>
+    {uploading &&
+    <View style={styles.loading}>
+      <ActivityIndicator size='large' />
+    </View>
+    }
   </View>)
   );
 }
@@ -200,15 +319,15 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
     marginBottom: 80,
     alignItems: 'auto',
-    paddingRight: 80
   },
-  backArrow: {
-    marginRight: 70,
-    paddingBottom: 0
+  backArrowView: {
+    position: 'absolute',
+    left: 30,
+    top: 82,
   },
   InputContainer: {
     width: AppStyles.textInputWidth.main,
-    marginTop: 30,
+    marginTop: 20,
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: AppStyles.color.white,
@@ -222,36 +341,40 @@ const styles = StyleSheet.create({
     fontFamily: AppStyles.fontFamily.regular,
   },
   availability: {
-    marginTop: 30,
-    height: 42,
+    marginTop: 20,
+    marginBottom: 0,
     paddingLeft: 20,
     paddingRight: 20,
     color: AppStyles.color.text,
   },
   description: {
-    height: 140,
+    height: 100,
     paddingLeft: 20,
     paddingRight: 20,
+    paddingTop: 15,
     color: AppStyles.color.text,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   addVehicleContainer: {
     position: 'absolute',
-    bottom:50,
-    width: AppStyles.buttonWidth.main,
-    backgroundColor: AppStyles.color.tint,
+    bottom: 30,
+    right: 24,
+    backgroundColor: AppStyles.color.accent,
     borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     marginTop: 30,
   },
   addVehicleText: {
-    color: AppStyles.color.primarybg,
+    color: AppStyles.color.background,
+    fontFamily: AppStyles.fontFamily.regular,
   },
   availabilityButtonContainer: {
     width: AppStyles.buttonWidth.main,
     backgroundColor: AppStyles.color.tint,
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
-    marginTop: 30,
+    marginTop: 10,
   },
   availabilityButtonText: {
     color: AppStyles.color.primarybg,
@@ -259,9 +382,29 @@ const styles = StyleSheet.create({
   vehicleImage: {
     width: 240,
     height: 240,
-    borderRadius: 24,
-    marginBottom: 24
+    borderRadius: 20,
+    marginBottom: 20,
   },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  label: {
+    color: AppStyles.color.accent,
+    fontFamily: AppStyles.fontFamily.bold,
+    textTransform: 'uppercase',
+    paddingBottom: 24,
+  },
+  hourlyRate: {
+    marginBottom: 40,
+  }
 });
 
 const mapStateToProps = (state) => ({

@@ -32,9 +32,17 @@ export const AppStyles = {
     background: "#1D1D1D",
     blue: "#3293fe"
   },
-  fontFamily: {
-    bold: 'Satoshi-Bold',
-    regular: 'Satoshi-Regular'
+  fontFamily: { //supposed to fix font issue for android, doesn't appear to
+    ...Platform.select({
+      ios: {
+        bold: 'Satoshi-Bold',
+        regular: 'Satoshi-Regular'
+      },
+      android: {
+        bold: 'satoshi-bold',
+        regular: 'satoshi-regular'
+      },
+    }),
   },
   fontSize: {
     mainTitle: 32,

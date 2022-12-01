@@ -10,7 +10,9 @@ import AddVehicleScreen from '../screens/AddVehicleScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
-import MessagesScreen from '../screens/MessagesScreen';
+import MessageScreen from '../screens/MessageScreen';
+import Conversation from '../components/Conversation';
+import ListingScreen from '../screens/ListingScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {AppIcon, AppStyles} from '../AppStyles';
 import DrawerContainer from '../components/DrawerContainer';
@@ -35,6 +37,37 @@ const LoginStack = () => (
   </Stack.Navigator>
 );
 
+const MessageStack = () => (
+  <Stack.Navigator
+    initialRouteName="Messages"
+    screenOptions={{
+      headerShown:false
+    }}
+  >
+
+    <Stack.Screen
+      name="Messages"
+      component={MessageScreen}
+      style={styles.homeHeader}
+      options={({navigation}) => ({
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.openDrawer()}>
+            <Image style={styles.iconStyle} source={AppIcon.images.menu} />
+          </Pressable>
+        ),
+        headerLeftContainerStyle: {paddingLeft: 10},
+      })}
+    />
+
+    <Stack.Screen
+    name="Conversation"
+    component={Conversation}
+    style={styles.homeHeader}
+    />
+
+  </Stack.Navigator>
+)
+
 const HomeStack = () => (
   <Stack.Navigator
     initialRouteName="Home"
@@ -42,7 +75,6 @@ const HomeStack = () => (
       headerShown: false
     }}>
 
-    {/* Add different screens to the Home Stack */}
     <Stack.Screen
       name="Home"
       component={HomeScreen}
@@ -56,19 +88,19 @@ const HomeStack = () => (
         headerLeftContainerStyle: {paddingLeft: 10},
       })}
     />
-    
-    <Stack.Screen
-      name="Messages"
-      component={MessagesScreen}
-      style={styles.homeHeader}
-      options={{headerShown:false}}
-    />
 
     <Stack.Screen
       name="Profile"
       component={ProfileScreen}
       style={styles.homeHeader}
     />
+
+    <Stack.Screen
+      name="Listing"
+      component={ListingScreen}
+      style={styles.homeHeader}
+    />
+
   </Stack.Navigator>
 );
 
@@ -87,7 +119,7 @@ const VendorStack = () => (
 
     <Stack.Screen
       name="Messages"
-      component={MessagesScreen}
+      component={MessageScreen}
       style={styles.homeHeader}
       options={{headerShown:false}}
     />
@@ -97,6 +129,7 @@ const VendorStack = () => (
       component={ProfileScreen}
       style={styles.homeHeader}
     />
+
   </Stack.Navigator>
 );
 
@@ -117,10 +150,9 @@ const TabNavigator = () => (
       tabBarInactiveTintColor: AppStyles.color.text,
       tabBarActiveTintColor: AppStyles.color.tint,
       headerShown: false,
-      tabBarShowLabel: false
+      tabBarShowLabel: false,
+      tabBarHideOnKeyboard: true
     }}>
-
-    {/* Add Screen Switch Buttons to Bottom Bar */}
 
     <BottomTab.Screen
       options={{
@@ -150,8 +182,8 @@ const TabNavigator = () => (
           );
         },
       }}
-      name="MessagesScreen"
-      component={MessagesScreen}
+      name="MessageStack"
+      component={MessageStack}
     />
 
     <BottomTab.Screen
@@ -192,8 +224,6 @@ const VendorTabNavigator = () => (
       tabBarShowLabel: false
     }}>
 
-    {/* Add Screen Switch Buttons to Bottom Bar */}
-
     <VendorBottomTab.Screen
       options={{
         tabBarLabel: 'Home',
@@ -222,8 +252,8 @@ const VendorTabNavigator = () => (
           );
         },
       }}
-      name="MessagesScreen"
-      component={MessagesScreen}
+      name="MessageStack"
+      component={MessageStack}
     />
 
     <VendorBottomTab.Screen
@@ -284,6 +314,7 @@ const RootNavigator = () => (
     <Stack.Screen name="LoginStack" component={LoginStack} />
     <Stack.Screen name="VendorStack" component={VendorDrawerStack} />
     <Stack.Screen name="DrawerStack" component={DrawerStack} />
+    <Stack.Screen name="MessageStack" component={MessageStack}/>
   </Stack.Navigator>
 );
 
