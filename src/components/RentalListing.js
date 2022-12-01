@@ -302,8 +302,8 @@ export default function RentalListing(props) {
                 />
                 <Animated.View style={[styles.background, open]} pointerEvents="box-none">
                     <View style={[styles.modal]}>
-                      <View style={{flexDirection:"row"}}>
-                          <Text style={[styles.modalText]}> Filter </Text>
+                      <View style={{flexDirection:"row", justifyContent:'center', marginBottom: 10}}>
+                          <Text style={[ styles.modalFilter]}> Filter </Text>
                           <TouchableOpacity onPress={close} style={styles.modalButton}>
                                 <Image
                                     style={{height:20, width:20}}
@@ -323,7 +323,7 @@ export default function RentalListing(props) {
                                         status={checkedProx === '0.05' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.05' ? () => setCheckedProx('50') : () => setCheckedProx('0.05')}
                                     />
-                                    <Text> {'< '}0.05 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< '}0.05 miles </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
                                     <RadioButton
@@ -332,7 +332,7 @@ export default function RentalListing(props) {
                                         status={checkedProx === '0.1' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.1' ? () => setCheckedProx('50') : () => setCheckedProx('0.1')}
                                     />
-                                    <Text> {'< '}0.1 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< '}0.1 miles </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
                                     <RadioButton
@@ -341,7 +341,7 @@ export default function RentalListing(props) {
                                         status={checkedProx === '0.2' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.2' ? () => setCheckedProx('50') : () => setCheckedProx('0.2')}
                                     />
-                                    <Text> {'< '}0.2 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< '}0.2 miles </Text>
                                 </View>
                             </View>
                             <View>
@@ -352,7 +352,7 @@ export default function RentalListing(props) {
                                         status={checkedProx === '0.3' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.3' ? () => setCheckedProx('50') : () => setCheckedProx('0.3')}
                                     />
-                                    <Text> {'< '}0.3 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< '}0.3 miles </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
                                     <RadioButton
@@ -361,7 +361,7 @@ export default function RentalListing(props) {
                                         status={checkedProx === '0.5' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '0.5' ? () => setCheckedProx('50') : () => setCheckedProx('0.5')}
                                     />
-                                    <Text> {'< '}0.5 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< '}0.5 miles </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
                                     <RadioButton
@@ -370,7 +370,7 @@ export default function RentalListing(props) {
                                         status={checkedProx === '1' ? 'checked' : 'unchecked'}
                                         onPress={checkedProx === '1' ? () => setCheckedProx('50') : () => setCheckedProx('1')}
                                     />
-                                    <Text> {'< '}1 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< '}1 miles </Text>
                                 </View>
                             </View>
 
@@ -390,7 +390,7 @@ export default function RentalListing(props) {
                                         status={checkedPrice === '5' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '5' ? () => setCheckedPrice('1000') : () => setCheckedPrice('5')}
                                     />
-                                    <Text> {'< $'}5/hr </Text>
+                                    <Text style={styles.modalNormal}> {'< $'}5/hr </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
                                     <RadioButton
@@ -399,7 +399,7 @@ export default function RentalListing(props) {
                                         status={checkedPrice === '10' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '10' ? () => setCheckedPrice('1000') : () => setCheckedPrice('10')}
                                     />
-                                    <Text> {'< $'}10/hr </Text>
+                                    <Text style={styles.modalNormal}> {'< $'}10/hr </Text>
                                 </View>
                             </View>
                             <View>
@@ -410,7 +410,7 @@ export default function RentalListing(props) {
                                         status={checkedPrice === '15' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '15' ? () => setCheckedPrice('1000') : () => setCheckedPrice('15')}
                                     />
-                                    <Text> {'< $'}15/hr </Text>
+                                    <Text style={styles.modalNormal}> {'< $'}15/hr </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
                                     <RadioButton
@@ -419,7 +419,7 @@ export default function RentalListing(props) {
                                         status={checkedPrice === '20' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '20' ? () => setCheckedPrice('1000') : () => setCheckedPrice('20')}
                                     />
-                                    <Text> {'< $'}20 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< $'}20 miles </Text>
                                 </View>
                             </View>
 
@@ -439,7 +439,7 @@ export default function RentalListing(props) {
                                         status={checkedRev === '4.75' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '4.75' ? () => setCheckedRev('0') : () => setCheckedRev('4.75')}
                                     />
-                                    <Text> 4.75+ </Text>
+                                    <Text style={styles.modalNormal}> 4.75+ </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
                                     <RadioButton
@@ -448,7 +448,7 @@ export default function RentalListing(props) {
                                         status={checkedRev === '4.5' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '4.5' ? () => setCheckedRev('0') : () => setCheckedRev('4.5')}
                                     />
-                                    <Text> 4.5+ </Text>
+                                    <Text style={styles.modalNormal}> 4.5+ </Text>
                                 </View>
                             </View>
                             <View>
@@ -459,7 +459,7 @@ export default function RentalListing(props) {
                                         status={checkedRev === '4' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '4' ? () => setCheckedRev('0') : () => setCheckedRev('4')}
                                     />
-                                    <Text> 4+ </Text>
+                                    <Text style={styles.modalNormal}> 4+ </Text>
                                 </View>
                                 <View style={{flexDirection:"row"}}>
                                     <RadioButton
@@ -468,7 +468,7 @@ export default function RentalListing(props) {
                                         status={checkedRev === '3' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '3' ? () => setCheckedRev('0') : () => setCheckedRev('3')}
                                     />
-                                    <Text> 3+ </Text>
+                                    <Text style={styles.modalNormal}> 3+ </Text>
                                 </View>
                             </View>
 
@@ -488,7 +488,7 @@ export default function RentalListing(props) {
                             data={endTimeData}
                             setSelected={(val) => ((val) === 'Select End Time') ? setSSelected("11:00 PM") : setESelected(val)}
                             save="value"
-                            style={[styles.dropdown]}
+                            style={styles.dropdown}
                             boxStyles={{color:AppStyles.color.accent}}
                             dropdownTextStyles={{color:AppStyles.color.accent}}
                             placeholder="Select End Time"
@@ -606,12 +606,25 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         padding: 5
     },
+    modalFilter: {
+        fontFamily: AppStyles.fontFamily.bold,
+        fontSize: AppStyles.fontSize.title,
+        color: AppStyles.color.white,
+        position: "absolute",
+    },
     modalText: {
         textAlign: "left",
+        fontFamily: AppStyles.fontFamily.bold,
+        fontSize: AppStyles.fontSize.content,
+        color: AppStyles.color.white,
+    },
+    modalNormal: {
         fontFamily: AppStyles.fontFamily.regular,
+        fontSize: AppStyles.fontSize.content,
+        color: AppStyles.color.white,
     },
     modal: {
-        padding: 20,
+        padding: 30,
         borderRadius: 8,
         marginBottom: 300,
         backgroundColor: AppStyles.color.secondarybg,
@@ -632,7 +645,10 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     dropdown: {
-        paddingBottom: 5
+        paddingBottom: 5,
+        fontFamily: AppStyles.fontFamily.bold,
+        fontSize: AppStyles.fontSize.title,
+        color: AppStyles.color.secondarytext,
     },
     noItemsContainer: {
         width: '100%',
