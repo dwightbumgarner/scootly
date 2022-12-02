@@ -32,7 +32,7 @@ export default function RentalListing(props) {
     const [startSelected, setSSelected] = React.useState('01:00 AM');
     const [endSelected, setESelected] = React.useState('11:00 PM');
     const startTimeData = [
-        {key:'0', value:'Select Start Time'},
+        {key:'0', value:'Start Time'},
         {key:'1', value:'12:00 AM'},
         {key:'2', value:'01:00 AM'},
         {key:'3', value:'02:00 AM'},
@@ -59,7 +59,7 @@ export default function RentalListing(props) {
         {key:'24', value:'11:00 PM'},
     ];
     const endTimeData = [
-        {key:'0', value:'Select End Time'},
+        {key:'0', value:'End Time'},
         {key:'1', value:'12:00 AM'},
         {key:'2', value:'01:00 AM'},
         {key:'3', value:'02:00 AM'},
@@ -167,7 +167,6 @@ export default function RentalListing(props) {
                     ratingCount={5}
                     imageSize={16}
                     readonly
-                    startingValue={item?.vendorRating}
                     type='custom'
                     ratingColor={AppStyles.color.accent}
                     ratingBackgroundColor={AppStyles.color.text}
@@ -493,26 +492,33 @@ export default function RentalListing(props) {
 
                       <View>
                         <Text style={[styles.modalText]}> Availability </Text>
-                        <SelectList
-                            data={startTimeData}
-                            setSelected={(val) => ((val) === 'Select Start Time') ? setSSelected("01:00 AM") : setSSelected(val)}
-                            save="value"
-                            dropdownTextStyles={{color:AppStyles.color.accent}}
-                            placeholder="Select Start Time"
-                            inputStyles={{color:AppStyles.color.accent}}
-                            fontFamily={AppStyles.fontFamily.regular}
-                        />
-                        <Text> </Text>
-                        <SelectList
-                            data={endTimeData}
-                            setSelected={(val) => ((val) === 'Select End Time') ? setSSelected("11:00 PM") : setESelected(val)}
-                            save="value"
-                            boxStyles={{color:AppStyles.color.accent}}
-                            dropdownTextStyles={{color:AppStyles.color.accent}}
-                            placeholder="Select End Time"
-                            inputStyles={{color:AppStyles.color.accent}}
-                            fontFamily={AppStyles.fontFamily.regular}
-                        />
+                        <View style={{flexDirection:'row'}}>
+                            <SelectList
+                                data={startTimeData}
+                                setSelected={(val) => ((val) === 'Start Time') ? setSSelected("01:00 AM") : setSSelected(val)}
+                                save="value"
+                                dropdownStyles={{backgroundColor:AppStyles.color.accent}}
+                                dropdownTextStyles={{color:AppStyles.color.primarybg}}
+                                placeholder="Start Time"
+                                inputStyles={{color:AppStyles.color.accent}}
+                                fontFamily={AppStyles.fontFamily.regular}
+                                boxStyles={{borderRadius:15, borderWidth: 2, borderColor: AppStyles.color.white}}
+                                maxHeight={100}
+                            />
+                            <Text style={{marginRight: 10}}> </Text>
+                            <SelectList
+                                data={endTimeData}
+                                setSelected={(val) => ((val) === 'End Time') ? setESelected("11:00 PM") : setESelected(val)}
+                                save="value"
+                                dropdownStyles={{backgroundColor:AppStyles.color.accent}}
+                                dropdownTextStyles={{color:AppStyles.color.primarybg}}
+                                placeholder="End Time"
+                                inputStyles={{color:AppStyles.color.accent}}
+                                fontFamily={AppStyles.fontFamily.regular}
+                                boxStyles={{borderRadius:15, borderWidth: 2, borderColor: AppStyles.color.white}}
+                                maxHeight={100}
+                            />
+                        </View>
                       </View>
 
                     </View>
