@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Animated, TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator, Modal} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import {AppStyles, width} from '../AppStyles';
 import firestore from '@react-native-firebase/firestore';
 import { Rating } from 'react-native-ratings';
@@ -32,7 +33,7 @@ export default function RentalListing(props) {
     const [startSelected, setSSelected] = React.useState('01:00 AM');
     const [endSelected, setESelected] = React.useState('11:00 PM');
     const startTimeData = [
-        {key:'0', value:'Select Start Time'},
+        {key:'0', value:'Start Time'},
         {key:'1', value:'12:00 AM'},
         {key:'2', value:'01:00 AM'},
         {key:'3', value:'02:00 AM'},
@@ -59,7 +60,7 @@ export default function RentalListing(props) {
         {key:'24', value:'11:00 PM'},
     ];
     const endTimeData = [
-        {key:'0', value:'Select End Time'},
+        {key:'0', value:'End Time'},
         {key:'1', value:'12:00 AM'},
         {key:'2', value:'01:00 AM'},
         {key:'3', value:'02:00 AM'},
@@ -87,7 +88,8 @@ export default function RentalListing(props) {
     ];
 
     // Here we retrieve all available rental listings
-    useEffect(() => {
+    useFocusEffect(
+        React.useCallback(() => {
         // Retrieve Firebase rentals collection
         firestore()
         .collection('rentals')
@@ -124,7 +126,9 @@ export default function RentalListing(props) {
                                 averageRating += ratingData.rating;
                                 totalRatings++;
                             })
-                            averageRating = averageRating/totalRatings;
+                            
+                            averageRating = totalRatings === 0 ? 0 : averageRating/totalRatings;
+                            
                             listingData.vendorRating = averageRating;
                             // At the end of all of this, we have a complete set of data for the current listing, push to the master listing data array
                             listings.push(listingData);
@@ -141,8 +145,9 @@ export default function RentalListing(props) {
                         })
                     })
                 });
-        });
-    }, []);
+            });
+        }, [])
+    );
 
     // key is bruh in this case (json format)
     const renderItem = ({item}) => (
@@ -165,7 +170,6 @@ export default function RentalListing(props) {
                     ratingCount={5}
                     imageSize={16}
                     readonly
-                    startingValue={item?.vendorRating}
                     type='custom'
                     ratingColor={AppStyles.color.accent}
                     ratingBackgroundColor={AppStyles.color.text}
@@ -173,14 +177,21 @@ export default function RentalListing(props) {
                 />
             </View>
             <View style={styles.vehicleMetaContainer}>
-                {console.log("RENTAL ID: ", item?.id)}
-                {console.log("RENTAL: ", item)}
                 <Image
                 style={styles.vehicleImage}
                 source={{uri: item?.vehicleImage}}
                 />
                 <View>
                     <Text style={styles.availability}>Available From {item?.availability}</Text>
+                    <View style={styles.availabilityDaysContainer}>
+                        <Text style={item?.availableDays.indexOf(1) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S</Text>
+                        <Text style={item?.availableDays.indexOf(2) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>M</Text>
+                        <Text style={item?.availableDays.indexOf(3) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T</Text>
+                        <Text style={item?.availableDays.indexOf(4) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>W</Text>
+                        <Text style={item?.availableDays.indexOf(5) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T</Text>
+                        <Text style={item?.availableDays.indexOf(6) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>F</Text>
+                        <Text style={item?.availableDays.indexOf(7) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S</Text>
+                    </View>
                     <Text style={styles.price}>Price: ${item?.hourlyRate}/hr</Text>
                     <Text style={styles.proximity}>Proximity: {item?.proximity} miles</Text>
                 </View>
@@ -491,26 +502,33 @@ export default function RentalListing(props) {
 
                       <View>
                         <Text style={[styles.modalText]}> Availability </Text>
-                        <SelectList
-                            data={startTimeData}
-                            setSelected={(val) => ((val) === 'Select Start Time') ? setSSelected("01:00 AM") : setSSelected(val)}
-                            save="value"
-                            dropdownTextStyles={{color:AppStyles.color.accent}}
-                            placeholder="Select Start Time"
-                            inputStyles={{color:AppStyles.color.accent}}
-                            fontFamily={AppStyles.fontFamily.regular}
-                        />
-                        <Text> </Text>
-                        <SelectList
-                            data={endTimeData}
-                            setSelected={(val) => ((val) === 'Select End Time') ? setSSelected("11:00 PM") : setESelected(val)}
-                            save="value"
-                            boxStyles={{color:AppStyles.color.accent}}
-                            dropdownTextStyles={{color:AppStyles.color.accent}}
-                            placeholder="Select End Time"
-                            inputStyles={{color:AppStyles.color.accent}}
-                            fontFamily={AppStyles.fontFamily.regular}
-                        />
+                        <View style={{flexDirection:'row'}}>
+                            <SelectList
+                                data={startTimeData}
+                                setSelected={(val) => ((val) === 'Start Time') ? setSSelected("01:00 AM") : setSSelected(val)}
+                                save="value"
+                                dropdownStyles={{backgroundColor:AppStyles.color.accent}}
+                                dropdownTextStyles={{color:AppStyles.color.primarybg}}
+                                placeholder="Start Time"
+                                inputStyles={{color:AppStyles.color.accent}}
+                                fontFamily={AppStyles.fontFamily.regular}
+                                boxStyles={{borderRadius:15, borderWidth: 2, borderColor: AppStyles.color.white}}
+                                maxHeight={100}
+                            />
+                            <Text style={{marginRight: 10}}> </Text>
+                            <SelectList
+                                data={endTimeData}
+                                setSelected={(val) => ((val) === 'End Time') ? setESelected("11:00 PM") : setESelected(val)}
+                                save="value"
+                                dropdownStyles={{backgroundColor:AppStyles.color.accent}}
+                                dropdownTextStyles={{color:AppStyles.color.primarybg}}
+                                placeholder="End Time"
+                                inputStyles={{color:AppStyles.color.accent}}
+                                fontFamily={AppStyles.fontFamily.regular}
+                                boxStyles={{borderRadius:15, borderWidth: 2, borderColor: AppStyles.color.white}}
+                                maxHeight={100}
+                            />
+                        </View>
                       </View>
 
                     </View>
@@ -578,21 +596,36 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.bold,
         width: '60%',
-        marginBottom: 20
+        marginBottom: 5
+    },
+    availabilityDaysContainer: {
+        marginBottom: 10,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+    },
+    availabilityDaysActive: {
+        color: AppStyles.color.accent,
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.bold,
+    },
+    availabilityDaysInactive: {
+        color: AppStyles.color.white,
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.regular,
     },
     price: {
         color: AppStyles.color.white,
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.regular,
         paddingRight: 100,
-        marginBottom: 20
+        marginBottom: 12
     },
     proximity: {
         color: AppStyles.color.white,
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.regular,
         width: '80%',
-        marginBottom: 20
+        marginBottom: 5
     },
     searchBar: {
         fontFamily: AppStyles.fontFamily.regular,

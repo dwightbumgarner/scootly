@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState, useEffect} from 'react';
+import React, {useLayoutEffect, useState, useEffect, useFocusEffect} from 'react';
 import Button from 'react-native-button';
 import {View, StyleSheet, Text} from 'react-native';
 import {connect, useSelector} from 'react-redux';
@@ -8,22 +8,18 @@ import VendorListing from '../components/VendorListing';
 
 
 
-function VendorHomeScreen({navigation, refreshKey}) {
+function VendorHomeScreen({navigation}) {
   const auth = useSelector((state) => state.auth);
-  const [updateKey, setUpdateKey] = useState(0);
-  useEffect(() => {
-      setUpdateKey(Math.random());
-    }, []);
 
   return (
       <View style={styles.container}>
         <Text style={styles.title}>Hi, {auth.user?.fullname.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
-        {<VendorListing refreshKey={updateKey}></VendorListing>}
+        {<VendorListing navigation={navigation}></VendorListing>}
         <Button
         containerStyle={styles.addVehicleContainer}
         style={styles.addVehicleText}
         onPress={() => navigation.navigate('AddVehicle')}>
-        Add a Vehicle
+        Add a Scooter
       </Button>
       </View>
   );

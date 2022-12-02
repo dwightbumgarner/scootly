@@ -27,14 +27,10 @@ const Conversation = ({navigation, route}) => {
     const [messageBuffer, setMessageBuffer] = useState('');
     const [messageList, setMessageList] = useState([]);
     const [listRef, setListRef] = useState(null);
-
+    
     const convObject = route.params?.convObject;
     const user = firebase.auth().currentUser;
     const friend = convObject?.friend;
-
-    async function doRef(ref) {
-        setListRef(ref);
-    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -81,7 +77,7 @@ const Conversation = ({navigation, route}) => {
                 <FlatList 
                 data={messageList} 
                 renderItem={Message} 
-                keyExtractor={(item, key) => {item.id}}
+                keyExtractor={(item, index) => item.sentAt}
                 ref={(ref) => {setListRef(ref);}}
                 onContentSizeChange={() => {listRef.scrollToEnd()}}
                 />
@@ -214,7 +210,7 @@ const styles = StyleSheet.create({
       inputBody: {
         paddingTop: 7,
         left: 1,
-        fontColor: AppStyles.color.white,
+        color: AppStyles.color.white,
         fontFamily: AppStyles.fontFamily.regular
       },
       sendButton: {
