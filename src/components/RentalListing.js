@@ -399,7 +399,6 @@ export default function RentalListing(props) {
 
                         </View>
                       </View>
-
                       <View style={{marginBottom: 24}}>
                         <Text style={[styles.modalText]}> Price </Text>
                         <View style={{flexDirection:"row"}}>
@@ -705,11 +704,11 @@ const styles = StyleSheet.create({
         marginTop: '50%',
         left: 10,
     },
-    background: {                   //regular items
+    background: {
         position: "absolute",
         left: 0,
         right: 0,
-        top:60,
+        top: -40,
         bottom: 0,
         alignItems: "center",
         justifyContent: "center",
