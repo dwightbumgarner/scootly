@@ -25,12 +25,8 @@ import {login} from '../reducers';
 import { Icon } from 'react-native-elements';
 import { SocialIcon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-// import { FontAwesome } from '@expo/vector-icons/FontAwesome';
-// import { Icon } from 'react-native-vector-icons/dist/FontAwesome';
 
-
-
-function LoginScreen({navigation}) {
+function LoginScreen({navigation, route}) {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,6 +38,13 @@ function LoginScreen({navigation}) {
       webClientId:
         '176790331793-nl45oq9u5uoedgu0r3rp0lub7224ituk.apps.googleusercontent.com',
     });
+
+    console.log(route.params?.user)
+    if (route.params?.user !== null && route.params?.user !== undefined) {
+      console.log('test')
+      const data = route.params?.user?.data();
+      setEmail(data?.email); 
+    }
   }, []);
 
   const onPressLogin = () => {

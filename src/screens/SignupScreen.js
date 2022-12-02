@@ -33,8 +33,7 @@ function SignupScreen({navigation}) {
           .doc(user_uid)
           .get()
           .then(function (user) {
-            dispatch(login(user.data()));
-            navigation.navigate('DrawerStack', {user});
+            navigation.navigate('LoginStack', {screen: "Login", params: {user: user}});
           })
           .catch(function (error) {
             const {code, message} = error;

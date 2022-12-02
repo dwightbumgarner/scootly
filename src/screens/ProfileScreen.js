@@ -16,12 +16,9 @@ function ProfileScreen({navigation}){
     const auth = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const user = firebase.auth().currentUser;
-    // var initialName = auth.user?.fullname ?? 'Stranger';
     const [image, setImage] = useState(null);
     const [initialName, changeInitialName] = useState(auth.user?.fullname ?? 'Stranger')
     const [userName, changeUserName] = useState('');
-    //var photo = auth?.user?.photoURL;
-    //console.log(photo)
 
     const selectImage = () => {
         const options = {
@@ -50,8 +47,8 @@ function ProfileScreen({navigation}){
     // check if this actually works
     const saveButton = () => {
         if(userName !== ""){
-            console.log("userName", userName.split(' ').slice(0, -1).join(' '))
-            if(userName.split(' ').slice(0, -1).join(' ') == ""){
+            console.log("userName", userName?.split(' ').slice(0, -1).join(' '))
+            if(userName?.split(' ').slice(0, -1).join(' ') == ""){
                 Alert.alert(
                     "Please enter your first and last name!",
                     [
@@ -67,7 +64,8 @@ function ProfileScreen({navigation}){
                 console.log(user);
                 const update = {displayName: userName}
                 firestore().collection('users').doc(user.uid).update({
-                    fullname: update.displayName
+                    fullname: update.displayName,
+
                 });
                 user.updateProfile(update).then(() => {
                     console.log('Update successful');
