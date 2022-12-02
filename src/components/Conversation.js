@@ -27,14 +27,10 @@ const Conversation = ({navigation, route}) => {
     const [messageBuffer, setMessageBuffer] = useState('');
     const [messageList, setMessageList] = useState([]);
     const [listRef, setListRef] = useState(null);
-
+    
     const convObject = route.params?.convObject;
     const user = firebase.auth().currentUser;
     const friend = convObject?.friend;
-
-    async function doRef(ref) {
-        setListRef(ref);
-    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -56,7 +52,6 @@ const Conversation = ({navigation, route}) => {
     const Message = ({item}) => (
         <View style= {user.uid == item.sender ? styles.sentMessageBlurb : styles.recMessageBlurb} >
             <Text style={user.uid == item.sender ? styles.sentMessageText : styles.recMessageText}>{item.content}</Text>
-            
         </View>
     )
 
