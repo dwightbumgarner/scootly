@@ -275,8 +275,7 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         position: 'absolute',
-        top: -9,
-        right: -20,
+        right: 20,
         top: 82,
     },
     logoutImage:{
