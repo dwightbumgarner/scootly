@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import {TouchableOpacity, StyleSheet, Image, ScrollView, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
-import {AppStyles, width, AppIcon} from '../AppStyles';
+import {TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {AppStyles, AppIcon} from '../AppStyles';
 import firestore, { firebase, orderBy } from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 
 // TODO: 
     // add time sent (already exists) to message blurb
     // order conversations on screen by RECENCY
-    // add subscriber to conversation list
     // noconversationsText not showing on android
 
 const MessageScreen = ({navigation, route}) => {
@@ -24,7 +23,7 @@ const MessageScreen = ({navigation, route}) => {
         React.useCallback(() => {
             // Do something when the screen is focused
 
-            firestore()
+            var sub = firestore()
             .collection('conversations')
             .where('participants', 'array-contains', user.uid)
             .get()
@@ -63,12 +62,9 @@ const MessageScreen = ({navigation, route}) => {
                 setLoading(false);
             })
             
-            return () => {
-                // Do something when the screen is unfocused
-                // Useful for cleanup functions
-            };
-        }, [loading == true])
-    );
+            return () => sub;
+        }, [loading === true, convos.length])
+    ); 
 
 
     const ConvoBlurb = ({item}) => {
@@ -77,7 +73,6 @@ const MessageScreen = ({navigation, route}) => {
         var latestMessage = item.data?.messages ? item.data.messages[mesLen - 1]?.content : 'No messages yet';
         var photo = item.friend?.photoURL;
         // Clicking a Connection opens a Conversation with another user 
-
         return (
             <TouchableOpacity 
             style={styles.connection} 
