@@ -167,7 +167,7 @@ function AddVehicleScreen({navigation}) {
         hourlyRate: hourlyRate,
         vehicleName: vehicleName,
         vehicleDescription: vehicleDescription,
-        proximity: Math.floor(Math.random()*10),
+        proximity: Math.random().toFixed(1),
         availableDays: weekdays,
         availability: startSelected + ' - ' + endSelected,
         vendorUID: auth.user?.id
