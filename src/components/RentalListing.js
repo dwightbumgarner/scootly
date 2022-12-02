@@ -704,11 +704,11 @@ const styles = StyleSheet.create({
         marginTop: '50%',
         left: 10,
     },
-    background: {                   //regular items
+    background: {
         position: "absolute",
         left: 0,
         right: 0,
-        top:60,
+        top: -40,
         bottom: 0,
         alignItems: "center",
         justifyContent: "center",
