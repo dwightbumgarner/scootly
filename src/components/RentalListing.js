@@ -17,6 +17,7 @@ export default function RentalListing(props) {
     const [data, setData] = useState([]);
     const [allData, setallData] = useState([]);
     const [searchValue, setSearchValue] = useState("");
+    const [modalActive, setModalActive] = useState(false);
     //MODAL
     const[animation, setAnimation]=useState(new Animated.Value(0));     
     const openModal = animation.interpolate({
@@ -213,6 +214,8 @@ export default function RentalListing(props) {
 
 //MODAL FUNCTIONALITY
     const modalTrigger=()=>{
+        props.handler(true);
+        setModalActive(true);
         Animated.timing(animation, {
             toValue: 1,
             duration: 250,
@@ -242,6 +245,8 @@ export default function RentalListing(props) {
     };
 
     const close=()=>{
+        props.handler(false);
+        setModalActive(false);
         Animated.timing(animation, {
             toValue: 0,
             duration: 250,
@@ -395,8 +400,6 @@ export default function RentalListing(props) {
                         </View>
                       </View>
 
-
-
                       <View style={{marginBottom: 24}}>
                         <Text style={[styles.modalText]}> Price </Text>
                         <View style={{flexDirection:"row"}}>
@@ -539,9 +542,11 @@ export default function RentalListing(props) {
                             />
                         </View>
                       </View>
-
                     </View>
                 </Animated.View>
+                {modalActive &&
+                <View style={styles.hidden}>
+                </View>}
         </SafeAreaView>
     );
 }
@@ -704,11 +709,23 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 0,
         right: 0,
-        top:0,
+        top:60,
         bottom: 0,
         alignItems: "center",
         justifyContent: "center",
         elevation: 5,
+        zIndex: 5,
+    },
+    hidden: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        opacity: 0.5,
+        backgroundColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     dropdown: {
         paddingBottom: 5,
