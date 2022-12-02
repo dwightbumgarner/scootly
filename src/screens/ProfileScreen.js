@@ -145,7 +145,7 @@ function ProfileScreen({navigation}){
                 <TouchableOpacity onPress={()=>selectImage()}>
                 <Image
                     style={styles.profileImage}
-                    source={image ? {uri: (image?.uri)} : (AppIcon.images.defaultProfile)}
+                    source={image ? {uri: (image?.uri)} : (auth.user.photoURL? {uri: (auth.user.photoURL)} : AppIcon.images.defaultProfile)}
                 />
             </TouchableOpacity>
             </View>
@@ -275,7 +275,8 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         position: 'absolute',
-        right: 30,
+        top: -9,
+        right: -20,
         top: 82,
     },
     logoutImage:{
