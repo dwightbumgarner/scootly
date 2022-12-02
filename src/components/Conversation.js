@@ -31,7 +31,6 @@ function writeMessage(convoId, content, sender) {
 const ReviewBox = (props) => {
 
     function leaveReview(rating) {
-
         firestore()
         .collection('ratings')
         .where('renterUID', '==', props.userId)
@@ -59,7 +58,6 @@ const ReviewBox = (props) => {
                     rating: rating
                 });
             }
-            
         });
     }
 
@@ -200,16 +198,16 @@ const Conversation = ({navigation, route}) => {
                 </Button>
                 
             </View>
-            {
-            reviewBoxVisible == true 
-            && 
+            {reviewBoxVisible && 
             <ReviewBox 
             name={friend.fullname} 
             closeFunc={setReviewBoxVisible}
             userId={user.uid}
             friendId={friend.id}
-            />
-            }
+            />}
+            {reviewBoxVisible &&
+            <View style={styles.hidden}>
+            </View>}
         </View>
     );
 };
@@ -259,6 +257,8 @@ const styles = StyleSheet.create({
         height: 230,
         width: 300,
         alignItems:'center',
+        zIndex: 5,
+        elevation: 5
     },
     reviewBoxHeader: {
         alignItems:'center',
@@ -276,6 +276,17 @@ const styles = StyleSheet.create({
     saveReviewText: {
         color: AppStyles.color.primarybg,
         fontFamily: AppStyles.fontFamily.regular,
+    },
+    hidden: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        opacity: 0.5,
+        backgroundColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     messageContainer: {
         flex:1,
