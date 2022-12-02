@@ -4,19 +4,25 @@ import { connect } from 'react-redux';
 import {AppStyles} from '../AppStyles';
 import {Configuration} from '../Configuration';
 import RentalListing from '../components/RentalListing';
-import { firebase } from '@react-native-firebase/firestore';
+import firestore, { firebase } from '@react-native-firebase/firestore';
+
 function HomeScreen({navigation}) {
 
   var user = firebase.auth().currentUser;
   const [username, setUsername] = useState(user?.displayName);
+
   const [modalActive, setModalActive] = useState(false);
 
   // listen for opening of screen, check for name change
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      user = firebase.auth().currentUser;
-      setUsername(user?.displayName);
-      console.log("Username: " + user?.displayName);
+
+      firestore().collection('users').doc(user.uid).get().then(doc => {
+        setUsername(doc.data().fullname);
+      })
+
+      console.log("Username: " + username);
+
     })
 
     return unsubscribe;

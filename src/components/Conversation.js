@@ -4,6 +4,7 @@ import {AppStyles, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
+import { Rating } from 'react-native-ratings';
 import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from 'react-native-elements'
 
@@ -11,7 +12,7 @@ const sendIcon = require('../../assets/icons/send-icon.png')
 
 
 // add a message to current conversation
-export function writeMessage(convoId, content, sender) {
+function writeMessage(convoId, content, sender) {
     // cannot send empty message
     if (content === '') {
         console.log('No message to be sent.');
@@ -26,11 +27,77 @@ export function writeMessage(convoId, content, sender) {
     .catch(() => {console.log('Message failed to send.');});
 }
 
+const ReviewBox = (props) => {
+
+    function leaveReview(rating) {
+
+        firestore()
+        .collection('ratings')
+        .where('renterUID', '==', props.userId)
+        .where('vendorUID', '==', props.friendId)
+        .get()
+        .then(snapshot => {
+            
+            if (snapshot.size == 0) {
+                console.log("Leaving new rating: " + rating + " stars.");
+
+                firestore().collection('ratings').add({
+                    rating:rating,
+                    renterUID: props.userId,
+                    vendorUID: props.friendId,
+                    review: ''
+                });
+            }
+            else {
+                console.log("Updating rating to: " + rating + " stars.");
+
+                firestore()
+                .collection('ratings')
+                .doc(snapshot.docs[0].id)
+                .update({
+                    rating: rating
+                });
+            }
+            
+        });
+    }
+
+    return (
+        <View style={styles.reviewBox}>
+            <View style={styles.reviewBoxHeader}>
+                <Text style={{color:'white', fontSize:25}}> Rate Your Experience </Text>
+            </View>
+
+            <Rating
+            tintColor={"black"}
+            imageSize={50}
+            ratingCount={5}
+            type='custom'
+            ratingColor={AppStyles.color.accent}
+            ratingBackgroundColor={AppStyles.color.grey}
+            onFinishRating={leaveReview}
+            startingValue={0}
+            />
+
+            <TouchableOpacity 
+            style={styles.saveReview} 
+            onPress={() => {
+                props.closeFunc(false);
+            }}>
+                <Text style={{color:AppStyles.color.accent, fontSize:20}}> Save </Text>
+            </TouchableOpacity>
+
+        </View>
+    )
+}
+
 // Screen for specific converesation with other user
 const Conversation = ({navigation, route}) => {
     const [messageBuffer, setMessageBuffer] = useState('');
     const [messageList, setMessageList] = useState([]);
     const [listRef, setListRef] = useState(null);
+    const [reviewBoxVisible, setReviewBoxVisible] = useState(false);
+    const [reviewRating, setReviewRating] = useState(0);
     
     const convObject = route.params?.convObject;
     const user = firebase.auth().currentUser;
@@ -70,10 +137,16 @@ const Conversation = ({navigation, route}) => {
                     size={27} 
                     onPress={() => navigation.navigate('Messages')}></Icon>      
                 </View>
+
                 <View style={styles.friendBox}>
                     <Image source={{uri: friend?.photoURL}} style={{height: 48, width: 48, borderRadius: 48, paddingTop: 10}}/>
                     <Text style={styles.friendName}> {friend?.fullname} </Text>
                 </View>
+                
+                <TouchableOpacity onPress={() => setReviewBoxVisible(!reviewBoxVisible)}>
+                    <Text style={styles.reviewButton}>Review</Text>
+                </TouchableOpacity>
+
             </View>
 
             <SafeAreaView style={styles.messageContainer}>
@@ -110,7 +183,16 @@ const Conversation = ({navigation, route}) => {
                 </Button>
                 
             </View>
-
+            {
+            reviewBoxVisible == true 
+            && 
+            <ReviewBox 
+            name={friend.fullname} 
+            closeFunc={setReviewBoxVisible}
+            userId={user.uid}
+            friendId={friend.id}
+            />
+            }
         </View>
     );
 };
@@ -148,6 +230,30 @@ const styles = StyleSheet.create({
         marginTop: 70,
         marginLeft: 'auto',
         marginRight: 'auto',
+    },
+    reviewButton: {
+        color:AppStyles.color.tint,
+
+    },
+    reviewBox: {
+        position:"absolute",
+        top: 250,
+        backgroundColor:'black',
+        borderColor:'white',
+        borderRadius:10,
+        borderWidth:1,
+        height: 200,
+        width: 300,
+        alignItems:'center',
+    },
+    reviewBoxHeader: {
+        alignItems:'center',
+        borderBottomColor:AppStyles.color.grey,
+        borderBottomWidth:1,
+        marginBottom:30
+    },
+    saveReview: {
+        marginTop:20
     },
     messageContainer: {
         flex:1,
