@@ -20,9 +20,6 @@ function HomeScreen({navigation}) {
       firestore().collection('users').doc(user.uid).get().then(doc => {
         setUsername(doc.data().fullname);
       })
-
-      console.log("Username: " + username);
-
     })
 
     return unsubscribe;
@@ -34,7 +31,8 @@ function HomeScreen({navigation}) {
 
   return (
       <View style={styles.container}>
-        <Text style={styles.title}>Hi, {username.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
+        {console.log("Username: " + username)}
+        <Text style={styles.title}>Hi, {username?.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
         <RentalListing navigation={navigation} handler = {backgroundHandler}/>
         {modalActive &&
         <View style={styles.hidden}>
