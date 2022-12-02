@@ -111,7 +111,7 @@ const MessageScreen = ({navigation, route}) => {
                 <Text style={styles.title}> Messages </Text>
                 <SafeAreaView>
                     {
-                        convos.length > 0 
+                        convos.length > 0
                         ? 
                         <FlatList
                         data={convos}
@@ -182,7 +182,8 @@ const styles = StyleSheet.create({
         color: AppStyles.color.white,
     },
     noConversationsText: {
-        width: '75%',
+        maxWidth: '75%',
+        width: '10%',
         textAlign: 'center',
         marginLeft: 'auto',
         marginRight: 'auto',

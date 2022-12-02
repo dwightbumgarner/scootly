@@ -454,7 +454,7 @@ export default function RentalListing(props) {
 
 
                       <View style={{marginBottom: 24}}>
-                        <Text style={[styles.modalText]}> Reviews </Text>
+                        <Text style={[styles.modalText]}> Ratings </Text>
                         <View style={{flexDirection:"row"}}>
                             <View style={{marginRight: 45}}>
                                 <View style={{flexDirection:"row", marginRight: 12}}>
@@ -695,11 +695,11 @@ const styles = StyleSheet.create({
     modal: {
         paddingTop: 45,
         paddingBottom: 24,
-        paddingHorizontal: 45,
+        paddingHorizontal: 39,
         borderRadius: 8,
-        marginBottom: '50%',
+        marginBottom: '90%',
         backgroundColor: AppStyles.color.background,
-        justifySelf: 'center',
+        justifySelf: 'flex-start',
     },
     button: {
         marginTop: '50%',

@@ -9,7 +9,8 @@ import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from 'react-native-elements'
 
 const sendIcon = require('../../assets/icons/send-icon.png')
-
+const rateIcon = require('../../assets/icons/rate-icon.png')
+const xIcon = require('../../assets/icons/x-icon.png')
 
 // add a message to current conversation
 function writeMessage(convoId, content, sender) {
@@ -64,12 +65,23 @@ const ReviewBox = (props) => {
 
     return (
         <View style={styles.reviewBox}>
+            {/* <TouchableOpacity 
+                onPress={() => {
+                    props.closeFunc(false);
+                }} 
+                style={styles.modalButton}>
+                <Image
+                    style={{height:20, width:20, right: 0, top: 0}}
+                    source={xIcon}
+                />
+            </TouchableOpacity> */}
+
             <View style={styles.reviewBoxHeader}>
-                <Text style={{color:'white', fontSize:25}}> Rate Your Experience </Text>
+                <Text style={styles.modalTitle}>Rate Your Experience</Text>
             </View>
 
             <Rating
-            tintColor={"black"}
+            tintColor={AppStyles.color.background}
             imageSize={50}
             ratingCount={5}
             type='custom'
@@ -84,7 +96,7 @@ const ReviewBox = (props) => {
             onPress={() => {
                 props.closeFunc(false);
             }}>
-                <Text style={{color:AppStyles.color.accent, fontSize:20}}> Save </Text>
+                <Text style={styles.saveReviewText}> Save </Text>
             </TouchableOpacity>
 
         </View>
@@ -143,9 +155,14 @@ const Conversation = ({navigation, route}) => {
                     <Text style={styles.friendName}> {friend?.fullname} </Text>
                 </View>
                 
-                <TouchableOpacity onPress={() => setReviewBoxVisible(!reviewBoxVisible)}>
-                    <Text style={styles.reviewButton}>Review</Text>
-                </TouchableOpacity>
+                <View style={styles.rateButton}>
+                    <TouchableOpacity onPress={() => setReviewBoxVisible(!reviewBoxVisible)}>
+                        <Image 
+                            source = {rateIcon}
+                            style = {styles.rateIcon}
+                        />
+                    </TouchableOpacity>
+                </View>
 
             </View>
 
@@ -233,16 +250,13 @@ const styles = StyleSheet.create({
     },
     reviewButton: {
         color:AppStyles.color.tint,
-
     },
     reviewBox: {
         position:"absolute",
-        top: 250,
-        backgroundColor:'black',
-        borderColor:'white',
+        top: 275,
+        backgroundColor: AppStyles.color.background,
         borderRadius:10,
-        borderWidth:1,
-        height: 200,
+        height: 230,
         width: 300,
         alignItems:'center',
     },
@@ -250,10 +264,18 @@ const styles = StyleSheet.create({
         alignItems:'center',
         borderBottomColor:AppStyles.color.grey,
         borderBottomWidth:1,
-        marginBottom:30
+        marginBottom: 20
     },
     saveReview: {
-        marginTop:20
+        backgroundColor: AppStyles.color.accent,
+        borderRadius: AppStyles.borderRadius.main,
+        paddingVertical: 16,
+        paddingHorizontal: 24,
+        marginTop: 30,
+    },
+    saveReviewText: {
+        color: AppStyles.color.primarybg,
+        fontFamily: AppStyles.fontFamily.regular,
     },
     messageContainer: {
         flex:1,
@@ -348,5 +370,20 @@ const styles = StyleSheet.create({
       sentMessageText: {
         color: AppStyles.color.background,
         fontFamily: AppStyles.fontFamily.regular
+      },
+      rateButton: {
+        position: 'absolute',
+        right: 30,
+        top: 82,
+      },  
+      rateIcon: {
+        height: 24,
+        width: 24
+      },
+      modalTitle: {
+        color: AppStyles.color.white,
+        fontFamily: AppStyles.fontFamily.bold,
+        fontSize: AppStyles.fontSize.content,
+        marginTop: 24,
       }
 })
