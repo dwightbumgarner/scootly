@@ -122,10 +122,6 @@ function ProfileScreen({navigation}){
     // view with header and profile image, resorts to default if cannot find info
     return (
         <View style={styles.container}>
-            <View>
-            <Text style={styles.title}>
-                {initialName}
-            </Text>
             <View style={styles.logoutButton}>
                 <TouchableOpacity 
                     onPress={() => {
@@ -137,12 +133,14 @@ function ProfileScreen({navigation}){
                         }); //logout on redux
                     }}>
                   <Image 
-                  style = {styles.tinylogout}
+                  style = {styles.logoutImage}
                   source = {logoutIcon}
                   />
-            </TouchableOpacity>
+                </TouchableOpacity>
             </View>
-            </View>
+            <Text style={styles.title}>
+                {initialName}
+            </Text>
             <View style={styles.profileImageCircle}>
                 <TouchableOpacity onPress={()=>selectImage()}>
                 <Image
@@ -275,17 +273,14 @@ const styles = StyleSheet.create({
         width: 15,
         height: 20,
     },
-    tinylogout:{
-        width: 24,
-        height: 24,
-        marginTop: 93,
-        marginBottom: 50,
-        left: 45,
-    },
     logoutButton: {
         position: 'absolute',
         top: -9,
         right: -20,
+    },
+    logoutImage:{
+        width: 24,
+        height: 24,
     },
     labelText: {
         color: AppStyles.color.accent,

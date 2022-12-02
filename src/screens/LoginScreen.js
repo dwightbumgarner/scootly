@@ -258,7 +258,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   or: {
-    color: AppStyles.color.white,
+    color: AppStyles.color.accent,
+    fontFamily: AppStyles.fontFamily.bold,
     marginTop: 40,
     marginBottom: 10,
   },
@@ -315,7 +316,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 65,
     marginTop: 30,
-    backgroundColor: AppStyles.color.white,
+    backgroundColor: AppStyles.color.text,
     borderRadius: 30
   },
   googleText: {
