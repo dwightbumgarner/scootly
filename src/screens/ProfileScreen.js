@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     logoutButton: {
         position: 'absolute',
         top: -9,
-        right: -45,
+        right: -20,
     },
     labelText: {
         color: AppStyles.color.accent,
