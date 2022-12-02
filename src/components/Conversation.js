@@ -54,8 +54,9 @@ const Conversation = ({navigation, route}) => {
     );
 
     const Message = ({item}) => (
-        <View style={user.uid == item.sender ? styles.sentMessageBlurb : styles.recMessageBlurb}>
-            <Text>{item.content}</Text>
+        <View style= {user.uid == item.sender ? styles.sentMessageBlurb : styles.recMessageBlurb} >
+            <Text style={user.uid == item.sender ? styles.sentMessageText : styles.recMessageText}>{item.content}</Text>
+            
         </View>
     )
 
@@ -68,7 +69,7 @@ const Conversation = ({navigation, route}) => {
                 </Button>
 
                 <View style={styles.friendBox}>
-                    <Image source={{uri: friend?.photoURL}} style={{height: 75, width: 75, borderRadius: 75}}/>
+                    <Image source={{uri: friend?.photoURL}} style={{height: 75, width: 75, borderRadius: 75, paddingTop: 10}}/>
                     <Text style={{color:'white', fontSize:20, paddingTop:20}}> {friend?.fullname} </Text>
                 </View>
 
@@ -81,7 +82,7 @@ const Conversation = ({navigation, route}) => {
                 <FlatList 
                 data={messageList} 
                 renderItem={Message} 
-                keyExtractor={(item, key) => {item.id}}
+                keyExtractor={(item, index) => item.sentAt}
                 ref={(ref) => {setListRef(ref);}}
                 onContentSizeChange={() => {listRef.scrollToEnd()}}
                 />
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     convoHeader: {
-        height: 150,
+        height: 180,
         width: '90%',
         display: 'flex',
         flexDirection:'row',
@@ -144,12 +145,12 @@ const styles = StyleSheet.create({
     },
     friendBox: {
         width: '50%',
-        height: '60%',
+        height: '50%',
         display:'flex',
         flexDirection:'column',
         justifyContent:'space-evenly',
         alignItems:'center',
-        marginTop: 10
+        marginTop: 40
 
     },
     messageContainer: {
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-around'
     },
     inputContainer: {
-        width: 250,
+        width: 270,
         height: 40,
         borderRadius: 20,
         marginLeft: 3,
@@ -212,7 +213,9 @@ const styles = StyleSheet.create({
         paddingRight:10
       },
       inputBody: {
-        color: 'white',
+        paddingTop: 7,
+        left: 1,
+        color: AppStyles.color.white,
         fontFamily: AppStyles.fontFamily.regular
       },
       sendButton: {

@@ -9,7 +9,7 @@ import ImagePicker from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import NumericInput from 'react-native-numeric-input'
-import { DayPicker } from 'react-native-picker-weekday'
+import { DayPicker } from 'react-native-picker-weekday' 
 import {SelectList} from 'react-native-dropdown-select-list'
 
 

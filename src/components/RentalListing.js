@@ -124,7 +124,9 @@ export default function RentalListing(props) {
                                 averageRating += ratingData.rating;
                                 totalRatings++;
                             })
-                            averageRating = averageRating/totalRatings;
+                            
+                            averageRating = totalRatings === 0 ? 0 : averageRating/totalRatings;
+                            
                             listingData.vendorRating = averageRating;
                             // At the end of all of this, we have a complete set of data for the current listing, push to the master listing data array
                             listings.push(listingData);
@@ -174,7 +176,7 @@ export default function RentalListing(props) {
             </View>
             <View style={styles.vehicleMetaContainer}>
                 {console.log("RENTAL ID: ", item?.id)}
-                {console.log("RENTAL: ", item)}
+                {/* console.log("RENTAL: ", item)*/}
                 <Image
                 style={styles.vehicleImage}
                 source={{uri: item?.vehicleImage}}
@@ -479,7 +481,6 @@ export default function RentalListing(props) {
                                         value="3"
                                         color={AppStyles.color.accent}
                                         uncheckedColor={AppStyles.color.white}
-                                        uncheckedColor={AppStyles.color.white}
                                         status={checkedRev === '3' ? 'checked' : 'unchecked'}
                                         onPress={checkedRev === '3' ? () => setCheckedRev('0') : () => setCheckedRev('3')}
                                     />
@@ -510,7 +511,6 @@ export default function RentalListing(props) {
                             dropdownTextStyles={{color:AppStyles.color.accent}}
                             placeholder="Select End Time"
                             inputStyles={{color:AppStyles.color.accent}}
-                            boxStyles={{color:AppStyles.color.accent}}
                             fontFamily={AppStyles.fontFamily.regular}
                         />
                       </View>
