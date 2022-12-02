@@ -11,6 +11,7 @@ import NumericInput from 'react-native-numeric-input'
 import { DayPicker } from 'react-native-picker-weekday' 
 import {SelectList} from 'react-native-dropdown-select-list'
 
+const chevronIcon = require('../../assets/icons/chevron-icon.png')
 
 function AddVehicleScreen({navigation}) {
   const auth = useSelector((state) => state.auth);
@@ -246,6 +247,17 @@ function AddVehicleScreen({navigation}) {
             inputStyle= {{fontFamily: AppStyles.fontFamily.regular}}  />
 
   <Text style={[styles.label, {marginTop: 50}]}>Availability</Text>
+    <DayPicker
+        weekdays={weekdays}
+        setWeekdays={setWeekdays}
+        activeColor={AppStyles.color.tint}
+        textColor={AppStyles.color.text}
+        text={AppStyles.color.white}
+        dayTextStyle={{fontFamily: AppStyles.fontFamily.regular}}
+        inactiveColor={AppStyles.color.secondarybg}
+        itemStyles={{marginHorizontal: 4, borderRadius: 6}}
+        wrapperStyles={{marginTop: 0, paddingTop: 0}}
+      />
     <SelectList
         data={startTimeData}
         setSelected={(val) => setSSelected(val)}
@@ -254,7 +266,12 @@ function AddVehicleScreen({navigation}) {
         dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         placeholder="Select Start Time"
-        boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+        boxStyles={{width: 160, borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+        arrowicon={<Image 
+                  source = {chevronIcon}
+                  style = {{height: 6, width: 12, top: 7, left: 8}}
+                  />}
+        dropdownStyles={{borderColor: AppStyles.color.white, borderRadius: 4, backgroundColor: AppStyles.color.secondarybg}}
     />
     <Text style={[styles.label, {marginTop: 24}]}>To</Text>
     <SelectList
@@ -264,19 +281,13 @@ function AddVehicleScreen({navigation}) {
         search={false}
         dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
-        boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+        boxStyles={{width: 160, borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+        arrowicon={<Image 
+                  source = {chevronIcon}
+                  style = {{height: 6, width: 12, top: 7, left: 8}}
+                  />}
+        dropdownStyles={{borderColor: AppStyles.color.white, borderRadius: 4, backgroundColor: AppStyles.color.secondarybg}}
         placeholder="Select End Time"
-    />
-    <DayPicker
-      weekdays={weekdays}
-      setWeekdays={setWeekdays}
-      activeColor={AppStyles.color.tint}
-      textColor={AppStyles.color.text}
-      text={AppStyles.color.white}
-      dayTextStyle={{fontFamily: AppStyles.fontFamily.regular}}
-      inactiveColor={AppStyles.color.secondarybg}
-      itemStyles={{marginHorizontal: 4, borderRadius: 6}}
-      wrapperStyles={{marginTop: 30, paddingTop: 0}}
     />
     <Button
       containerStyle={styles.addVehicleContainer}

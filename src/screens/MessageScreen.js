@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         width:340,
         height:90,
         marginBottom: 15,
-        borderRadius:30,
+        borderRadius:16,
         backgroundColor: AppStyles.color.secondarybg,
         alignItems:'center',
         flexDirection:'row',
@@ -180,7 +180,6 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.regular,
         color: AppStyles.color.white,
-        marginLeft: 10
     },
     noConversationsText: {
         width: '75%',
