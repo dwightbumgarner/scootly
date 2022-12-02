@@ -56,6 +56,7 @@ const Conversation = ({navigation, route}) => {
     const Message = ({item}) => (
         <View style= {user.uid == item.sender ? styles.sentMessageBlurb : styles.recMessageBlurb} >
             <Text style={user.uid == item.sender ? styles.sentMessageText : styles.recMessageText}>{item.content}</Text>
+            
         </View>
     )
 
@@ -81,7 +82,7 @@ const Conversation = ({navigation, route}) => {
                 <FlatList 
                 data={messageList} 
                 renderItem={Message} 
-                keyExtractor={(item, key) => {item.id}}
+                keyExtractor={(item, index) => item.sentAt}
                 ref={(ref) => {setListRef(ref);}}
                 onContentSizeChange={() => {listRef.scrollToEnd()}}
                 />
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
       inputBody: {
         paddingTop: 7,
         left: 1,
-        fontColor: AppStyles.color.white,
+        color: AppStyles.color.white,
         fontFamily: AppStyles.fontFamily.regular
       },
       sendButton: {

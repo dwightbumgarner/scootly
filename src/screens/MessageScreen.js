@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import {TouchableOpacity, StyleSheet, Image, ScrollView, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
-import firestore, { firebase } from '@react-native-firebase/firestore';
+import firestore, { firebase, orderBy } from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 
 // TODO: 
@@ -30,14 +30,15 @@ const MessageScreen = ({navigation, route}) => {
             .get()
             .then(collectionSnapshot => {
                 setCount(collectionSnapshot.size);
+                console.log("Total conversations: " + collectionSnapshot.size);
+
                 if (collectionSnapshot.size === 0) {
                     setLoading(false);
                 }
 
-                collectionSnapshot.forEach(docSnapshot => {
-
+                collectionSnapshot.forEach(doc => {
                     // set index of other user based on position in array
-                    let part = docSnapshot.data().participants;
+                    let part = doc.data().participants;
                     var friendIndex = part[0] === user.uid ? 1 : 0;
                     
                     // get data of other participant
@@ -47,21 +48,19 @@ const MessageScreen = ({navigation, route}) => {
                         .get()
                         .then(userSnapshot => {
                             // load data into state variable if non duplicate
-                            if (!convoIds.includes(docSnapshot.id)){
-                                setConvoIds(convoIds.concat(docSnapshot.id));
-                                setConvos(convos.concat({id: docSnapshot.id, data: docSnapshot.data(), friend: userSnapshot.data()}));
-                                console.log("added " + docSnapshot.id);
-                                console.log(convos);
+                            if (!convoIds.includes(doc.id)){
+                                setConvoIds(convoIds.concat(doc.id));
+                                setConvos(convos.concat({id: doc.id, data: doc.data(), friend: userSnapshot.data()}));
+                                console.log("added " + doc.id);
                             }
-                            if (convoIds.length === count){
-                                console.log("Total conversations: " + count);
-                                setLoading(false);
-                            }
+                            
+                            setLoading(false);
                     });
                 });
             })
             .catch(() => {
-                console.log("Error loading conversations")
+                console.log("Error loading conversations");
+                setLoading(false);
             })
             
             return () => {
@@ -77,7 +76,6 @@ const MessageScreen = ({navigation, route}) => {
         var name = item.friend ? item.friend?.fullname : 'name';
         var latestMessage = item.data?.messages ? item.data.messages[mesLen - 1]?.content : 'No messages yet';
         var photo = item.friend?.photoURL;
-        
         // Clicking a Connection opens a Conversation with another user 
 
         return (
@@ -123,7 +121,7 @@ const MessageScreen = ({navigation, route}) => {
                         <FlatList
                         data={convos}
                         renderItem={ConvoBlurb}
-                        ketExtractor={(item, key) => {item.id}}
+                        ketExtractor={(item, index) => item.id}
                         />
                         :
                         <Text style={styles.noConversationsText}>
