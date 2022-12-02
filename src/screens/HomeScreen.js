@@ -8,24 +8,31 @@ import { firebase } from '@react-native-firebase/firestore';
 function HomeScreen({navigation}) {
 
   var user = firebase.auth().currentUser;
-  const [username, setUsername] = useState(user.displayName);
+  const [username, setUsername] = useState(user?.displayName);
+  const [modalActive, setModalActive] = useState(false);
 
   // listen for opening of screen, check for name change
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       user = firebase.auth().currentUser;
-      setUsername(user.displayName);
-      console.log("Username: " + user.displayName);
+      setUsername(user?.displayName);
+      console.log("Username: " + user?.displayName);
     })
 
     return unsubscribe;
   }, [navigation])
 
+  function backgroundHandler(modalState) {
+    setModalActive(modalState);
+  };
 
   return (
       <View style={styles.container}>
         <Text style={styles.title}>Hi, {username.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
-        <RentalListing navigation={navigation}/>
+        <RentalListing navigation={navigation} handler = {backgroundHandler}/>
+        {modalActive &&
+        <View style={styles.hidden}>
+        </View>}
       </View>
   );
 }
@@ -49,6 +56,19 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginLeft: 5,
+  },
+  hidden: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: -1, // works on ios
+    elevation: -1, // works on android
   },
 });
 

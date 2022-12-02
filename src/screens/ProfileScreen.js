@@ -9,6 +9,8 @@ import {useDispatch} from 'react-redux';
 import auther from '@react-native-firebase/auth';
 import {logout} from '../reducers';
 
+const logoutIcon = require('../../assets/icons/logout-icon.png')
+
 function ProfileScreen({navigation}){
     // find current user's data and store the photo
     const auth = useSelector((state) => state.auth);
@@ -120,24 +122,26 @@ function ProfileScreen({navigation}){
     // view with header and profile image, resorts to default if cannot find info
     return (
         <View style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
+            <View>
             <Text style={styles.title}>
                 {initialName}
             </Text>
-            <TouchableOpacity 
-            onPress={() => {
-                auther()
-                  .signOut()
-                  .then(() => {
-                    dispatch(logout());
-                    navigation.navigate('LoginStack');
-                  }); //logout on redux
-              }}>
+            <View style={styles.logoutButton}>
+                <TouchableOpacity 
+                    onPress={() => {
+                        auther()
+                        .signOut()
+                        .then(() => {
+                            dispatch(logout());
+                            navigation.navigate('LoginStack');
+                        }); //logout on redux
+                    }}>
                   <Image 
                   style = {styles.tinylogout}
-                  source = {AppIcon.images.logout}
+                  source = {logoutIcon}
                   />
             </TouchableOpacity>
+            </View>
             </View>
             <View style={styles.profileImageCircle}>
                 <TouchableOpacity onPress={()=>selectImage()}>
@@ -158,10 +162,11 @@ function ProfileScreen({navigation}){
                 underlineColorAndroid="transparent"
                 />
             </View>
+            <Text style={styles.labelText}>Change User Mode</Text>
             <View style={{
                 flexDirection: "row",
                 paddingHorizontal: 10,
-                justifyContent: "space-around",
+                justifyContent: "space-between",
             }}>
             <Button
                 containerStyle={styles.flowContainer}
@@ -210,7 +215,7 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.title,
         fontFamily: AppStyles.fontFamily.bold,
         color: AppStyles.color.white,
-        paddingTop: 90,
+        paddingTop: 80,
         marginBottom: 50,
         textAlign: 'center',
     },
@@ -239,7 +244,7 @@ const styles = StyleSheet.create({
     InputContainer: {
         width: AppStyles.textInputWidth.main,
         height: 50,
-        marginTop: 50,
+        marginTop: 24,
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: AppStyles.color.white,
@@ -250,7 +255,7 @@ const styles = StyleSheet.create({
         backgroundColor: AppStyles.color.accent,
         borderRadius: AppStyles.borderRadius.main,
         padding: 15,
-        marginTop: 45,
+        marginTop: 20,
     },
     flowText: {
         color: AppStyles.color.primarybg,
@@ -258,7 +263,7 @@ const styles = StyleSheet.create({
     },
     saveContainer:{
         position: 'absolute',
-        bottom: 20,
+        bottom: 30,
         right: 24,
         backgroundColor: AppStyles.color.accent,
         borderRadius: AppStyles.borderRadius.main,
@@ -267,15 +272,26 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     space: {
-        width: 40,
+        width: 15,
         height: 20,
     },
     tinylogout:{
-        width: 30,
-        height: 30,
-        marginTop: 90,
+        width: 24,
+        height: 24,
+        marginTop: 93,
         marginBottom: 50,
         left: 45,
+    },
+    logoutButton: {
+        position: 'absolute',
+        top: -9,
+        right: -45,
+    },
+    labelText: {
+        color: AppStyles.color.accent,
+        fontFamily: AppStyles.fontFamily.bold,
+        textTransform: 'uppercase',
+        paddingTop: 60,
     }
 });
 
