@@ -399,9 +399,6 @@ export default function RentalListing(props) {
 
                         </View>
                       </View>
-
-
-
                       <View style={{marginBottom: 24}}>
                         <Text style={[styles.modalText]}> Price </Text>
                         <View style={{flexDirection:"row"}}>
