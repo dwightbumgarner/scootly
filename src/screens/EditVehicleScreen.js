@@ -11,6 +11,7 @@ import NumericInput from 'react-native-numeric-input'
 import { DayPicker } from 'react-native-picker-weekday' 
 import {SelectList} from 'react-native-dropdown-select-list'
 
+const chevronIcon = require('../../assets/icons/chevron-icon.png')
 
 function EditVehicleScreen({navigation, route}) {
   const item = route.params.itemData;
@@ -259,6 +260,17 @@ function EditVehicleScreen({navigation, route}) {
             inputStyle= {{fontFamily: AppStyles.fontFamily.regular}}  />
 
   <Text style={[styles.label, {marginTop: 50}]}>Availability</Text>
+    <DayPicker
+        weekdays={weekdays}
+        setWeekdays={setWeekdays}
+        activeColor={AppStyles.color.tint}
+        textColor={AppStyles.color.text}
+        text={AppStyles.color.white}
+        dayTextStyle={{fontFamily: AppStyles.fontFamily.regular}}
+        inactiveColor={AppStyles.color.secondarybg}
+        itemStyles={{marginHorizontal: 4, borderRadius: 6}}
+        wrapperStyles={{paddingTop: 0, marginTop: 0}}
+      />
     <SelectList
         data={startTimeData}
         setSelected={(val) => setSSelected(val)}
@@ -267,7 +279,12 @@ function EditVehicleScreen({navigation, route}) {
         dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         placeholder={(item.availability).substring(0,item.availability.indexOf(" - "))}
-        boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+        boxStyles={{width: 125, borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+        arrowicon={<Image 
+                  source = {chevronIcon}
+                  style = {{height: 6, width: 12, top: 6, left: 8}}
+                  />}
+        dropdownStyles={{borderColor: AppStyles.color.white, borderRadius: 4, backgroundColor: AppStyles.color.secondarybg}}
     />
     <Text style={[styles.label, {marginTop: 24}]}>To</Text>
     <SelectList
@@ -277,19 +294,13 @@ function EditVehicleScreen({navigation, route}) {
         search={false}
         dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
-        boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+        boxStyles={{width: 125, borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
         placeholder={(item.availability).substring(item.availability.indexOf(" - ") + 3)}
-    />
-    <DayPicker
-      weekdays={weekdays}
-      setWeekdays={setWeekdays}
-      activeColor={AppStyles.color.tint}
-      textColor={AppStyles.color.text}
-      text={AppStyles.color.white}
-      dayTextStyle={{fontFamily: AppStyles.fontFamily.regular}}
-      inactiveColor={AppStyles.color.secondarybg}
-      itemStyles={{marginHorizontal: 4, borderRadius: 6}}
-      wrapperStyles={{marginTop: 30, paddingTop: 0}}
+        arrowicon={<Image 
+                  source = {chevronIcon}
+                  style = {{height: 6, width: 12, top: 6, left: 8}}
+                  />}
+        dropdownStyles={{borderColor: AppStyles.color.white, borderRadius: 4, backgroundColor: AppStyles.color.secondarybg}}
     />
     <Button
       containerStyle={styles.addVehicleContainer}

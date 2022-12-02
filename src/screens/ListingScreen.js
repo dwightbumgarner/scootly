@@ -157,10 +157,8 @@ const styles = StyleSheet.create({
     },
     footer: {
         position: 'absolute',
-        bottom: 20,
-        right: 20,
-        paddingVertical: 16,
-        marginTop: 30,
+        bottom: 30,
+        right: 24,
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
@@ -169,10 +167,9 @@ const styles = StyleSheet.create({
     messageContainer: {
         flexDirection:'row',
         alignItems:'center',
-        padding:15,
+        padding:16,
         backgroundColor: AppStyles.color.accent,
         borderRadius: AppStyles.borderRadius.main,
-        marginTop: 30,
     },
     // bookButtonText: {
     //     color: AppStyles.color.background,
@@ -182,6 +179,7 @@ const styles = StyleSheet.create({
     messageButtonText: {
         color: AppStyles.color.background,
         fontFamily: AppStyles.fontFamily.regular,
+        fontSize: AppStyles.fontSize.normal,
         paddingRight: 10,
         paddingLeft: 5
     },
