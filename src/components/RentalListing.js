@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Animated, TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator, Modal} from 'react-native';
+import {useSelector} from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import {AppStyles, width} from '../AppStyles';
 import firestore from '@react-native-firebase/firestore';
@@ -13,6 +14,7 @@ const chevronIcon = require('../../assets/icons/chevron-icon.png')
 const xIcon = require('../../assets/icons/x-icon.png')
 
 export default function RentalListing(props) {
+    const auth = useSelector((state) => state.auth);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [allData, setallData] = useState([]);
@@ -95,6 +97,7 @@ export default function RentalListing(props) {
         // Retrieve Firebase rentals collection
         firestore()
         .collection('rentals')
+        .where('vendorUID', '!=', auth.user?.id)
         .get()
         .then(collectionSnapshot => {
             //console.log('Total Rentals: ', collectionSnapshot.size);
