@@ -13,11 +13,11 @@
 Set up ios/android emulation environment
 
 ```
-
 git clone https://github.com/scootly/react-native-client/
-npm install 
-npx react-native run-android
 
+npm install 
+
+npx react-native run-android || ios thing (TODO)
 ```
 
 ## App Designs
