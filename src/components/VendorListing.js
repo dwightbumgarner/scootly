@@ -8,7 +8,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import { ListItem, SearchBar } from "react-native-elements";
 import filter from "lodash.filter";
-const editIcon = require('../../assets/icons/edit.png')
+
+const editIcon = require('../../assets/icons/edit-icon.png')
 
 export default function VendorListing(props) {
     const auth = useSelector((state) => state.auth);
@@ -103,7 +104,7 @@ export default function VendorListing(props) {
                     <Text style={styles.price}>Price: ${item?.hourlyRate}/hr</Text>
                     <View style={styles.editCircle}>
                         <Image
-                            style={{height:20, width:20}}
+                            style={{height:20, width:20, bottom: 3, right: 3}}
                             source={editIcon}
                         /></View>
                 </View>
@@ -158,18 +159,21 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 15
+        marginBottom: 15,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '95%',
     },
     vehicleMetaContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: AppStyles.color.grey, 
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingTop: 20,
-        paddingBottom: 20,
-        borderRadius: 20
+        padding: 20,
+        borderRadius: 20,
+        width: '95%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     subtitle: {
         flexDirection: "row"
@@ -179,15 +183,13 @@ const styles = StyleSheet.create({
         height: 120,
         borderRadius: 10,
         marginRight: 15
-
     },
     vehicleName: {
         color: AppStyles.color.white,
         fontSize: AppStyles.fontSize.content,
-        fontWeight: "bold",
+        fontFamily: AppStyles.fontFamily.bold,
         paddingRight: 20,
         paddingLeft: 10,
-
     },
     vendorName: {
         color: AppStyles.color.white,
@@ -234,7 +236,7 @@ const styles = StyleSheet.create({
         height: 55,
         marginLeft: 142,
         marginTop: 85,
-        position: 'absolute'
+        position: 'absolute',
     },
     noItemsText: {
         width: '75%',
