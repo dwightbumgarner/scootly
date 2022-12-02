@@ -25,6 +25,7 @@ npx react-native run-android || ios thing (TODO)
 ```
 
 ## App Designs
+<img src="https://www.instamobile.io/wp-content/uploads/2019/01/Simulator-Screen-Shot-iPhone-XS-2019-01-20-at-16.00.46-473x1024.png" alt="react native splash screen" width="210" height="456" />
 
 
 ## Credit:
