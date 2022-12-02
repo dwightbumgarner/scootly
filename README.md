@@ -23,7 +23,7 @@ git clone https://github.com/scootly/react-native-client/
 
 npm install 
 
-npx react-native run-android || ios thing (TODO)
+npx react-native run-android
 ```
 Then watch the app execute on an Android emulator.
 
