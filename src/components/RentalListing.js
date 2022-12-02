@@ -183,6 +183,15 @@ export default function RentalListing(props) {
                 />
                 <View>
                     <Text style={styles.availability}>Available From {item?.availability}</Text>
+                    <View style={styles.availabilityDaysContainer}>
+                        <Text style={item?.availableDays.indexOf(1) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S</Text>
+                        <Text style={item?.availableDays.indexOf(2) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>M</Text>
+                        <Text style={item?.availableDays.indexOf(3) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T</Text>
+                        <Text style={item?.availableDays.indexOf(4) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>W</Text>
+                        <Text style={item?.availableDays.indexOf(5) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T</Text>
+                        <Text style={item?.availableDays.indexOf(6) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>F</Text>
+                        <Text style={item?.availableDays.indexOf(7) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S</Text>
+                    </View>
                     <Text style={styles.price}>Price: ${item?.hourlyRate}/hr</Text>
                     <Text style={styles.proximity}>Proximity: {item?.proximity} miles</Text>
                 </View>
@@ -587,21 +596,36 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.bold,
         width: '60%',
-        marginBottom: 20
+        marginBottom: 5
+    },
+    availabilityDaysContainer: {
+        marginBottom: 10,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+    },
+    availabilityDaysActive: {
+        color: AppStyles.color.accent,
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.bold,
+    },
+    availabilityDaysInactive: {
+        color: AppStyles.color.white,
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.regular,
     },
     price: {
         color: AppStyles.color.white,
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.regular,
         paddingRight: 100,
-        marginBottom: 20
+        marginBottom: 12
     },
     proximity: {
         color: AppStyles.color.white,
         fontSize: AppStyles.fontSize.normal,
         fontFamily: AppStyles.fontFamily.regular,
         width: '80%',
-        marginBottom: 20
+        marginBottom: 5
     },
     searchBar: {
         fontFamily: AppStyles.fontFamily.regular,
