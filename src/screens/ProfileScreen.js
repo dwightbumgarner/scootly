@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, Alert, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import {connect, useSelector} from 'react-redux';
@@ -56,18 +56,33 @@ function ProfileScreen({navigation}){
     // check if this actually works
     const saveButton = () => {
         if(userName !== ""){
-            console.log(user);
-            const update = {displayName: userName}
-            user.updateProfile(update).then(() => {
-                console.log('Update successful');
-                user.reload().then(() => {
-                    const test = firebase.auth().currentUser;
-                    console.log(test);
-                });
-              }).catch((error) => {
-                console.log('Update unsuccessful' + error);
-              });  
-            changeInitialName(userName)
+            console.log("userName", userName.split(' ').slice(0, -1).join(' '))
+            if(userName.split(' ').slice(0, -1).join(' ') == ""){
+                Alert.alert(
+                    "Must enter a last name",
+                    [
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                        }
+                    ]
+                );
+            }
+            else{
+                console.log(user);
+                const update = {displayName: userName}
+                user.updateProfile(update).then(() => {
+                    console.log('Update successful');
+                    firebase.auth().currentUser.reload().then(() => {
+                        const test = firebase.auth().currentUser;
+                        console.log(test);
+                    });
+                }).catch((error) => {
+                    console.log('Update unsuccessful' + error);
+                });  
+                changeInitialName(userName)
+            }
         }
     };
 
