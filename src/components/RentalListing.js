@@ -696,7 +696,7 @@ const styles = StyleSheet.create({
         paddingBottom: 24,
         paddingHorizontal: 39,
         borderRadius: 8,
-        marginBottom: '90%',
+        marginBottom: '60%',
         backgroundColor: AppStyles.color.background,
         justifySelf: 'flex-start',
     },
