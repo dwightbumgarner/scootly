@@ -1,10 +1,15 @@
 import React, {useState} from 'react'
-import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, Alert, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import {connect, useSelector} from 'react-redux';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-picker';
+import {useDispatch} from 'react-redux';
+import auther from '@react-native-firebase/auth';
+import {logout} from '../reducers';
+
+
 
 // TODO:
     // button to change info (not with google)
@@ -15,6 +20,8 @@ import ImagePicker from 'react-native-image-picker';
 function ProfileScreen({navigation}){
     // find current user's data and store the photo
     const auth = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    const user = firebase.auth().currentUser;
     // var initialName = auth.user?.fullname ?? 'Stranger';
     const [image, setImage] = useState(null);
     const [initialName, changeInitialName] = useState(auth.user?.fullname ?? 'Stranger')
@@ -46,14 +53,38 @@ function ProfileScreen({navigation}){
         });
     };
 
+    // check if this actually works
     const saveButton = () => {
-        const update = {displayName: userName}
-        firebase.auth().currentUser.updateProfile(update)
-        
-        changeInitialName(userName)
+        if(userName !== ""){
+            console.log("userName", userName.split(' ').slice(0, -1).join(' '))
+            if(userName.split(' ').slice(0, -1).join(' ') == ""){
+                Alert.alert(
+                    "Must enter a last name",
+                    [
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                        }
+                    ]
+                );
+            }
+            else{
+                console.log(user);
+                const update = {displayName: userName}
+                user.updateProfile(update).then(() => {
+                    console.log('Update successful');
+                    firebase.auth().currentUser.reload().then(() => {
+                        const test = firebase.auth().currentUser;
+                        console.log(test);
+                    });
+                }).catch((error) => {
+                    console.log('Update unsuccessful' + error);
+                });  
+                changeInitialName(userName)
+            }
+        }
     };
-
-    
 
     const uploadData = async () => {
         console.log(image);
@@ -93,9 +124,25 @@ function ProfileScreen({navigation}){
     // view with header and profile image, resorts to default if cannot find info
     return (
         <View style={styles.container}>
+            <View style={{flexDirection: 'row'}}>
             <Text style={styles.title}>
                 {initialName}
             </Text>
+            <TouchableOpacity 
+            onPress={() => {
+                auther()
+                  .signOut()
+                  .then(() => {
+                    dispatch(logout());
+                    navigation.navigate('LoginStack');
+                  }); //logout on redux
+              }}>
+                  <Image 
+                  style = {styles.tinylogout}
+                  source = {AppIcon.images.logout}
+                  />
+            </TouchableOpacity>
+            </View>
             <View style={styles.profileImageCircle}>
                 <TouchableOpacity onPress={()=>selectImage()}>
                 <Image
@@ -150,6 +197,7 @@ function ProfileScreen({navigation}){
                 title="SAVE">
                     Save
             </Button>
+            
         </View>
     );
 }
@@ -226,6 +274,13 @@ const styles = StyleSheet.create({
         width: 40,
         height: 20,
     },
+    tinylogout:{
+        width: 30,
+        height: 30,
+        marginTop: 90,
+        marginBottom: 50,
+        left: 45,
+    }
 });
 
 export default ProfileScreen;
