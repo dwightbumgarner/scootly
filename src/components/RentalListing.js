@@ -9,6 +9,7 @@ import {RadioButton} from 'react-native-paper';
 import {SelectList} from 'react-native-dropdown-select-list'
 
 const filterIcon = require('../../assets/icons/filter-icon.png')
+const chevronIcon = require('../../assets/icons/chevron-icon.png')
 const xIcon = require('../../assets/icons/x-icon.png')
 
 export default function RentalListing(props) {
@@ -16,6 +17,7 @@ export default function RentalListing(props) {
     const [data, setData] = useState([]);
     const [allData, setallData] = useState([]);
     const [searchValue, setSearchValue] = useState("");
+    const [modalActive, setModalActive] = useState(false);
     //MODAL
     const[animation, setAnimation]=useState(new Animated.Value(0));     
     const openModal = animation.interpolate({
@@ -212,6 +214,8 @@ export default function RentalListing(props) {
 
 //MODAL FUNCTIONALITY
     const modalTrigger=()=>{
+        props.handler(true);
+        setModalActive(true);
         Animated.timing(animation, {
             toValue: 1,
             duration: 250,
@@ -241,9 +245,11 @@ export default function RentalListing(props) {
     };
 
     const close=()=>{
+        props.handler(false);
+        setModalActive(false);
         Animated.timing(animation, {
             toValue: 0,
-            duration: 500,
+            duration: 250,
             useNativeDriver: false,
         }).start();
         filterFunction();
@@ -313,21 +319,21 @@ export default function RentalListing(props) {
                 />
                 <Animated.View style={[styles.background, open]} pointerEvents="box-none">
                     <View style={[styles.modal]}>
-                      <View style={{flexDirection:"row", justifyContent:'center', marginBottom: 30}}>
+                      <View style={{flexDirection:"row", justifyContent:'center', marginBottom: 30, gap: 30}}>
                           <Text style={[ styles.modalFilter]}> Filter </Text>
                           <TouchableOpacity onPress={close} style={styles.modalButton}>
                                 <Image
-                                    style={{height:20, width:20}}
+                                    style={{height:20, width:20, right: 20, top: 2}}
                                     source={xIcon}
                                 />
                           </TouchableOpacity>
                       </View>
 
-                      <View style={{marginBottom: 15}}>
+                      <View style={{marginBottom: 24, marginTop: 12}}>
                         <Text style={[styles.modalText]}> Proximity </Text>
                         <View style={{flexDirection:"row"}}>
                             <View>
-                                <View style={{flexDirection:"row"}}>
+                                <View style={{flexDirection:"row", marginRight: 10}}>
                                     <RadioButton.Android
                                         value="0.05"
                                         color={AppStyles.color.accent}
@@ -394,13 +400,11 @@ export default function RentalListing(props) {
                         </View>
                       </View>
 
-
-
-                      <View style={{marginBottom: 15}}>
+                      <View style={{marginBottom: 24}}>
                         <Text style={[styles.modalText]}> Price </Text>
                         <View style={{flexDirection:"row"}}>
                             <View style={{marginRight: 25}}>
-                                <View style={{flexDirection:"row"}}>
+                                <View style={{flexDirection:"row", marginRight: 20}}>
                                     <RadioButton.Android
                                         value="5"
                                         color={AppStyles.color.accent}
@@ -440,7 +444,7 @@ export default function RentalListing(props) {
                                         status={checkedPrice === '20' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '20' ? () => setCheckedPrice('1000') : () => setCheckedPrice('20')}
                                     />
-                                    <Text style={styles.modalNormal}> {'< $'}20 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< $'}20/hr </Text>
                                 </View>
                             </View>
 
@@ -449,11 +453,11 @@ export default function RentalListing(props) {
 
 
 
-                      <View style={{marginBottom: 15}}>
+                      <View style={{marginBottom: 24}}>
                         <Text style={[styles.modalText]}> Reviews </Text>
                         <View style={{flexDirection:"row"}}>
                             <View style={{marginRight: 45}}>
-                                <View style={{flexDirection:"row"}}>
+                                <View style={{flexDirection:"row", marginRight: 12}}>
                                     <RadioButton.Android
                                         value="4.75"
                                         color={AppStyles.color.accent}
@@ -500,39 +504,49 @@ export default function RentalListing(props) {
                         </View>
                       </View>
 
-                      <View>
+                      <View style={{marginBottom: 24}}>
                         <Text style={[styles.modalText]}> Availability </Text>
-                        <View style={{flexDirection:'row'}}>
+                        <View style={{flexDirection:'row', marginTop: 8}}>
                             <SelectList
                                 data={startTimeData}
                                 setSelected={(val) => ((val) === 'Start Time') ? setSSelected("01:00 AM") : setSSelected(val)}
                                 save="value"
-                                dropdownStyles={{backgroundColor:AppStyles.color.accent}}
-                                dropdownTextStyles={{color:AppStyles.color.primarybg}}
+                                search={false}
+                                dropdownTextStyles={{color:AppStyles.color.text}}
                                 placeholder="Start Time"
-                                inputStyles={{color:AppStyles.color.accent}}
+                                inputStyles={{color:AppStyles.color.text}}
                                 fontFamily={AppStyles.fontFamily.regular}
-                                boxStyles={{borderRadius:15, borderWidth: 2, borderColor: AppStyles.color.white}}
-                                maxHeight={100}
+                                boxStyles={{width: 125, borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+                                arrowicon={<Image 
+                                        source = {chevronIcon}
+                                        style = {{height: 6, width: 12, top: 6, left: 8}}
+                                        />}
+                                dropdownStyles={{borderColor: AppStyles.color.white, borderRadius: 4, backgroundColor: AppStyles.color.secondarybg}}
                             />
                             <Text style={{marginRight: 10}}> </Text>
                             <SelectList
                                 data={endTimeData}
                                 setSelected={(val) => ((val) === 'End Time') ? setESelected("11:00 PM") : setESelected(val)}
                                 save="value"
-                                dropdownStyles={{backgroundColor:AppStyles.color.accent}}
-                                dropdownTextStyles={{color:AppStyles.color.primarybg}}
+                                search={false}
+                                dropdownTextStyles={{color:AppStyles.color.text}}
                                 placeholder="End Time"
-                                inputStyles={{color:AppStyles.color.accent}}
+                                inputStyles={{color:AppStyles.color.text}}
                                 fontFamily={AppStyles.fontFamily.regular}
-                                boxStyles={{borderRadius:15, borderWidth: 2, borderColor: AppStyles.color.white}}
-                                maxHeight={100}
+                                boxStyles={{width: 125, borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
+                                arrowicon={<Image 
+                                        source = {chevronIcon}
+                                        style = {{height: 6, width: 12, top: 6, left: 8}}
+                                        />}
+                                dropdownStyles={{borderColor: AppStyles.color.white, borderRadius: 4, backgroundColor: AppStyles.color.secondarybg}}
                             />
                         </View>
                       </View>
-
                     </View>
                 </Animated.View>
+                {modalActive &&
+                <View style={styles.hidden}>
+                </View>}
         </SafeAreaView>
     );
 }
@@ -662,25 +676,29 @@ const styles = StyleSheet.create({
         fontSize: AppStyles.fontSize.title,
         color: AppStyles.color.white,
         position: "absolute",
+        marginBottom: 10,
     },
     modalText: {
         textAlign: "left",
         fontFamily: AppStyles.fontFamily.bold,
-        fontSize: AppStyles.fontSize.content,
-        color: AppStyles.color.white,
+        fontSize: AppStyles.fontSize.body,
+        color: AppStyles.color.accent,
         marginBottom: 8,
+        textTransform: 'uppercase'
     },
     modalNormal: {
         fontFamily: AppStyles.fontFamily.regular,
         fontSize: AppStyles.fontSize.normal,
         color: AppStyles.color.white,
-        marginTop: 2,
+        marginTop: 7,
     },
     modal: {
-        padding: 30,
+        paddingTop: 45,
+        paddingBottom: 24,
+        paddingHorizontal: 45,
         borderRadius: 8,
-        marginBottom: 300,
-        backgroundColor: AppStyles.color.secondarybg,
+        marginBottom: '50%',
+        backgroundColor: AppStyles.color.background,
         justifySelf: 'center',
     },
     button: {
@@ -691,11 +709,23 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 0,
         right: 0,
-        top:0,
+        top:60,
         bottom: 0,
         alignItems: "center",
         justifyContent: "center",
         elevation: 5,
+        zIndex: 5,
+    },
+    hidden: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        opacity: 0.5,
+        backgroundColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     dropdown: {
         paddingBottom: 5,

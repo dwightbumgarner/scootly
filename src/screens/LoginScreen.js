@@ -231,18 +231,14 @@ function LoginScreen({navigation}) {
           containerStyle={styles.googleContainer}
           style={styles.Button}>
           <View style={{
-            justifyContent: "space-evenly",
+            justifyContent: "flex-start",
             flexDirection: "row",
           }}>
-            <View style={{
-              //backgroundColor:AppStyles.color.accent
-            }}>
+            <View>
               <SocialIcon
-              style
               title='Sign in with google'
-              iconColor={AppStyles.color.primarybg}
               type='google'
-              underlayColor= {AppStyles.color.accent}
+              iconStyle={{color: AppStyles.color.primarybg}}
               iconSize={20}
               light={true}
               />
@@ -315,29 +311,19 @@ const styles = StyleSheet.create({
     color: AppStyles.color.text,
     fontFamily: AppStyles.fontFamily.regular
   },
-  facebookContainer: {
-    width: 192,
-    backgroundColor: AppStyles.color.facebook,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginTop: 30,
-  },
-  facebookText: {
-    color: AppStyles.color.white,
-  },
   googleContainer: {
-    width: 205,
+    width: 250,
     height: 65,
     marginTop: 30,
-    backgroundColor: AppStyles.color.accent,
-    borderRadius: AppStyles.borderRadius.main
+    backgroundColor: AppStyles.color.white,
+    borderRadius: 30
   },
   googleText: {
     color: AppStyles.color.loginText,
     fontFamily: AppStyles.fontFamily.regular, 
     fontWeight: '500',
     textAlign: 'center',
-    padding: 0,
+    marginLeft: 20,
     marginTop: 25
   },
 });
