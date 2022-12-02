@@ -124,7 +124,9 @@ export default function RentalListing(props) {
                                 averageRating += ratingData.rating;
                                 totalRatings++;
                             })
-                            averageRating = averageRating/totalRatings;
+                            
+                            averageRating = totalRatings === 0 ? 0 : averageRating/totalRatings;
+                            
                             listingData.vendorRating = averageRating;
                             // At the end of all of this, we have a complete set of data for the current listing, push to the master listing data array
                             listings.push(listingData);
@@ -174,7 +176,7 @@ export default function RentalListing(props) {
             </View>
             <View style={styles.vehicleMetaContainer}>
                 {console.log("RENTAL ID: ", item?.id)}
-                {console.log("RENTAL: ", item)}
+                {/* console.log("RENTAL: ", item)*/}
                 <Image
                 style={styles.vehicleImage}
                 source={{uri: item?.vehicleImage}}

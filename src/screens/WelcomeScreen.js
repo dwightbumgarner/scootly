@@ -16,15 +16,18 @@ function WelcomeScreen({navigation, route}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // TODO:
+    // add a check to see if user previously logged in did not lgo out properly
+    // if so, link their data correctly
     tryToLoginFirst();
   }, []);
 
   async function tryToLoginFirst() {
+    console.log("Attempting login")
     const email = await AsyncStorage.getItem('@loggedInUserID:key');
     const password = await AsyncStorage.getItem('@loggedInUserID:password');
     const id = await AsyncStorage.getItem('@loggedInUserID:id');
     if (
-      route.params?.justLoggedOut != true &&
       id != null &&
       id.length > 0 &&
       password != null &&
@@ -45,6 +48,7 @@ function WelcomeScreen({navigation, route}) {
                 fullname: doc.data().fullname,
               };
               if (doc.exists) {
+                console.log('Logging in as ' + userDict.fullname);
                 dispatch(login(userDict));
                 navigation.navigate('DrawerStack');
               } else {
@@ -104,6 +108,7 @@ function WelcomeScreen({navigation, route}) {
   }
   return (
     <View style={styles.container}>
+      {console.log("Entering welcome screen")}
       <Text style={styles.subtitle}>Welcome to</Text>
       <Text style={styles.title}>Scootly</Text>
       <Button
