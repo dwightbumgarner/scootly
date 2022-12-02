@@ -147,7 +147,7 @@ function ProfileScreen({navigation}){
                 <TouchableOpacity onPress={()=>selectImage()}>
                 <Image
                     style={styles.profileImage}
-                    source={image ? {uri: (image?.uri)} : (AppIcon.images.defaultProfile)}
+                    source={image ? {uri: (image?.uri)} : (auth.user.photoURL? {uri: (auth.user.photoURL)} : AppIcon.images.defaultProfile)}
                 />
             </TouchableOpacity>
             </View>
