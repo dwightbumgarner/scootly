@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Animated, TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView, ActivityIndicator, Modal} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import {AppStyles, width} from '../AppStyles';
 import firestore from '@react-native-firebase/firestore';
 import { Rating } from 'react-native-ratings';
@@ -87,7 +88,8 @@ export default function RentalListing(props) {
     ];
 
     // Here we retrieve all available rental listings
-    useEffect(() => {
+    useFocusEffect(
+        React.useCallback(() => {
         // Retrieve Firebase rentals collection
         firestore()
         .collection('rentals')
@@ -143,8 +145,9 @@ export default function RentalListing(props) {
                         })
                     })
                 });
-        });
-    }, []);
+            });
+        }, [])
+    );
 
     // key is bruh in this case (json format)
     const renderItem = ({item}) => (
@@ -174,8 +177,6 @@ export default function RentalListing(props) {
                 />
             </View>
             <View style={styles.vehicleMetaContainer}>
-                {console.log("RENTAL ID: ", item?.id)}
-                {/* console.log("RENTAL: ", item)*/}
                 <Image
                 style={styles.vehicleImage}
                 source={{uri: item?.vehicleImage}}

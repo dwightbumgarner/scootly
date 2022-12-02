@@ -51,7 +51,7 @@ function ProfileScreen({navigation}){
             console.log("userName", userName.split(' ').slice(0, -1).join(' '))
             if(userName.split(' ').slice(0, -1).join(' ') == ""){
                 Alert.alert(
-                    "Must enter a last name",
+                    "Please enter your first and last name!",
                     [
                         {
                             text: "Cancel",

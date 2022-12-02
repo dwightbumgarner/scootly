@@ -4,12 +4,13 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, useRoute} from '@react-navigation/native';
-import HomeScreen from '../screens/HomeScreen';
-import VendorHomeScreen from '../screens/VendorHomeScreen';
-import AddVehicleScreen from '../screens/AddVehicleScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
+import HomeScreen from '../screens/HomeScreen';
+import VendorHomeScreen from '../screens/VendorHomeScreen';
+import AddVehicleScreen from '../screens/AddVehicleScreen';
+import EditVehicleScreen from '../screens/EditVehicleScreen';
 import MessageScreen from '../screens/MessageScreen';
 import Conversation from '../components/Conversation';
 import ListingScreen from '../screens/ListingScreen';
@@ -111,11 +112,18 @@ const VendorStack = () => (
       headerShown: false,
     }}>
     <Stack.Screen name="VendorHome" component={VendorHomeScreen}/>
+
     <Stack.Screen 
       name="AddVehicle" 
       component={AddVehicleScreen} 
       options={{ tabBarVisible: false }}
     />
+
+    <Stack.Screen 
+      name="EditVehicle" 
+      component={EditVehicleScreen} 
+      options={{ tabBarVisible: false }}
+    />  
 
     <Stack.Screen
       name="Messages"
