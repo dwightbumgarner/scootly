@@ -189,12 +189,12 @@ export default function RentalListing(props) {
                 <View>
                     <Text style={styles.availability}>Available From {item?.availability}</Text>
                     <View style={styles.availabilityDaysContainer}>
-                        <Text style={item?.availableDays.indexOf(1) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S</Text>
-                        <Text style={item?.availableDays.indexOf(2) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>M</Text>
-                        <Text style={item?.availableDays.indexOf(3) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T</Text>
-                        <Text style={item?.availableDays.indexOf(4) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>W</Text>
-                        <Text style={item?.availableDays.indexOf(5) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T</Text>
-                        <Text style={item?.availableDays.indexOf(6) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>F</Text>
+                        <Text style={item?.availableDays.indexOf(1) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S </Text>
+                        <Text style={item?.availableDays.indexOf(2) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>M </Text>
+                        <Text style={item?.availableDays.indexOf(3) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T </Text>
+                        <Text style={item?.availableDays.indexOf(4) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>W </Text>
+                        <Text style={item?.availableDays.indexOf(5) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T </Text>
+                        <Text style={item?.availableDays.indexOf(6) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>F </Text>
                         <Text style={item?.availableDays.indexOf(7) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S</Text>
                     </View>
                     <Text style={styles.price}>Price: ${item?.hourlyRate}/hr</Text>
@@ -456,7 +456,7 @@ export default function RentalListing(props) {
 
 
                       <View style={{marginBottom: 24}}>
-                        <Text style={[styles.modalText]}> Reviews </Text>
+                        <Text style={[styles.modalText]}> Ratings </Text>
                         <View style={{flexDirection:"row"}}>
                             <View style={{marginRight: 45}}>
                                 <View style={{flexDirection:"row", marginRight: 12}}>
@@ -697,11 +697,11 @@ const styles = StyleSheet.create({
     modal: {
         paddingTop: 45,
         paddingBottom: 24,
-        paddingHorizontal: 45,
+        paddingHorizontal: 39,
         borderRadius: 8,
-        marginBottom: '50%',
+        marginBottom: '60%',
         backgroundColor: AppStyles.color.background,
-        justifySelf: 'center',
+        justifySelf: 'flex-start',
     },
     button: {
         marginTop: '50%',
