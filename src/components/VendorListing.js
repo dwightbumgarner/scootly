@@ -3,12 +3,14 @@ import {TouchableOpacity, StyleSheet, Image, Text, View, FlatList, SafeAreaView,
 import {connect, useSelector} from 'react-redux';
 import {AppStyles, width} from '../AppStyles';
 import firestore from '@react-native-firebase/firestore';
+import { useFocusEffect } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import { ListItem, SearchBar } from "react-native-elements";
 import filter from "lodash.filter";
+const editIcon = require('../../assets/icons/edit.png')
 
-export default function VendorListing(refreshKey) {
+export default function VendorListing(props) {
     const auth = useSelector((state) => state.auth);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
@@ -16,7 +18,8 @@ export default function VendorListing(refreshKey) {
     const [searchValue, setSearchValue] = useState("");
 
     // Here we retrieve all available rental listings
-    useEffect(() => {
+    useFocusEffect(
+        React.useCallback(() => {
         // Retrieve Firebase rentals collection
         firestore()
         .collection('rentals')
@@ -71,25 +74,38 @@ export default function VendorListing(refreshKey) {
                         })
                     })
                 });
-        });
-    }, []);
+            });
+        }, [])
+    );
 
 
     const renderItem = ({item}) => (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {props.navigation.navigate("EditVehicle", {itemData: item})}}>
             {<View style={styles.vendorMetaContainer}>
                 <Text style={styles.vehicleName}>{item?.vehicleName}</Text>
             </View>}
             <View style={styles.vehicleMetaContainer}>
-                {console.log("RENTAL ID: ", item?.id)}
-                {console.log("RENTAL: ", item)}
                 <Image
                 style={styles.vehicleImage}
                 source={{uri: item?.vehicleImage}}
                 />
                 <View>
-                    <Text style={styles.availability}>Availabile From {item?.availability}</Text>
+                    <Text style={styles.availability}>Available From {item?.availability}</Text>
+                    <View style={styles.availabilityDaysContainer}>
+                        <Text style={item?.availableDays.indexOf(1) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S</Text>
+                        <Text style={item?.availableDays.indexOf(2) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>M</Text>
+                        <Text style={item?.availableDays.indexOf(3) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T</Text>
+                        <Text style={item?.availableDays.indexOf(4) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>W</Text>
+                        <Text style={item?.availableDays.indexOf(5) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>T</Text>
+                        <Text style={item?.availableDays.indexOf(6) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>F</Text>
+                        <Text style={item?.availableDays.indexOf(7) > -1 ? styles.availabilityDaysActive: styles.availabilityDaysInactive}>S</Text>
+                    </View>
                     <Text style={styles.price}>Price: ${item?.hourlyRate}/hr</Text>
+                    <View style={styles.editCircle}>
+                        <Image
+                            style={{height:20, width:20}}
+                            source={editIcon}
+                        /></View>
                 </View>
             </View>
         </TouchableOpacity>
@@ -115,7 +131,6 @@ export default function VendorListing(refreshKey) {
     }
       
     searchFunction = (text) => {
-        console.log("THIS ALL LISTINGS: ", allData);
     const updatedData = allData.filter((item) => {
         const item_data = `${item.vehicleName.toUpperCase()})`;
         const text_data = text.toUpperCase();
@@ -184,17 +199,42 @@ const styles = StyleSheet.create({
     },
     availability: {
         color: AppStyles.color.accent,
-        fontSize: AppStyles.fontSize.small,
-        fontWeight: "bold",
-        paddingRight: 100,
-        marginBottom: 20
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.bold,
+        width: '60%',
+        marginBottom: 5
+    },
+    availabilityDaysContainer: {
+        marginBottom: 10,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+    },
+    availabilityDaysActive: {
+        color: AppStyles.color.accent,
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.bold,
+    },
+    availabilityDaysInactive: {
+        color: AppStyles.color.white,
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.regular,
     },
     price: {
         color: AppStyles.color.white,
-        fontSize: AppStyles.fontSize.small,
-        fontWeight: "bold",
+        fontSize: AppStyles.fontSize.normal,
+        fontFamily: AppStyles.fontFamily.regular,
         paddingRight: 100,
-        marginBottom: 50
+        marginBottom: 12
+    },
+    editCircle: {
+        backgroundColor: AppStyles.color.accent,
+        padding: 20,
+        borderRadius: 50,
+        width: 55,
+        height: 55,
+        marginLeft: 142,
+        marginTop: 85,
+        position: 'absolute'
     },
     noItemsText: {
         width: '75%',

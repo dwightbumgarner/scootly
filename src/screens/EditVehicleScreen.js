@@ -12,17 +12,19 @@ import { DayPicker } from 'react-native-picker-weekday'
 import {SelectList} from 'react-native-dropdown-select-list'
 
 
-function AddVehicleScreen({navigation}) {
+function EditVehicleScreen({navigation, route}) {
+  const item = route.params.itemData;
+  console.log(item);
   const auth = useSelector((state) => state.auth);
-  const [vehicleName, setVehicleName] = useState('');
-  const [vehicleDescription, setVehicleDescription] = useState('');
-  const [hourlyRate, setHourlyRate] = useState(10);
+  const [vehicleName, setVehicleName] = useState(item?.vehicleName);
+  const [vehicleDescription, setVehicleDescription] = useState(item?.vehicleDescription);
+  const [hourlyRate, setHourlyRate] = useState(item?.hourlyRate);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [currentScreen, setCurrentScreen] = useState(true);
-  const [weekdays, setWeekdays] = React.useState([-1]);
-  const [startSelected, setSSelected] = React.useState('');
-  const [endSelected, setESelected] = React.useState('');
+  const [weekdays, setWeekdays] = React.useState(item?.availableDays);
+  const [startSelected, setSSelected] = React.useState((item?.availability).substring(0,item?.availability.indexOf(" - ")));
+  const [endSelected, setESelected] = React.useState((item?.availability).substring(item?.availability.indexOf(" - ") + 3));
   const startTimeData = [
       {key:'1', value:'12:00 AM'},
       {key:'2', value:'01:00 AM'},
@@ -101,12 +103,6 @@ function AddVehicleScreen({navigation}) {
   };
 
   const uploadData = async () => {
-    if(!image){
-      Alert.alert(
-        'Please add an image of your scooter!'
-      );
-      return;
-    }
     if(!vehicleName){
       Alert.alert(
         'Please add a name for your scooter!'
@@ -143,41 +139,58 @@ function AddVehicleScreen({navigation}) {
       );
       return;
     }
-    console.log(image);
-    const { uri } = image;
-    const filename = uri.substring(uri.lastIndexOf('/') + 1);
-    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-    setUploading(true);
-    const task = storage()
-    .ref(filename)
-    .putFile(uploadUri);
-    try {
-      await task;
-    } catch (e) {
-      console.error(e);
-    }
+    if(image){
+      console.log(image);
+      const { uri } = image;
+      const filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+      setUploading(true);
+      const task = storage()
+      .ref(filename)
+      .putFile(uploadUri);
+      try {
+        await task;
+      } catch (e) {
+        console.error(e);
+      }
 
-    task.snapshot.ref.getDownloadURL().then(downloadURL => {
-      var cleanedDays = weekdays;
-      cleanedDays.splice(0, 1);
+      task.snapshot.ref.getDownloadURL().then(downloadURL => {
+        firestore()
+        .collection('rentals')
+        .doc(item?.id)
+        .update({
+          vehicleImage: downloadURL,
+          hourlyRate: hourlyRate,
+          vehicleName: vehicleName,
+          vehicleDescription: vehicleDescription,
+          availableDays: weekdays,
+          availability: startSelected + ' - ' + endSelected,
+          vendorUID: auth.user?.id
+        })
+        .then(() => {
+          setUploading(false);
+          navigation.navigate('VendorHome');
+        });
+      })
+      setImage(null);
+    }else{
+      setUploading(true);
       firestore()
       .collection('rentals')
-      .add({
-        vehicleImage: downloadURL,
+      .doc(item?.id)
+      .update({
         hourlyRate: hourlyRate,
         vehicleName: vehicleName,
         vehicleDescription: vehicleDescription,
-        proximity: Math.random().toFixed(1),
         availableDays: weekdays,
         availability: startSelected + ' - ' + endSelected,
         vendorUID: auth.user?.id
       })
       .then(() => {
         setUploading(false);
-        navigation.navigate('VendorHome', {refreshKey: Math.random()});
+        navigation.navigate('VendorHome');
       });
-    })
-    setImage(null);
+    }
   };
 
   return (
@@ -186,12 +199,12 @@ function AddVehicleScreen({navigation}) {
       <View style={styles.backArrowView}>
           <Icon type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => navigation.navigate('VendorHome')}></Icon>      
       </View>
-      <Text style={styles.title}>Add a Scooter</Text>
+      <Text style={styles.title}>Edit Scooter</Text>
 
       <TouchableOpacity onPress={()=>selectImage()}>
         <Image
           style={styles.vehicleImage}
-          source={image ? {uri: (image?.uri)} : (AppIcon.images.defaultVehicle)}
+          source={image ? {uri: (image?.uri)} : {uri: (item?.vehicleImage)}}
         />
       </TouchableOpacity>
       <View style={styles.InputContainer}>
@@ -226,7 +239,7 @@ function AddVehicleScreen({navigation}) {
       <View style={styles.backArrowView}>
         <Icon type="ionicon" name="arrow-back-outline" color={AppStyles.color.accent} size={27} onPress={() => setCurrentScreen(true)}></Icon>
       </View>
-      <Text style={styles.title}>Add a Scooter</Text>
+      <Text style={styles.title}>Edit Scooter</Text>
     <Text style={styles.label}>Hourly Rate</Text>
     <NumericInput 
             value={hourlyRate} 
@@ -253,7 +266,7 @@ function AddVehicleScreen({navigation}) {
         search={false}
         dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
-        placeholder="Select Start Time"
+        placeholder={(item.availability).substring(0,item.availability.indexOf(" - "))}
         boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
     />
     <Text style={[styles.label, {marginTop: 24}]}>To</Text>
@@ -265,7 +278,7 @@ function AddVehicleScreen({navigation}) {
         dropdownTextStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         inputStyles={{color:AppStyles.color.text, fontFamily: AppStyles.fontFamily.regular}}
         boxStyles={{borderRadius: 4, borderWidth: 1, borderColor: AppStyles.color.text}}
-        placeholder="Select End Time"
+        placeholder={(item.availability).substring(item.availability.indexOf(" - ") + 3)}
     />
     <DayPicker
       weekdays={weekdays}
@@ -398,4 +411,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(AddVehicleScreen);
+export default connect(mapStateToProps)(EditVehicleScreen);

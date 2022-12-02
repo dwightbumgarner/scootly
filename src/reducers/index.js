@@ -12,7 +12,7 @@ export const login = (user) => ({
 });
 
 export const logout = (user) => ({
-  type: LOGIN,
+  type: LOGOUT,
 });
 
 function auth(state = initialAuthState, action) {

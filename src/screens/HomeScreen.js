@@ -1,20 +1,30 @@
-import React, {useLayoutEffect, useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-import {connect, useSelector} from 'react-redux';
+import { connect } from 'react-redux';
 import {AppStyles} from '../AppStyles';
 import {Configuration} from '../Configuration';
 import RentalListing from '../components/RentalListing';
-import firestore, { firebase } from '@react-native-firebase/firestore';
-
-
-
-
+import { firebase } from '@react-native-firebase/firestore';
 function HomeScreen({navigation}) {
-  const auth = useSelector((state) => state.auth);
+
+  var user = firebase.auth().currentUser;
+  const [username, setUsername] = useState(user.displayName);
+
+  // listen for opening of screen, check for name change
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      user = firebase.auth().currentUser;
+      setUsername(user.displayName);
+      console.log("Username: " + user.displayName);
+    })
+
+    return unsubscribe;
+  }, [navigation])
+
 
   return (
       <View style={styles.container}>
-        <Text style={styles.title}>Hi, {auth?.user?.fullname?.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
+        <Text style={styles.title}>Hi, {username.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
         <RentalListing navigation={navigation}/>
       </View>
   );

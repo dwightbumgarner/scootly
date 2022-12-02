@@ -1,21 +1,13 @@
 import React, {useState} from 'react'
-import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, Alert, DevSettings, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
-import {AppStyles, width, AppIcon} from '../AppStyles';
+import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, Alert } from 'react-native';
+import {AppStyles, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
-import {connect, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-picker';
 import {useDispatch} from 'react-redux';
 import auther from '@react-native-firebase/auth';
 import {logout} from '../reducers';
-
-
-
-// TODO:
-    // button to change info (not with google)
-        // add/change photo
-        // change name
-    // button to switch between vendor/renter mode
 
 function ProfileScreen({navigation}){
     // find current user's data and store the photo
@@ -26,8 +18,8 @@ function ProfileScreen({navigation}){
     const [image, setImage] = useState(null);
     const [initialName, changeInitialName] = useState(auth.user?.fullname ?? 'Stranger')
     const [userName, changeUserName] = useState('');
-    var photo = auth?.user?.photoURL;
-    console.log(photo)
+    //var photo = auth?.user?.photoURL;
+    //console.log(photo)
 
     const selectImage = () => {
         const options = {
@@ -59,7 +51,7 @@ function ProfileScreen({navigation}){
             console.log("userName", userName.split(' ').slice(0, -1).join(' '))
             if(userName.split(' ').slice(0, -1).join(' ') == ""){
                 Alert.alert(
-                    "Must enter a last name",
+                    "Please enter your first and last name!",
                     [
                         {
                             text: "Cancel",
@@ -70,32 +62,28 @@ function ProfileScreen({navigation}){
                 );
             }
             else{
-                // console.log(user);
-                // const update = {displayName: userName}
-                // await user.updateProfile(update).then(async function ()  {
-                //     console.log('Update successful');
-                //     await firebase.auth().currentUser.reload().then(() => {
-                //         const test = firebase.auth().currentUser;
-                //         console.log(test);
-                //     });
-                // }).catch((error) => {
-                //     console.log('Update unsuccessful' + error);
-                // });  
-                firestore()
-                .collection('users')
-                .doc(user.uid)
-                .update({
-                    fullname: userName
-                })
+                console.log(user);
+                const update = {displayName: userName}
+                firestore().collection('users').doc(user.uid).update({
+                    fullname: update.displayName
+                });
+                user.updateProfile(update).then(() => {
+                    console.log('Update successful');
+                    firebase.auth().currentUser.reload().then(() => {
+                        const test = firebase.auth().currentUser;
+                        console.log(test);
+                    });
+                }).catch((error) => {
+                    console.log('Update unsuccessful' + error);
+                });  
                 changeInitialName(userName);
-                
-                // window.location.reload(false);
+                changeUserName('');
             }
         }
     };
 
     const uploadData = async () => {
-        console.log(image);
+        //console.log(image);
         const { uri } = image;
         const filename = uri.substring(uri.lastIndexOf('/') + 1);
         const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
