@@ -165,7 +165,7 @@ export default function RentalListing(props) {
                     ratingCount={5}
                     imageSize={16}
                     readonly
-                    startingValue={item?.vendorRating}
+                    // startingValue={item?.vendorRating}
                     type='custom'
                     ratingColor={AppStyles.color.accent}
                     ratingBackgroundColor={AppStyles.color.text}

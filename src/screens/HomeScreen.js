@@ -4,6 +4,8 @@ import {connect, useSelector} from 'react-redux';
 import {AppStyles} from '../AppStyles';
 import {Configuration} from '../Configuration';
 import RentalListing from '../components/RentalListing';
+import firestore, { firebase } from '@react-native-firebase/firestore';
+
 
 
 

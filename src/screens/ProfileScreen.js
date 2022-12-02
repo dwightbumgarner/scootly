@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, Alert, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, StyleSheet, TextInput, Image, Text, View, Alert, DevSettings, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import {AppStyles, width, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import {connect, useSelector} from 'react-redux';
@@ -54,7 +54,7 @@ function ProfileScreen({navigation}){
     };
 
     // check if this actually works
-    const saveButton = () => {
+    const saveButton = async () => {
         if(userName !== ""){
             console.log("userName", userName.split(' ').slice(0, -1).join(' '))
             if(userName.split(' ').slice(0, -1).join(' ') == ""){
@@ -70,18 +70,26 @@ function ProfileScreen({navigation}){
                 );
             }
             else{
-                console.log(user);
-                const update = {displayName: userName}
-                user.updateProfile(update).then(() => {
-                    console.log('Update successful');
-                    firebase.auth().currentUser.reload().then(() => {
-                        const test = firebase.auth().currentUser;
-                        console.log(test);
-                    });
-                }).catch((error) => {
-                    console.log('Update unsuccessful' + error);
-                });  
-                changeInitialName(userName)
+                // console.log(user);
+                // const update = {displayName: userName}
+                // await user.updateProfile(update).then(async function ()  {
+                //     console.log('Update successful');
+                //     await firebase.auth().currentUser.reload().then(() => {
+                //         const test = firebase.auth().currentUser;
+                //         console.log(test);
+                //     });
+                // }).catch((error) => {
+                //     console.log('Update unsuccessful' + error);
+                // });  
+                firestore()
+                .collection('users')
+                .doc(user.uid)
+                .update({
+                    fullname: userName
+                })
+                changeInitialName(userName);
+                
+                // window.location.reload(false);
             }
         }
     };
