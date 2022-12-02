@@ -428,7 +428,7 @@ export default function RentalListing(props) {
                                         status={checkedPrice === '20' ? 'checked' : 'unchecked'}
                                         onPress={checkedPrice === '20' ? () => setCheckedPrice('1000') : () => setCheckedPrice('20')}
                                     />
-                                    <Text style={styles.modalNormal}> {'< $'}20 miles </Text>
+                                    <Text style={styles.modalNormal}> {'< $'}20/hr </Text>
                                 </View>
                             </View>
 
