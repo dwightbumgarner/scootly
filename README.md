@@ -3,19 +3,19 @@
 ## Fully working features
 
 - Sign in with Google
-- User Management with Firebase Auth
-- Email/Password Registration
-- Persistent Login Credentials (a.k.a Remember password)
-- Logout Functionality
+- User and data management with Firebase Auth
+- Persistent login credentials and logout functionality
 - Messaging between users
 - 
 
 ## Installation
 
-
+Set up ios/android emulation environment
 
 ```
-npm install && react-native run-android
+git clone https://github.com/scootly/react-native-client/
+npm install 
+react-native run-android
 
 ```
 
