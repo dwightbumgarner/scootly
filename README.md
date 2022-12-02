@@ -2,11 +2,15 @@
 
 ## Fully working features
 
+- Create new profile
 - Sign in with Google
-- User and data management with Firebase Auth
 - Persistent login credentials and logout functionality
+- User and data management with Firebase Auth
+- Make listings of personal scooters available for rent
+- Search and filter through scooter listings
 - Messaging between users
-- 
+- Rate your interactions with other users
+- Update user profile
 
 ## Installation
 
@@ -23,6 +27,5 @@ npx react-native run-android || ios thing (TODO)
 ## App Designs
 
 
-
-# Credit:
+## Credit:
 Started with template from instamobile: https://github.com/instamobile/react-native-starter-kit
