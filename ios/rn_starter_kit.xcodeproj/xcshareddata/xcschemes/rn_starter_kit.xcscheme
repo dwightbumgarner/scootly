@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "rn_starter_kit.app"
+               BuildableName = "Scootly.app"
                BlueprintName = "rn_starter_kit"
                ReferencedContainer = "container:rn_starter_kit.xcodeproj">
             </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "rn_starter_kit.app"
+            BuildableName = "Scootly.app"
             BlueprintName = "rn_starter_kit"
             ReferencedContainer = "container:rn_starter_kit.xcodeproj">
          </BuildableReference>
@@ -72,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "rn_starter_kit.app"
+            BuildableName = "Scootly.app"
             BlueprintName = "rn_starter_kit"
             ReferencedContainer = "container:rn_starter_kit.xcodeproj">
          </BuildableReference>

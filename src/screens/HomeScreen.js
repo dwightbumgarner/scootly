@@ -34,7 +34,7 @@ function HomeScreen({navigation}) {
 
   return (
       <View style={styles.container}>
-        <Text style={styles.title}>Hi, {username.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
+        <Text style={styles.title}>Hi, {username?.split(' ').slice(0, -1).join(' ') ?? 'Stranger'}</Text>
         <RentalListing navigation={navigation} handler = {backgroundHandler}/>
         {modalActive &&
         <View style={styles.hidden}>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Button from 'react-native-button';
-import {View, StyleSheet, Text, TextInput, Image, TouchableOpacity, ActivityIndicator, Alert} from 'react-native';
+import {View, StyleSheet, Text, TextInput, Image, TouchableOpacity, ActivityIndicator, Alert, KeyboardAvoidingView} from 'react-native';
 import {connect, useSelector} from 'react-redux';
 import {AppStyles, AppIcon} from '../AppStyles';
 import { Icon } from 'react-native-elements'
@@ -195,7 +195,7 @@ function AddVehicleScreen({navigation}) {
           source={image ? {uri: (image?.uri)} : (AppIcon.images.defaultVehicle)}
         />
       </TouchableOpacity>
-      <View style={styles.InputContainer}>
+      <KeyboardAvoidingView behavior="padding" style={styles.InputContainer}>
         <TextInput
           style={styles.body}
           placeholder="Vehicle Name"
@@ -204,8 +204,8 @@ function AddVehicleScreen({navigation}) {
           placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
-      </View>
-      <View style={styles.InputContainer}>
+      </KeyboardAvoidingView>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} style={styles.InputContainer}>
         <TextInput
           style={styles.description}
           placeholder="Description"
@@ -215,7 +215,7 @@ function AddVehicleScreen({navigation}) {
           placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
-      </View>
+      </KeyboardAvoidingView>
       <Button
         containerStyle={styles.addVehicleContainer}
         style={styles.addVehicleText}

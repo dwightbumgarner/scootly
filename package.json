@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
@@ -41,6 +42,7 @@
     "react-native-fbsdk": "^3.0.0",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-image-picker": "^2.3.4",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-numeric-input": "^1.9.1",
     "react-native-paper": "^4.12.5",
     "react-native-picker-weekday": "^1.1.2",

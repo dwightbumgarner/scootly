@@ -82,58 +82,6 @@ function LoginScreen({navigation}) {
       });
   };
 
-  const onPressFacebook = () => {
-    LoginManager.logInWithPermissions([
-      'public_profile',
-      'user_friends',
-      'email',
-    ]).then(
-      (result) => {
-        if (result.isCancelled) {
-          Alert.alert('Whoops!', 'You cancelled the sign in.');
-        } else {
-          AccessToken.getCurrentAccessToken().then((data) => {
-            const credential = firebase.auth.FacebookAuthProvider.credential(
-              data.accessToken,
-            );
-            const accessToken = data.accessToken;
-            auth()
-              .signInWithCredential(credential)
-              .then((result) => {
-                var user = result.user;
-                AsyncStorage.setItem(
-                  '@loggedInUserID:facebookCredentialAccessToken',
-                  accessToken,
-                );
-                AsyncStorage.setItem('@loggedInUserID:id', user.uid);
-                var userDict = {
-                  id: user.uid,
-                  fullname: user.displayName,
-                  email: user.email,
-                  profileURL: user.photoURL,
-                };
-                var userData = {
-                  ...userDict,
-                  appIdentifier: 'rn-android-universal-listings',
-                };
-                firestore().collection('users').doc(user.uid).set(userData);
-                dispatch(login(userDict));
-                navigation.navigate('DrawerStack', {
-                  user: userDict,
-                });
-              })
-              .catch((error) => {
-                alert('Please try again! ' + error);
-              });
-          });
-        }
-      },
-      (error) => {
-        Alert.alert('Sign in error', error);
-      },
-    );
-  };
-
   const onPressGoogle = () => {
     setLoading(true);
     GoogleSignin.signIn()

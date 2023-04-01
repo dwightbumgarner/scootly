@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import {TouchableOpacity, StyleSheet, Image, ScrollView, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, StyleSheet, Image, ScrollView, Text, TextInput, View, FlatList, SafeAreaView, ActivityIndicator, KeyboardAvoidingView} from 'react-native';
 import {AppStyles, AppIcon} from '../AppStyles';
 import Button from 'react-native-button';
 import firestore, { firebase } from '@react-native-firebase/firestore';
@@ -7,6 +7,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Rating } from 'react-native-ratings';
 import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from 'react-native-elements'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 const sendIcon = require('../../assets/icons/send-icon.png')
 const rateIcon = require('../../assets/icons/rate-icon.png')
@@ -163,7 +165,6 @@ const Conversation = ({navigation, route}) => {
                 </View>
 
             </View>
-
             <SafeAreaView style={styles.messageContainer}>
                 <FlatList 
                 data={messageList} 
@@ -174,30 +175,28 @@ const Conversation = ({navigation, route}) => {
                 style={{marginVertical: 16}}
                 />
             </SafeAreaView>
-
-            <View style={styles.composeBar}>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                    style={styles.inputBody}
-                    placeholder="Message"
-                    value={messageBuffer}
-                    onChangeText={setMessageBuffer}
-                    placeholderTextColor={AppStyles.color.white}
-                    cursorColor={AppStyles.color.accent}
-                    />
-                </View>
-                <Button 
-                containerStyle={styles.sendButton} 
-                onPress={() => {
-                    writeMessage(convObject?.id, messageBuffer, user.uid);
-                    setMessageBuffer('');
-                    listRef.scrollToEnd({ animated: true });
-                  }}
-                >
-                    <Image source={sendIcon} style={styles.sendIcon}/>    
-                </Button>
-                
-            </View>
+            <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} style={styles.composeBar}>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                        style={styles.inputBody}
+                        placeholder="Message"
+                        value={messageBuffer}
+                        onChangeText={setMessageBuffer}
+                        placeholderTextColor={AppStyles.color.white}
+                        cursorColor={AppStyles.color.accent}
+                        />
+                    </View>
+                    <Button 
+                    containerStyle={styles.sendButton} 
+                    onPress={() => {
+                        writeMessage(convObject?.id, messageBuffer, user.uid);
+                        setMessageBuffer('');
+                        listRef.scrollToEnd({ animated: true });
+                    }}
+                    >
+                        <Image source={sendIcon} style={styles.sendIcon}/>    
+                    </Button>
+            </KeyboardAvoidingView>
             {reviewBoxVisible && 
             <ReviewBox 
             name={friend.fullname} 
@@ -219,6 +218,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: AppStyles.color.primarybg
+    },
+    keyboard: {
+        flex: 1,
     },
     title: {
         fontSize: AppStyles.fontSize.title,
@@ -329,8 +331,6 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'center',
-        borderTopWidth: 2,
-        borderTopColor: AppStyles.color.secondarybg,
     },
     inputContainer: {
         width: 280,

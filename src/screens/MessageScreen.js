@@ -77,7 +77,7 @@ const MessageScreen = ({navigation, route}) => {
             <TouchableOpacity 
             style={styles.connection} 
             onPress={() => {
-                console.log('Opened conversation with ' + item.friend?.fullname);
+                //console.log('Opened conversation with ' + item.friend?.fullname);
                 navigation.navigate("Conversation", {convObject: item});
             }}
             >

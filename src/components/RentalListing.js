@@ -15,6 +15,7 @@ const xIcon = require('../../assets/icons/x-icon.png')
 
 export default function RentalListing(props) {
     const auth = useSelector((state) => state.auth);
+    console.log(auth);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [allData, setallData] = useState([]);
@@ -97,7 +98,7 @@ export default function RentalListing(props) {
         // Retrieve Firebase rentals collection
         firestore()
         .collection('rentals')
-        .where('vendorUID', '!=', auth.user?.id)
+        .where('vendorUID', '!=', auth?.user?.id)
         .get()
         .then(collectionSnapshot => {
             //console.log('Total Rentals: ', collectionSnapshot.size);

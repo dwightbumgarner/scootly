@@ -23,7 +23,7 @@ function SignupScreen({navigation}) {
         const data = {
           email: email,
           fullname: fullname,
-          phone: phone,
+          id: response.user._user.uid,
           appIdentifier: 'rn-android-universal-listings',
         };
         const user_uid = response.user._user.uid;
@@ -38,12 +38,18 @@ function SignupScreen({navigation}) {
           })
           .catch(function (error) {
             const {code, message} = error;
+            console.log(code);
             Alert.alert(message);
           });
       })
       .catch((error) => {
         const {code, message} = error;
-        Alert.alert(message);
+        console.log(code);
+        if(code == 'auth/email-already-in-use'){
+          Alert.alert("Sorry, that email address is taken!");
+        }else{
+          Alert.alert(message);
+        }
       });
   };
 
@@ -64,16 +70,6 @@ function SignupScreen({navigation}) {
           placeholder="Full Name"
           onChangeText={setFullname}
           value={fullname}
-          placeholderTextColor={AppStyles.color.white}
-          underlineColorAndroid="transparent"
-        />
-      </View>
-      <View style={styles.InputContainer}>
-        <TextInput
-          style={styles.body}
-          placeholder="Phone Number"
-          onChangeText={setPhone}
-          value={phone}
           placeholderTextColor={AppStyles.color.white}
           underlineColorAndroid="transparent"
         />
