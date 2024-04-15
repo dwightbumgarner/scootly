@@ -1,4 +1,6 @@
-# Scootly.io
+# Scootly
+
+Scootly is a peer-to-peer electric scooter sharing app built with React Native.
 
 ## Fully working features
 
@@ -29,7 +31,7 @@ Then watch the app execute on an Android emulator.
 
 For IOS:
 
-Set up IOS emulation environment via xcode, then...
+Set up IOS emulation environment via Xcode, then...
 
 ```
 git clone https://github.com/scootly/react-native-client/
@@ -42,7 +44,7 @@ pod install
 ```
 Then build the app by opening the .xcworkspace file in the IOS directory, and execute it on an IOS emulator.
 
-## App Designs
+## App Screens
 
 <a href="">
 	<img src="https://user-images.githubusercontent.com/7905626/205381309-963f693a-9c65-4d5c-989d-501668544292.png" width="210" height="456" /></a>
@@ -64,4 +66,4 @@ Then build the app by opening the .xcworkspace file in the IOS directory, and ex
 
 ## Credit:
 
-Started with template from instamobile: https://github.com/instamobile/react-native-starter-kit
+Used boilerplate starter code from Instamobile: https://github.com/instamobile/react-native-starter-kit
