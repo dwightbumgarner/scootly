@@ -14,7 +14,7 @@ Scootly is a peer-to-peer electric scooter sharing app built with React Native.
 - Rate your interactions with other users
 - Update user profile
 
-## Installation
+## Setup
 
 For Android:
 
